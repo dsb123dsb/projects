@@ -1,0 +1,19 @@
+/*使用jqzoom*/
+/*$(function(){
+	$(".jqzoom").jqueryzoom({
+		zoomType:"standard",
+		lens:true,
+		preloadImages:false,
+		alwaysOn:false,
+		zoomWidth:440,
+		zoomHeight:440,
+		xOffset:10,
+		yOffset:0,
+		position:"right"
+	});
+});*/
+$(function(){
+  $('div.jqzoom').zoom(
+  	{on:'mouseover'}
+  );
+});

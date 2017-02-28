@@ -1,0 +1,27 @@
+@charset "utf-8";
+/*
+    Document   : CSS样式初始化
+    Created on : 2016. 9. 10,10:41:00
+    Author     :
+    Description:
+        CSS样式表的初始化，全局样式设置。部分样式属性请根据具体页面重置其属性
+        导入方式：<link href="css/common.css" rel="stylesheet" type="text/css" />
+*/
+/* reset */
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin: 0;padding: 0;}/* 初始化标签在所有浏览器中的margin、padding值 */
+body,button,input,select,textarea{font:12px/1.5 tahoma,arial,\5b8b\4f53;}
+h1,h2,h3,h4,h5,h6{font-size: 100%}
+address,cite,dfn,em,var{font-style: normal;}/* 重置样式标签的样式 */
+code,kbd,pre,samp{font-family: courier new,courier,monospace;}
+small{font-size: 12px;}
+ul,ol{list-style: none;}/* 重置类表前导符号为none,menu在HTML5中有效,dl li也可 */
+a{text-decoration: none;}
+a:hover{text-decoration: underline;}
+sup{vertical-align: text-top;}
+sub{vertical-align: text-bottom;}
+legend{color: #000;}
+fieldset,img{border: 0;}/* 重置fieldset（表单分组）、图片的边框为0*/
+button,input,select,textarea{font-size: 100%;}
+table{border-collapse: collapse;border-spacing:0;}
+.clear{clear: both;float: none;height: 0;overflow: hidden;}
+html .hide{display: none;}

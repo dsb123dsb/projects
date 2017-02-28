@@ -1,0 +1,270 @@
+@@charset "UTF-8";
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, "Mircosoft Yahei UI";
+    position: relative;
+}
+#myCarousel {
+    margin: 100px 0 0 0;
+}
+.logo {
+    padding: 0px;
+}
+#navbar-collapse ul {
+    margin-top: 0;
+}
+.carousel-inner img{
+    margin: 0 auto;
+}
+.tab1 {
+    margin: 30px 0;
+    color: #666;
+}
+.tab1 .media-heading {
+    margin: 8px 0 10px 0;
+    color: #0059b2;
+}
+.tab1 .text-muted {
+    font-size: 16px;
+    line-height: 22px;
+    color: #999;
+}
+.tab1 .col {
+    padding: 5px;
+}
+.tab2 {
+    background-color: #eee;
+    padding: 20px;
+    text-align: center;
+    line-height: 1.5;
+}
+.text h3 {
+    font-size: 20px;
+}
+.text p {
+    font-size: 14px;
+}
+.tab3 {
+    padding: 20px;
+    text-align: center;
+    line-height: 1.5;
+}
+.tab-h2 {
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #0059b2;
+}
+.tab-p {
+    font-size: 15px;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #999;
+}
+.jumbotron {
+    background-color: rgb(40, 40, 40);
+    margin: 50px 0 0 0;
+    color: #ccc;
+}
+.jumbotron h1 {
+    font-size: 26px;
+    padding-left: 20px;
+}
+.jumbotron h4 {
+    font-size: 16px;
+    padding-left: 20px;
+}
+.info-content {
+    background: #eee;
+    margin: 0 0 20px 0;
+    padding: 15px 0;
+    box-shadow: 2px 2px 3px #666;
+}
+.info-content h4 {
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+}
+.info-right {
+    background-color: #eee;
+}
+.info-right blockquote {
+    margin: 0;
+    padding: 0;
+}
+.info-right h2 {
+    font-size: 20px;
+    color: #666;
+    padding-top: 5px;
+    margin-left: 5px;
+}
+.info-right h4 {
+    font-size: 12px;
+}
+.info-right p {
+    font-size: 7px;
+}
+.info-right .piece {
+    padding-bottom: 5px;
+}
+#information {
+    background-color: #d9d9d9;
+    padding: 40px 0;
+}
+#case {
+    background-color: #eee;
+    padding: 40px 0;
+    text-align: center;
+}
+#case h4 {
+    color: #0059b2;
+}
+#case p {
+    color: #666;
+}
+#case img {
+    margin-top: 10px;
+}
+#more {
+    background-color: #eee;
+    padding: 40px 15px;
+}
+#more a {
+    font-weight: bold;
+}
+#more .more {
+    background-color: #fff;
+    box-shadow: 2px 2px 3px #ccc;
+    padding: 10px 15px;
+}
+#more h3 {
+    color: #0059b2;
+    font-weight: bold;
+    font-size: 18px;
+    border-bottom: 2px dashed #ccc;
+    padding-bottom: 5px;
+    margin-top: 15px;
+    /*margin: 5px 0;*/
+}
+#more p {
+    line-height: 1.5;
+    font-size: 13px;
+}
+#more .nav-stacked {
+    width: 206px;
+}
+#more .nav-stacked.affix {
+    top: 60px;
+}
+#footer {
+    background-color: #ccc;
+    border-top: 1px solid #eee;
+    padding: 15px;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+}
+
+/*For small size*/
+@media (min-width: 768px) {
+    .tab-h2 {
+        font-size: 24px;
+    }
+    .tab-p {
+        font-size: 16px;
+    }
+    .text h3 {
+        font-size: 22px;
+    }
+    .text p {
+        font-size: 15px;
+    }
+    .tab2-img {
+        float: left;
+    }
+    .tab2-text {
+        float: right;
+    }
+    .jumbotron h1 {
+        font-size: 30px;
+    }
+    .jumbotron h4 {
+        font-size: 16px;
+    }
+    .info-content h4 {
+        font-size: 16px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .info-right {
+        background-color: #eee;
+        box-shadow: 2px 2px 3px #666;
+    }
+    #more h3 {
+        font-size: 19px;
+    }
+    #more p {
+        font-size: 14px;
+}
+
+/*For medium size*/
+@media (min-width: 992) {
+    .tab-h2 {
+        font-size: 26px;
+    }
+    .tab-p {
+        font-size: 18px;
+    }
+    .text h3 {
+        font-size: 24px;
+    }
+    .text p {
+        font-size: 16px;
+    }
+    .jumbotron h1 {
+        font-size: 33px;
+    }
+    .jumbotron h4 {
+        font-size: 17px;
+    }
+    .info-content h4 {
+        font-size: 18px;
+    }
+    #more h3 {
+        font-size: 20px;
+    }
+    #more p {
+        font-size: 15px;
+}
+
+/*For large size*/
+@media (min-width: 1200px) {
+    .tab-h2 {
+        font-size: 30px;
+    }
+    .tab-p {
+        font-size: 20px;
+    }
+    .text h3 {
+        font-size: 26px;
+    }
+    .text p {
+        font-size: 17px;
+    }
+    .jumbotron h1 {
+        font-size: 36px;
+    }
+    .jumbotron h4 {
+        font-size: 18px;
+    }
+    .info-content h4 {
+        font-size: 20px;
+    }
+    #more h3 {
+        font-size: 22px;
+    }
+    #more p {
+        font-size: 16px;
+    }
+}
