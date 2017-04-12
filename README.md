@@ -5,5 +5,5 @@
 4. wx 小程序
 5. demo-parkingNote
 6. imgZoom![](http://i.imgur.com/SE2cBPG.gif)
-7. 图片幻灯片效果
-8. 仿百度智能输入控件![](http://i.imgur.com/M6oehYg.gif)
+7. 图片幻灯片效果-slideShow effects
+8. 仿百度智能输入控件-auto input![](http://i.imgur.com/M6oehYg.gif)
