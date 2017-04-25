@@ -1,0 +1,79 @@
+<view class="window" style="width:{{winWidth}}px;height:{{winHeight}}px;">
+
+<scroll-view scroll-y="true" style="height:{{winHeight-45}}px" bindscroll="bindScroll">
+<!--预览图-->
+<view class="preview-image-container" bindtap="previewImage">
+    <!--image class="preview-image" src="{{pictureInfo.pictureSrc}}" style="height:{{imageInfo.height*750/imageInfo.width}}rpx"></image-->
+    <image mode="aspectFit" style="width:750rpx;height:{{imageInfo.height*750/imageInfo.width}}rpx"  class="preview-image" src="{{pictureInfo.pictureSrc+'?x-oss-process=image/resize,w_300'}}"></image>
+</view>
+
+
+<!--编辑按钮-->
+<view wx:if="{{isMyWork}}" class="edit-image" bindtap="edit">
+    <image src="../../image/detail/edit.png"></image>
+<!--view class="edit-image" bindtap="edit"-->
+</view>
+
+<!--文字信息-->
+<view class="picture-info">
+    <view class="picture-title">{{pictureInfo.pictureTitle}}</view>
+    <view class="picture-desc">
+        <text>{{pictureInfo.pictureDesc}}</text>
+    </view>
+</view>
+
+<!--标签-->
+<view class="tags-group">
+    <block wx:for="{{tags}}">
+        <!--<navigator url="../tagDetail/tagDetail?tag={{item}}">-->
+        <!--删除 bindtap="gotag"-->
+            <view class="tags-item" data-tag="{{item}}" >{{item}}</view>
+        <!--</navigator>-->
+    </block>
+</view>
+</scroll-view>
+
+<!--底部-->
+<view style="bottom:{{0}}rpx" class="user-operation">
+    <view class="user-operation-content">
+        <!--<navigator url="../me/me?userId={{pictureInfo.authorId}}" redirect>-->
+            <!--删除bindtap="gome"-->
+            <view class="user-content" >
+                <view class="user-avatar"><image src="{{pictureInfo.authorAvatar}}"></image></view>
+                <view class="user-name">{{pictureInfo.authorName}}</view>
+            </view>
+        <!--</navigator>-->
+        <!--底部按钮组-->
+        <view class="operation-groups">
+            <image bindtap="download" src="../../image/detail/download@2x.png"></image>
+            <image wx:if="{{!isMyCollect}}" bindtap="collect" src="../../image/detail/collect@2x.png"></image>
+            <image wx:else bindtap="cancelCollect" src="../../image/detail/cancelCollect@2x.png"></image>
+            <!--image bindtap="share" src="../../image/detail/share@2x.png"></image-->
+            <image bindtap="report" src="../../image/detail/report@2x.png"></image>
+        </view>
+    </view>
+</view>
+
+<!--长按引导-->
+<view wx:if="{{displayLongtap}}" class="longtap-tip" style="width:{{winWidth}}px;height:{{winHeight}}px;">
+    <!--iphone的长按引导-->
+    <block wx:if="{{isIphone}}">
+        <image mode="aspectFit" style="width:{{winWidth}}px;height:{{winHeight}}px;" class="picture-bg" src="{{pictureInfo.pictureSrc+'?x-oss-process=image/resize,w_300'}}"></image>
+        <view class="opacity-cover" style="width:{{winWidth}}px;height:{{winHeight}}px"></view>
+
+        <image class="longtap-arrow" src="../../image/detail/longtap@2x.png"></image>
+        <!--<image class="longtap-image" src="../../image/detail/longtap-arrow@2x.png"></image>-->
+        <view class="longtap-text">长按图片可以下载哦</view>
+        <view class="iknow-btn" bindtap="enterPreview">我知道了</view>
+    </block>
+    <!--其它机型的长按引导-->
+    <block wx:else>
+        <image mode="aspectFit" style="width:{{winWidth}}px;height:{{winHeight}}px;" class="picture-bg" src="{{pictureInfo.pictureSrc+'?x-oss-process=image/resize,w_300'}}"></image>
+        <view class="opacity-cover" style="width:{{winWidth}}px;height:{{winHeight}}px"></view>
+        <!--<image class="android-arrow" src="../../image/detail/longtap-arrow@2x.png"></image>-->
+        <view class="android-download-tip">点击右上角按钮可以下载哦</view>
+        <view class="iknow-container"><view class="android-ikonw-btn" bindtap="enterPreview">我知道了</view></view>
+    </block>
+</view>
+
+</view>

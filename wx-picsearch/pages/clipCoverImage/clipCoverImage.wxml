@@ -1,0 +1,25 @@
+<view class="window" style="width:{{winWidth}}px;height:{{winHeight}}px;">
+
+<canvas disable-scroll="true" class="small-canvas" canvas-id="small"></canvas>
+
+<!--fixed 49-->
+<image wx:if="{{displayImage}}" src="{{pictureSrc}}" style="width:{{pictureWidth*px2rpx}}rpx;height:{{pictureHeight*px2rpx}}rpx;top:{{fixTop}}rpx;left:{{fixLeft}}rpx;"></image>
+
+<!--fixed 50-->
+<view class="transparent-cover cover-top"></view>
+<view class="transparent-cover cover-bottom"></view>
+
+
+
+<!--fixed 60-->
+<view class="touch-pad" catchtouchstart="touchstart" catchtouchmove="touchmove" catchtouchend="touchend" 
+    style="height:{{winHeight}}px"></view>
+
+<!--fixed 99-->
+<!--底部操作栏-->
+<view class="fixed-operation">
+    <view class="operation-cancel" bindtap="cancel">取消</view>
+    <view class="operation-select" bindtap="select">选取</view>
+</view>
+
+</view>

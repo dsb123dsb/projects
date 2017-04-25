@@ -1,0 +1,144 @@
+.top-container {
+  display: flex;
+  flex-direction: row;
+  color: #030303;
+  margin: 15rpx 23rpx;
+  align-items: center;
+}
+
+#search-box {
+  /*border:solid 1px #979797;*/
+  height: 35px;
+  position: relative;
+  width: 582rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  line-height: 40px;
+  background: #eaebed;
+  border-radius: 4px;
+  font-family: "PingFang-SC-Regular";
+  font-size: 12px;
+  color: #8c8d91;
+  letter-spacing: 0px;
+  font-weight: normal;
+}
+
+.search-logo {
+  width: 14px;
+  height: 14px;
+  margin-left: 31rpx;
+  margin-right: 7px;
+  /*position: absolute;
+    left:29rpx;
+    top:17rpx;*/
+}
+
+.search-input {
+  /*position:absolute;
+    left:70rpx;
+    right:0;*/
+  height: 35px;
+  width: 530rpx;
+  font-family: "微软雅黑";
+  /*color: #f4f4f4;*/
+}
+
+.cancel-search {
+  margin-left: 24rpx;
+}
+
+.search-btn {
+  padding: 0rpx 20rpx;
+  /*height: 35px;
+  font-size: 12px;
+  margin-left: 28rpx;
+  background-color: #ea4f16;
+  line-height: 35px;
+  color: white;
+  border-radius: 12rpx;
+  width: 100rpx;*/
+  height: 34px;
+  font-size: 12px;
+  margin-left: 20rpx;
+  background-color: #ea4f16;
+  line-height: 32px;
+  color: white;
+  border-radius: 12rpx;
+  width: 150rpx;
+}
+.top-group {
+  margin-left: 22rpx;
+  margin-right: 0rpx;
+  overflow: hidden;
+}
+.top-image-box {
+  position: relative;
+  width: 340rpx;
+  height: 340rpx;
+  margin: 24rpx 21rpx 0rpx 0rpx;
+  float: left;
+  overflow: hidden;
+}
+
+.top-image {
+  width: 100%;
+  height: 100%;
+}
+
+.picture-title {
+  position: absolute;
+  left: 22rpx;
+  bottom: 33rpx;
+  color: white;
+  font-size: 15px;
+  z-index: 2;
+}
+
+.box-cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #292929;
+  opacity: 0.2;
+  filter: alpha(opacity=20);
+}
+
+.bottom-tips {
+  height: 56rpx;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(51, 51, 51, 1);
+  font-size: 0.5em;
+  color: white;
+  position: fixed;
+  z-index: 5;
+  line-height: 56rpx;
+  bottom: 0;
+}
+
+.bottom-tip-container {
+  position: fixed;
+  z-index: 5;
+  bottom: 0;
+  width: 100%;
+  height: 34px;
+  line-height: 34px;
+}
+
+.none {
+  position: fixed;
+  text-align: center;
+  top: 444rpx;
+  width: 100%;
+  color: #4b4b4b;
+  font-size: 12px;
+}
+
+.none image {
+  width: 94rpx;
+  height: 94rpx;
+  margin-bottom: 41rpx;
+}

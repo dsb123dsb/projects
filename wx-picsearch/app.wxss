@@ -1,0 +1,186 @@
+/**app.wxss**/
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+}
+
+view {
+  font-family: "黑体";
+}
+
+.naviBarBorder {
+  width: 100%;
+  height: 1rpx;
+  background-color: #f4f4f4;
+  position: fixed;
+  top: 0;
+  z-index: 99;
+}
+
+.placeholder {
+  color: #c4c6c8;
+  font-family: "微软雅黑";
+}
+
+.placeholder-c4 {
+  color: #c4c4c4;
+  font-family: "微软雅黑";
+  font-size: 14px;
+}
+
+.placeholder-search {
+  font-family: "微软雅黑";
+  line-height: 40px;
+  font-size: 14px;
+}
+
+input {
+  font-family: "微软雅黑";
+}
+
+.clear-float {
+  clear: both;
+}
+
+.back-to-top {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  padding: 30rpx;
+  right: 1rpx;
+  bottom: 124rpx;
+  z-index: 99;
+}
+
+.back-to-top image {
+  width: 100%;
+  height: 100%;
+}
+
+
+
+
+
+/* tab 相关 */
+
+.bottom-bar {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: white;
+  z-index: 99;
+  height: 56px;
+  align-items: center;
+  box-shadow: 0 -2rpx 2rpx rgba(30, 30, 30, 0.1);
+}
+
+.tab-icon {
+  width: 33%;
+  text-align: center;
+}
+
+.tab-icon-text {
+  text-align: center;
+  font-size: 10px;
+  color: #979797;
+}
+
+.icon-left {
+  margin-left: 40rpx;
+  margin-right: 20rpx;
+}
+
+.icon-right {
+  margin-right: 40rpx;
+  margin-left: 20rpx;
+}
+
+.icon-side image {
+  width: 22px;
+  height: 22px;
+}
+
+.icon-center image {
+  width: 30px;
+  height: 30px;
+}
+
+.icon-text-active {
+  color: #ea4f16;
+}
+
+/*刷新动画相关样式(home\division\subdivision)*/
+
+.load-animation {
+  height: 35px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.load-animation view {
+  padding-top: 10rpx;
+  width: 100%;
+}
+
+.load-animation image {
+  height: 28rpx;
+  width: 107rpx;
+  margin-bottom: 10rpx;
+}
+
+.update-animation {
+  text-align: center;
+  background-color: #ea4f16;
+  margin: auto;
+  /*overflow:hidden;*/
+  font-size: 12px;
+  color: #fff;
+  padding: 0rpx 0 0rpx 0;
+  height: 34px;
+  line-height: 34px;
+  position: relative;
+}
+
+.update-text {
+  width: 500rpx;
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.window {
+  position: fixed;
+  width: 750rpx;
+  overflow-x: hidden;
+  overflow-y: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+page {
+  background-color: white;
+}
+
+.no-more {
+  position: fixed;
+  width: 100%;
+  bottom: 56px;
+}
+
+.swiper-box {
+  width: 750rpx;
+  height: auto;
+  overflow: hidden;
+}

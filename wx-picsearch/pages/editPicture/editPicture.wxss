@@ -1,0 +1,107 @@
+.button{
+    display:block;
+    width:100%;
+    height:40.5px;
+    text-align:center;
+    line-height:40.5px;
+    font-size:15px;
+}
+
+.title-input{
+    height:46.5px;
+    border-bottom:solid 2rpx #eeeeee;
+    position:relative;
+    color:#030303;
+}
+.title-input input{
+    font-size:12px;
+    position:absolute;
+    left:38rpx;
+    border:0;
+    height:46.5px;
+    width:80%;
+    line-height:46.5px;
+}
+.placeholder{
+    color:#c4c6c8;
+}
+
+.desc-input{
+
+    height:254rpx;
+    padding:34rpx 0;
+    position:relative;
+    color:#030303;
+    font-size:12px;
+    border-bottom:solid 2rpx #eeeeee;
+}
+.desc-input textarea{
+    position:absolute;
+    left:26rpx;
+    padding:0;
+    margin:0;
+    height:250rpx;
+}
+
+.tags-column{
+    /*height:69rpx;*/
+
+    padding:13rpx 39rpx  13rpx 39rpx;
+    
+}
+/*
+.add-tag{
+    border:solid 2rpx #ea4f16;
+    font-size:20rpx;
+    font-family:"微软雅黑";
+    padding:5rpx 10rpx;
+    display:inline;
+    color:#ea4f16;
+    border-radius:20rpx;
+}
+.add-tag{
+    
+}*/
+.add-tag{
+    padding:25rpx 0;
+}
+.add-tag-icon{
+    width:12px;
+    height:12px;
+}
+.add-tag-title{
+    font-size:12px;
+    color:#030303;
+    margin:0 0rpx 0rpx 8rpx;
+}
+.add-tag-tips{
+    font-size:12px;
+    color:#777777;
+}
+.tag-item{
+    height:18.5px;
+    line-height:18.5px;
+    font-size:12px;
+    color:#777777;
+    background-color:#f4f4f4;
+    padding:7rpx 15rpx 8rpx 12rpx;
+    margin:36rpx 26rpx 0rpx 0;
+    float:left;
+    border-radius:20rpx;
+}
+.tag-item image{
+    width:7.5px;
+    height:7.5px;
+    margin-left:9rpx;
+    
+}
+.image-container{
+    border-top:solid 2rpx #eeeeee;
+    clear:both;
+    padding:76rpx 0 0 39rpx;
+}
+
+.image-container image{
+    width:483rpx;
+    height:483rpx;
+}

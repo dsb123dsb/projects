@@ -1,0 +1,40 @@
+.division {
+
+  /*border-top: 1rpx solid #f4f4f4;*/
+  padding: 37rpx 0 37rpx 66rpx;
+  margin-top:10rpx; 
+
+}
+.division-group{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.division-item {
+  font-size: 28rpx;
+  color: #888;
+  border-radius: 10rpx;
+  line-height: 66rpx;
+  height: 66rpx;
+  margin-bottom: 31rpx;
+  border: 1rpx solid #777;
+  text-align: center;
+  /*add*/
+  margin-right:   4.8%;
+  padding-left: 39rpx;
+  padding-right: 39rpx;
+}
+
+.tips {
+  position: fixed;
+  background-color: #ea4f16;
+  width: 100%;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  height: 24px;
+  line-height: 24px;
+  z-index: 9;
+}
+

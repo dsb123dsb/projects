@@ -1,0 +1,66 @@
+<import src="../template/template.wxml" />
+<view  class="window" style="width:750rpx;height:{{winHeight}}px;">
+  <scroll-view scroll-y="true" style="height:{{winHeight}}px"  bindscrolltolower="loadMore"  bindscroll="bindScroll" scroll-top="{{topPos}}">
+
+    <!--顶部刷新动画-->
+    <block wx:if="{{displayRefresh}}">
+      <view class="load-animation">
+        <view>
+          <image src="../../image/global/loadingAnimation.gif"></image>
+        </view>
+      </view>
+    </block>
+    <block wx:if="{{displayUpdate}}">
+      <view class="update-animation" style="width:{{updateWidth}}%">
+        <view class="update-background"></view>
+        <view class="update-text" wx:if="{{updateNum!=0}}">为您更新了{{updateNum}}条记录</view>
+        <view class="update-text" wx:else>暂无内容更新</view>
+      </view>
+    </block>
+
+        <!--图片列表-->
+        <view bindtouchend="touchEnd" bindtouchstart="touchStart" class="top-group">
+          <block wx:for="{{topHotList}}" wx:key="pictureId">
+            <navigator url="{{ click ? '':'../detail/detail?pictureId='+item.pictureId }}" bindtap="clickNavi">
+              <view class="top-image-box" style="background-color:{{colorSheet[index%6]}};margin:{{(index-1)%3==0?'4rpx 0.8%':'4rpx 0px'}}">
+                <block wx:if="{{divisionInfo.divisionName=='表情'}}">
+                  <image class="top-image" src="{{item.pictureSrc+'?x-oss-process=image/resize,m_pad,h_170,w_170'}}"></image>
+                </block>
+                <block wx:else>
+                  <image class="top-image" src="{{item.pictureSrc+'?x-oss-process=image/resize,m_fill,h_170,w_170'}}"></image>
+                </block>
+              </view>
+            </navigator>
+          </block>
+        </view>
+
+    <!--底部加载动画-->
+
+    <!--<view class="no-more">-->
+    <block wx:if="{{displayLoading}}">
+      <view class="section load-animation">
+        <view>
+          <image src="../../image/global/loadingAnimation.gif"></image>
+        </view>
+      </view>
+    </block>
+
+    <!--</view>-->
+
+    <!--<view class="no-more">-->
+    <block wx:if="{{displayNoMore}}">
+      <view class="update-animation" style="width:{{updateWidth}}%">
+        已经没有更多了
+      </view>
+    </block>
+
+    <!--</view>-->
+
+    <!--回到顶部按钮 定义在template里-->
+    <block wx:if="{{displayBackTop}}">
+      <template is="backTop" />
+    </block>
+  </scroll-view>
+</view>
+
+<!--<template is="tab-bar" data="{{isDivision}}"/>-->

@@ -1,0 +1,36 @@
+<template name="tab-bar">
+<view class="bottom-bar" style="bottom:0;">
+    <view class="tab-icon icon-side icon-left">
+        <block wx:if="{{!isHome&&!isDivision}}">
+        <navigator url="../home/home" open-type="redirect">
+            <image src="../../image/global/homeDisable@2x.png" ></image><view class="tab-icon-text">首页</view>
+        </navigator>
+        </block>
+        <block wx:elif="{{isDivision}}"> <!--在分类页点击首页icon进行返回-->
+            <view bindtap="goback">
+            <image src="../../image/global/homeDisable@2x.png" ></image><view class="tab-icon-text">首页</view>
+            </view>
+        </block>
+        <block wx:else><!--isHome-->
+            <image src="../../image/global/home@2x.png" ></image><view class="tab-icon-text icon-text-active">首页</view>
+        </block>
+    </view>
+    <view class="tab-icon icon-center" bindtap="post"><image src="../../image/global/pic.png"></image></view>
+    <block wx:if="{{!isMe}}">
+        <view class="tab-icon icon-side icon-right" bindtap="gome">
+            <image src="../../image/global/me@2x.png"></image><view class="tab-icon-text">我的</view>
+        </view>
+    </block>
+    <block wx:else><!--me active-->
+        <view class="tab-icon icon-side icon-right">
+            <image src="../../image/global/meActive@2x.png"></image><view class="tab-icon-text icon-text-active">我的</view>
+        </view>
+    </block>
+</view>
+</template>
+
+<template name="backTop">
+<view class="back-to-top" bindtap="backToTop">
+    <image src="../../image/global/backToTop@2x.png"></image>
+</view>
+</template>

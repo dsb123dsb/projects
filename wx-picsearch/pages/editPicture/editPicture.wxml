@@ -1,0 +1,41 @@
+
+<view>
+    <view wx:if="{{hasPicture}}" class="button" style="background-color:#ea4f16;color:white" bindtap="submitEdit">发 布</view>
+    <view wx:else class="button" style="background-color:{{btnDisableColor}};color:#777777">发 布</view>
+
+    <view class="title-input">
+        <input value="{{titleContent}}" placeholder="标题" placeholder-class="placeholder" maxlength="20" bindchange="inputTitle"/>
+    </view>
+    <view class="desc-input">
+        <textarea value="{{descContent}}" placeholder="描述" placeholder-class="placeholder" maxlength="200" bindblur="inputDesc" bindinput="inputDesc"/>
+    </view>
+</view>
+
+<!--标签-->
+<view class="tags-column">
+    <!--添加标签按钮-->
+    <view>
+        <navigator url="../addTag/addTag">
+            <view bindtap="addTags" class="add-tag">
+                <image class="add-tag-icon" src="../../image/post/add@2x.png"></image>
+                <text class="add-tag-title">添加标签</text>
+                <text class="add-tag-tips">（可以让更多人发现你哦）</text>
+            </view>
+        </navigator>
+    </view>
+
+    <view>
+        <block wx:for="{{tags}}">
+            <view class="tag-item">
+                <text>{{item}}</text><image data-name="{{item}}" bindtap="deleteTag" src="../../image/post/delete@2x.png"></image>
+            </view>
+        </block>
+    </view>
+
+    <view class="clear-float"></view>
+</view>
+
+<!--缩略图 483*483-->
+<view class="image-container">
+    <image mode="aspectFill" src="{{pictureInfo.pictureSrc+'?x-oss-process=image/resize,m_fill,h_200,w_200'}}"></image>
+</view>

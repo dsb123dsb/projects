@@ -1,0 +1,21 @@
+
+/*change*/
+.top-group{
+    margin-top: 13rpx;
+    margin-left:0px;
+    margin-right:0px;
+    overflow:hidden;
+}
+.top-image-box {
+width:32.8%;
+height:290rpx;
+margin:10rpx 0rpx 0rpx 0rpx;
+float:left;
+overflow:hidden;
+
+}
+.top-image {
+    width: 100%;
+
+    height: 100%;
+}

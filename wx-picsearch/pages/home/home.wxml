@@ -1,0 +1,71 @@
+<import src="../template/template.wxml" />
+
+<!--<view class="window" style="width:{{winWidth}}px;height:{{winHeight - 56}}px;">-->
+
+<!--导航栏下边框-->
+<view class="naviBarBorder"></view>
+<scroll-view scroll-y="true" style="height:{{winHeight-56}}px;background:#f5f6fa;" bindscroll="bindScroll" scroll-top="{{topPos}}">
+
+  <!--顶部刷新动画-->
+  <block wx:if="{{displayRefresh}}">
+    <view class="load-animation">
+      <view>
+        <image src="../../image/global/loadingAnimation.gif"></image>
+      </view>
+    </view>
+  </block>
+  <block wx:if="{{displayUpdate}}">
+    <view class="update-animation" style="width:{{updateWidth}}%">
+
+      <!--<block wx:if="{{true}}">
+    <view class="update-animation" style="width:{{20}}%">-->
+      <view class="update-background"></view>
+      <view class="update-text" wx:if="{{updateNum!=0}}">为您更新了{{updateNum}}条记录</view>
+      <view class="update-text" wx:else>暂无内容更新</view>
+    </view>
+  </block>
+
+  <!--搜索框-->
+  <navigator url="../search/search">
+    <view id="search-box">
+      <image class="search-logo" src="../../image/home/search@2x.png"></image>
+      <text class="placeholder-03">搜索</text>
+    </view>
+  </navigator>
+
+  <!--显示所有分类-->
+  <view class="" id="category-group">
+    <block wx:for="{{division}}" wx:key="divisionId">
+      <navigator url="{{click ? '':'../division/division?divisionId='+item.divisionId}}" bindtap="clickNavi">
+
+        <!--分类图230*230-->
+        <view class="category-item" id="category-item-{{index}}">
+          <image mode="aspectFit" src="{{picUrl+item.indexPicType+'.png'+'?x-oss-process=image/resize,w_165'}}"></image>
+          <view class="category-name">{{item.divisionName}}</view>
+        </view>
+      </navigator>
+    </block>
+  </view>
+
+  <!--底部加载动画-->
+  <block wx:if="{{displayLoading}}">
+    <view class="load-animation">
+      <view>
+        <image src="../../image/global/loadingAnimation.gif"></image>
+      </view>
+    </view>
+  </block>
+  <block wx:if="{{displayNoMore}}">
+    <view class="update-animation" style="width:{{updateWidth}}%">
+      已经没有更多了
+    </view>
+  </block>
+</scroll-view>
+
+<!--回到顶部按钮 定义在template里-->
+<block wx:if="{{displayBackTop}}">
+  <template is="backTop" />
+</block>
+
+<!--底部 tab bar-->
+<template is="tab-bar" data="{{isHome}}" />

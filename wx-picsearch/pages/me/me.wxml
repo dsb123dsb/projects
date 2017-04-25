@@ -1,0 +1,128 @@
+<import src="../template/template.wxml" />
+<view class="window" style="width:{{winWidth}}px;height:{{winHeight - 56}}px">
+
+  <!--top:{{winHeight-80}}px-->
+  <scroll-view scroll-y="true" style="height:{{winHeight-56}}px" bindscrolltolower="loadMore">
+
+    <!--封面-->
+
+    <!--+'?x-oss-process=image/resize,w_200/blur,r_3,s_2'-->
+    <view class="cover">
+      <image bindtap="changeCoverImage" class="cover-image" src="{{userInfo.userCoverSrc?userInfo.userCoverSrc:userInfo.userAvatar}}" mode="aspectFill"></image>
+
+      <!--<text style="font-size:20rpx;">{{userInfo.userAvatar}}</text>-->
+
+      <!--定位头像-->
+      <view class="avatar-container">
+        <image class="avatar-image" src="{{userInfo.userAvatar}}"></image>
+      </view>
+
+      <!--客服按钮-->
+      <view class="buttonMessage" style="top:18px">
+        <view class="messageCover"></view>
+        <image src="../../image/global/massage@2x.png" class="massImg"></image>
+        <contact-button class="inter" type="default-light" size="27" session-from="1111"></contact-button>
+      </view>
+    </view>
+
+    <!--用户文字信息-->
+    <view class="userInfo-box">
+      <view class="username">{{userInfo.userName}}</view>
+
+      <!--<view class="user-intro">{{userInfo.userIntroduction}}</view>-->
+    </view>
+
+    <!--swiper-->
+    <view class="swiper-tab">
+      <view class="tab-container" data-current="0" bindtap="switchNav">
+        <view class="swiper-tab-list {{currentTab==0 ? 'on':''}}">上传</view>
+      </view>
+      <view class="tab-container" data-current="1" bindtap="switchNav">
+        <view class="swiper-tab-list {{currentTab==1 ? 'on':''}}">收 藏</view>
+      </view>
+    </view>
+    <view current="{{currentTab}}" class="swiper-box" duration="300">
+
+      <!--我的图片-->
+      <block wx:if="{{currentTab == 0}}">
+
+        <!--图片列表-->
+        <view class="top-group">
+
+          <!--我的图片 列表为空时-->
+          <block wx:if="{{myPostList.length === 0}}">
+            <view class="empty-container">
+              <image class="empty-list" src="../../image/me/empty@2x.png"></image>
+              <view>空空如也~</view>
+            </view>
+          </block>
+
+          <!--我的图片 列表不为空 340*340-->
+          <block wx:else>
+            <block wx:for="{{myPostList}}" wx:key="pictureId">
+
+              <!--<navigator url="../detail/detail?pictureId={{item.pictureId}}">-->
+              <view class="top-image-box" style="background-color:{{colorSheet[index%6]}}" data-id="{{item.pictureId}}" bindtap="godetail">
+                <image class="top-image" src="{{item.pictureSrc+'?x-oss-process=image/resize,m_fill,h_170,w_170'}}"></image>
+                <view class="image-title">{{item.pictureTitle}}</view>
+                <view class="box-cover"></view>
+              </view>
+
+              <!--</navigator>-->
+            </block>
+          </block>
+        </view>
+      </block>
+
+      <!--我的收藏-->
+      <block wx:if="{{currentTab == 1}}">
+
+        <!--图片列表-->
+        <view class="top-group">
+
+          <!--我的收藏 列表为空时-->
+          <block wx:if="{{myCollectionList.length === 0}}">
+            <view class="empty-container">
+              <image class="empty-list" src="../../image/me/empty@2x.png"></image>
+              <view>
+                <text>空空如也~</text>
+              </view>
+            </view>
+          </block>
+
+          <!--我的图片 列表不为空  340*340-->
+          <block wx:else>
+            <block wx:for="{{myCollectionList}}" wx:key="pictureId">
+
+              <!--<navigator url="../detail/detail?pictureId={{item.pictureId}}">-->
+              <view class="top-image-box" style="background-color:{{colorSheet[index%6]}}" data-id="{{item.pictureId}}" bindtap="godetail">
+                <image class="top-image" src="{{item.pictureSrc+'?x-oss-process=image/resize,m_fill,h_170,w_170'}}"></image>
+                <view class="image-title">{{item.pictureTitle}}</view>
+                <view class="box-cover"></view>
+              </view>
+
+              <!--</navigator>-->
+            </block>
+          </block>
+        </view>
+      </block>
+    </view>
+
+    <!--底部加载动画-->
+    <block wx:if="{{displayLoading}}">
+      <view class="load-animation">
+        <view>
+          <image src="../../image/global/loadingAnimation.gif"></image>
+        </view>
+      </view>
+    </block>
+    <block wx:if="{{displayNoMore}}">
+      <view class="update-animation" style="width:{{updateWidth}}%">
+        已经没有更多了
+      </view>
+    </block>
+  </scroll-view>
+</view>
+
+<!--底部tabbar-->
+<template is="tab-bar" data="{{isMe}}" />
