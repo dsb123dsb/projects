@@ -8,4 +8,5 @@
 7. imgZoom [demo地址](https://pressuregit.github.io/projects-show/imageZoom/)![](http://i.imgur.com/SE2cBPG.gif)
 8. 图片幻灯片效果-slideShow effects [demo地址](https://pressuregit.github.io/projects-show/slideSho-efects/)
 9. 仿百度智能输入控件-auto input [demo地址](https://pressuregit.github.io/projects-show/autoInput-Component/)![](http://i.imgur.com/M6oehYg.gif)
+10. 手机手势解锁（纯es6）[demo地址](https://pressuregit.github.io/projects-show/handlock/)
 
