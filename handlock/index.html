@@ -37,17 +37,17 @@
 
 		#hint{
 			color: #e00;
-			font-size: 0.8em;
+			font-size: 1.8em;
 		}
 
 		#toast{
 			position: absolute;
 			color: #fff;
 			background-color: #000; 
-			border-radius: 5px;
+			border-radius: 10px;
 			z-index: 9999;
 			padding:6px 16px;
-			font-size: 0.8em;
+			font-size: 1.8em;
 			top:50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
@@ -64,6 +64,7 @@
 
 		#main label{
 			margin-right: 6px;
+			font-size: 1.8em;
 		}
 	</style>
 </head>
@@ -78,7 +79,8 @@
 			<label for=""><input name="mode" type="radio" value="update">设置密码</label>
 		</div>
 	</div>
-	<script type="text/javascript" src="./dist/hand-lock-1.0.0.min.js"></script>
+
+	<script type="text/javascript" src="/static/js/hand-lock.js"></script>
 	<script type="text/javascript">
 		console.log('tets done2!');
 		var password = localStorage.getItem('handlock_password')|| '11121323';
@@ -149,20 +151,21 @@
 				locker.check(password);
 			}
 		});
-		function recorded(res){
-			if(res.err){
-				console.log(res.err);
-				locker.clearPath();
-				if(res.err.message != HandLock.Locker.ERR_USER_CANCELED){
-					locker.record().then(recorded);
-				}
-			}else{
-				console.log('密码： ', res.records);
-				locker.record().then(recorded);
-			}
-		}
+		// function recorded(res){
+		// 	if(res.err){
+		// 		console.log(res.err);
+		// 		locker.clearPath();
+		// 		if(res.err.message != HandLock.Locker.ERR_USER_CANCELED){
+		// 			locker.record().then(recorded);
+		// 		}
+		// 	}else{
+		// 		console.log('密码： ', res.records);
+		// 		locker.record().then(recorded);
+		// 	}
+		// }
 		locker.render();
-		locker.record().then(recorded);
+		// locker.record().then(recorded);
+		var p = locker.check(password);
 	</script>
 </body>
 </html>
