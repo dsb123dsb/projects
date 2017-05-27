@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		<script type="text/javascript" src="./index .js"></script>
+		<script type="text/javascript">
+			// console.log('Jsonnb: '+ Jsonnb);
+			// var Jsonnb = Jsonnb.Jsonnb;
+
+			var callback = (newVal, oldVal, path) => {
+				alert(`新值：${newVal} ------ 旧值：${oldVal} ----- path: ${path}`);
+			};
+
+			var data = {
+				a:200,
+				level1: {
+					b: 'str',
+					c: [1,2,3],
+					level2: {
+						d: 90
+					}
+				}
+			};
+
+			var j = new Jsonnb(data, callback);
+
+			// data.a = 250;
+			// data.a = 260;
+			// data.levele1.b = 'sss';
+			// data.levele1.levele2.d = 'msn';
+			data.level1.c.push(4);
+		</script>
+	</body>
+	</html>	
