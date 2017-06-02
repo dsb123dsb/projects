@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	// 定义：保证一个类仅有一个实例，并且提供一个访问它的全局访问点
+	// 1.不透明的单例类
+	var sin = function(name){
+		this.name = name;
+		this.instance = null;
+	};
+	sin.prototype.get = function(){alert(this.name)};
+	sin.getInstance = function(name){
+		if(!this.instance){
+			this.instance = new sin(name);
+		}
+		return this.instance;
+	};
+
+	var a = sin.getInstance('a');
+	var b = sin.getInstance('b');
+	alert(a===b);
+	//2. 透明单例
+	var CreateDiv = (function(){
+		var instance;
+
+		var CreateDiv = function(html){
+			if(instance){
+				return instance;
+			}
+			this.html = html;
+			this.init();
+			return instance = this;
+		};
+
+		CreateDiv.prototype.init = function(){
+			var div = document.createElement('div');
+			div.innerHTML = this.html;
+			document.body.appendChild(div); 
+		};
+		return CreateDiv;
+	})();
+
+	var a = new CreateDiv('aa');
+	var b = new CreateDiv('bb');
+
+	alert(a===b);
+	// 3.代理实现蛋例模式（单一职责）
+	//创建对象和执行初始化代码
+	var CreateDiv = function(html){
+			this.html = html;
+			this.init();
+	};
+	CreateDiv.prototype.init = function(){
+		var div = document.createElement('div');
+		div.innerHTML = this.html;
+		document.body.appendChild(div); 
+	};
+	// 保证只有一个对像
+	var ProxySingletonCreateDiv = (function(){
+		var instance;
+		return function(html){
+			if(!instance){
+				return instance =  new CreateDiv(html);
+			}
+
+			return instance;
+		};
+	})();
+	var a = new ProxySingletonCreateDiv('aaa');
+	var b = new ProxySingletonCreateDiv('bbb');
+
+	alert(a===b);
+
+	</script>
+</body>
+</html>
