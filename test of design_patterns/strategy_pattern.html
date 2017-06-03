@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 1.模仿传统面向对象策略模式实现
+			// a.策略类，封装算法
+			var performanceS = function(){};
+			performanceS.prototype.calculate = function(salary){
+				return salary*4;
+			};
+			var performanceA = function(){};
+			performanceA.prototype.calculate = function(salary){
+				return salary*3;
+			};
+			var B = function(){};
+			B.prototype.calculate = function(salary){
+				return salary*2;
+			};
+
+			// b.环境类，接受请求并且委托到某个策略类
+			var Bonus = function(){
+				this.salary = null; // 原始工资
+				this.strategy = null; // 绩效等级对应策略对象
+			};
+			Bonus.prototype.setSalary = function(salary){
+				this.salary = salary; // 设置员工原始工资
+			};
+			Bonus.prototype.setStrategy = function(strategy){
+				this.strategy = strategy; // 设置员工绩效等级对应的策略对象
+			};
+			Bonus.prototype.getBonbus = function(){// 获取奖金金额
+				return this.strategy.calculate(this.salary); // 把计算奖金的操作委托给策略对象
+			};
+
+			// demo
+			var bonus = new Bonus();
+			bonus.setSalary(10000);
+			bonus.setStrategy(new performanceS()); // 设置策略对象
+
+			console.log(bonus.getBonbus()); // 输出40000
+
+			bonus.setStrategy(new performanceA());
+			console.log(bonus.getBonbus());
+		// 2.js版本策略模式（js中函数也是对象，可以简洁许多）
+			// a.定义策略
+			var strategies ={
+				'S': function(salary){
+					return salary*4;
+				},
+				'A': function(salary){
+					return salary*3;
+				},
+				'B': function(salary){
+					return salary*2;
+				},
+			};
+			// b.环境接受请求
+			var calculateBonus = function(level, salary){
+				return strategies[level](salary);
+			};
+
+			console.log(calculateBonus('S', 20000));
+			console.log(calculateBonus('A', 10000));
+	</script>
+</body>
+</html>
