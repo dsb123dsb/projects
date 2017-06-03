@@ -5,6 +5,7 @@
 	<title>Document</title>
 </head>
 <body>
+	<button id ='loginBtn'>登陆</button>
 	<script type="text/javascript">
 	// 定义：保证一个类仅有一个实例，并且提供一个访问它的全局访问点
 	// 1.不透明的单例类
@@ -49,7 +50,7 @@
 
 	alert(a===b);
 	// 3.代理实现蛋例模式（单一职责）
-	//创建对象和执行初始化代码
+		//创建对象和执行初始化代码
 	var CreateDiv = function(html){
 			this.html = html;
 			this.init();
@@ -59,7 +60,7 @@
 		div.innerHTML = this.html;
 		document.body.appendChild(div); 
 	};
-	// 保证只有一个对像
+		// 保证只有一个对像
 	var ProxySingletonCreateDiv = (function(){
 		var instance;
 		return function(html){
@@ -74,7 +75,62 @@
 	var b = new ProxySingletonCreateDiv('bbb');
 
 	alert(a===b);
+	// 4.js中单例（无类型语言，非要先创建类是穿棉衣洗澡）单例核心：确保只有一个实例，并且提供全局访问，js中全局变量就可
+		// a.命名空间（objec-oriented js）
+		var MyApp= {};
+		MyApp.namespace = function(name){
+			var parts = name.split('.');
+			var current = MyApp; // 引用类型
+			for(var i in parts){
+				if(!current[parts[i]]){
+					current[parts[i]] ={};
+				}
+				current = current[parts[i]];
+			}
+		};
+		MyApp.namespace('event');
+		MyApp.namespace('dom.style');
+		// 上述代码等同于
+		var MyApp = {
+			event: {},
+			dom: {
+				style: {}
+			}
+		};
+		// b. 闭包封装私有变量
+		var user = (function(){
+			var __name = 'sven',
+				__age = 29;
 
-	</script>
+			return {
+				getUserInfo: function(){
+					return __name + '-' + __age;
+				}
+			};
+		})();
+	// 通用惰性单例
+		// 管理单例逻辑
+		var getSingle = function(fn){
+			var result;
+			return function(){
+				return result || (result = fn.apply(this, arguments));
+			};
+		};
+		// 创建实例
+		var creteLoginLayer =function(){
+			var div = document.createElement('div');
+			div.innerHTML = '我是登陆浮窗';
+			div.style.display = 'none';
+			document.body.appendChild(div);
+			return div;
+		};
+		// 登陆悬浮窗demo
+		var creteSingleLoginLayer = getSingle(creteLoginLayer);
+
+		document.getElementById('loginBtn').onclick = function(){
+			var loginLayer = creteSingleLoginLayer();
+			loginLayer.style.display = 'block';
+		};
+		</script>
 </body>
 </html>
