@@ -1,7 +1,0 @@
-<template name="tabBar">
-    <view class="bottomBar">
-        <view class="homeIcon"><image src="image/global/home@2x.png"></image></view>
-        <view class="postIcon"><image src="image/global/post2x.png"></image></view>
-        <view class="meIcon"><image src="image/global/me@2x.png"></image></view>
-    </view>
-</template>
