@@ -11,7 +11,7 @@
 10. 手机手势解锁（纯es6）[demo地址](https://pressuregit.github.io/projects-show/handlock/)
 11. MVVM迷你库-之如何监测数据的变化 [参考出处](https://github.com/HcySunYang/jsonob)， [代码详解地址](http://hcysun.me/2016/04/28/JavaScript%E5%AE%9E%E7%8E%B0MVVM%E4%B9%8B%E6%88%91%E5%B0%B1%E6%98%AF%E6%83%B3%E7%9B%91%E6%B5%8B%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/)
 12. design_patterns设计模式练习（曾探----javascript设计模式开发与实践）
-   -  [strategy_pattern_animateDemo](https://dsb123dsb.github.io/projects/strategy_pattern_animateDemo/)
-   -  [generalizd strategy_pattern](https://dsb123dsb.github.io/projects/generalized_strategy_pattern)
+	- [strategy_pattern_animateDemo](https://pressuregit.github.io/projects-show/strategy_pattern_animateDemo/)
+	- [generalized strategy_pattern](https://pressuregit.github.io/projects-show/generalized_strategy_pattern/)
 13. 手机手势解锁（纯es6）[demo地址](https://pressuregit.github.io/projects-show/handlock/)
 
