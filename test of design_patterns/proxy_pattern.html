@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+/*		img{
+			height: 100%;
+			width: 100%;
+		}*/
+	</style>
+</head>
+<body>
+
+	<script type="text/javascript">
+	// demo 代理实现图片预加载
+	var myImage = (function(){  // 本体img请求
+		var imgNode = document.createElement('img');
+		document.body.appendChild(imgNode);
+
+		return {
+			setSrc: function(src){
+				imgNode.src = src;
+			}
+		};
+	})();
+
+	var proxyImage = (function(){   // 代理实现预加载，功能分离，单一职责
+		var img = new Image;
+		img.onload = function(){
+			myImage.setSrc(this.src);
+		};
+		return {
+			setSrc: function(src){
+				myImage.setSrc('./loadingAnimation.gif');
+				img.src = src;
+			}
+		};
+	})();
+
+	proxyImage.setSrc('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1198592474,2596220466&fm=26&gp=0.jpg');
+	</script>
+</body>
+</html>
