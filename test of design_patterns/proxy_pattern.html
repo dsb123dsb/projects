@@ -18,27 +18,40 @@
 		var imgNode = document.createElement('img');
 		document.body.appendChild(imgNode);
 
-		return {
-			setSrc: function(src){
+		// return {
+		// 	setSrc: function(src){
+		// 		imgNode.src = src;
+		// 	}
+		// };
+		return function(src){
 				imgNode.src = src;
-			}
-		};
+			};
 	})();
 
 	var proxyImage = (function(){   // 代理实现预加载，功能分离，单一职责
 		var img = new Image;
 		img.onload = function(){
-			myImage.setSrc(this.src);
+			// myImage.setSrc(this.src);
+			myImage(this.src);
+
 		};
-		return {
-			setSrc: function(src){
-				myImage.setSrc('./loadingAnimation.gif');
-				img.src = src;
+
+		// return {
+		// 	setSrc: function(src){
+		// 		myImage.setSrc('./loadingAnimation.gif');
+		// 		img.src = src;
+		// 	}
+		// };
+		return 	function(src){
+					// myImage.setSrc('./loadingAnimation.gif');
+					myImage('./loadingAnimation.gif');
+					img.src = src;
 			}
-		};
+		;
 	})();
 
-	proxyImage.setSrc('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1198592474,2596220466&fm=26&gp=0.jpg');
+	// proxyImage.setSrc('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1198592474,2596220466&fm=26&gp=0.jpg');
+	proxyImage('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1198592474,2596220466&fm=26&gp=0.jpg');
 	</script>
 </body>
 </html>
