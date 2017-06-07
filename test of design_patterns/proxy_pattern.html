@@ -11,9 +11,15 @@
 	</style>
 </head>
 <body>
-
+	<input type="checkbox" name="" id="1">1
+	<input type="checkbox" name="" id="2">2
+	<input type="checkbox" name="" id="2">3
+	<input type="checkbox" name="" id="4">4
+	<input type="checkbox" name="" id="5">5
+	<input type="checkbox" name="" id="6">6
+	<input type="checkbox" name="" id="7">7
 	<script type="text/javascript">
-	// demo 代理实现图片预加载
+	// demo 虚拟代理实现图片预加载
 	var myImage = (function(){  // 本体img请求
 		var imgNode = document.createElement('img');
 		document.body.appendChild(imgNode);
@@ -52,6 +58,39 @@
 
 	// proxyImage.setSrc('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1198592474,2596220466&fm=26&gp=0.jpg');
 	proxyImage('https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1198592474,2596220466&fm=26&gp=0.jpg');
+
+	// demo 虚拟proxy合并http请求
+	var synchronousFile = function(id){
+		console.log('开始同步文件， id为： ' + id);
+	};
+
+	var proxySynchronousFile = (function(){
+		var cache = [],  // 保存一段时间内需要同步的id
+			timer;       // 定时器
+		return function(id){
+			cache.push(id);
+			if(timer){	 // 保证不会覆盖已经启动的定时器
+				return;
+			};
+
+			timer = setTimeout(function(){
+				synchronousFile(cache.join(','));   // 2秒后像本体发送需要同步的id集合
+				clearTimeout(timer);  				// 清空定时器
+				timer = null;
+				cache.length = 0; 					// 清空ID集合
+			}, 2000);
+		};
+	})();
+
+	var checkbox = document.getElementsByTagName('input');
+
+	for(var i = 0, c; c = checkbox[i++]; i<checkbox.length){
+		c.onclick = function(){
+			if(this.checked === true){
+				proxySynchronousFile(this.id);
+			};
+		};
+	};
 	</script>
 </body>
 </html>
