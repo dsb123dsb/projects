@@ -5,7 +5,8 @@
 	<title>Document</title>
 </head>
 <body>
-	<div>dwd</div>
+	<div id="show"></div>
+	<button id="count">点我</button>
 	<script type="text/javascript">
 		// 1.dom事件均是发布订阅模式=观察者=事件模型
 			// body默认高度0
@@ -73,6 +74,70 @@
 			salesOffices.remove('squareMeter88', fn1); 					 // 删除小明消息
 			salesOffices.trigger('squareMeter88', 2000000);				 // 输出： 200000	
 		// 3. demo webSite login
+		// 4. 全局的发布订阅，订阅者不需要了解消息来自哪个发布者，发布者也不需要知道消息会推送给那些订阅者，Event类似‘中介’，把订阅者和发布者联系起来，
+			// 可实现模块间通信
+		var Event =(function(){					  	 	 // 发布订阅功能提取，单独放到一对象，可以对需要的对象进行安装
+			var clientList ={},		 	 	 // 缓存列表，存放订阅者的回调函数
+				listen,
+				trigger,
+				remove;
+			listen = function(key, fn){	 		 // 增加订阅者， key对订阅者的额消息进行分类（对应dom事件类型）
+				if(!clientList[key]){  	 // 如果没有订阅过此类消息，给该消息增加一个缓存列表
+					clientList[key] = [];
+				}
+				clientList[key].push(fn);   // 订阅的消息添加进缓存列表
+			};
+			trigger = function(){				 // 发布消息
+				var key = Array.prototype.shift.call(arguments), // 取出消息对应类型
+					fns = clientList[key];	 // 取出消息对应的回调函数集合
+
+				if(!fns || fns.length === 0){ 	 // 如果没有绑定对应的消息
+					return false;
+				}
+
+				for(var i =0, fn; fn = fns[i++]; i<fns.length){  // 遍历消息集合并执行
+					fn.apply(this, arguments);	 // arguments 是tirgger时带上的参数
+				}
+			};
+			remove = function(key, fn){ 			 // 取消订阅事件	
+				var fns = clientList[key];
+
+				if(!fns){ 						 // 如果key对应的消息没有被人订阅， 则直接返回
+					return false;
+				}
+				if(!fn){						 // 如果没有传入具体的回调函数，表示需要取消key对应消息的若有订阅
+					fns && (fns.length =0);
+				}else{
+					for(var l = fns.length-1;l>=0;l--){
+						var _fn = fns[l];
+						if(_fn === fn){
+							fns.splice(l, 1);	 // 删除订阅者的回调函数
+						}
+					}
+				}
+			};
+
+			return {
+				listen : listen,
+				trigger: trigger,
+				remove: remove
+			};
+		})();
+			// tets : a,b模块在保持封装的前提下保持通信，
+			var b = (function(){
+				var div = document.getElementById('show');
+				Event.listen('add', function(count){
+					div.innerHTML = count;
+				});
+			})();
+			var a = (function(){
+				var count = 0; 
+				var button = document.getElementById('count');
+				button.onclick = function(){
+					console.log(this);
+					Event.trigger('add', ++count);
+				};
+			})();
 	</script>
 </body>
 </html>
