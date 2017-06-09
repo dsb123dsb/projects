@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div>dwd</div>
+	<script type="text/javascript">
+		// 1.dom事件均是发布订阅模式=观察者=事件模型
+			// body默认高度0
+		document.body.addEventListener('click', function(){
+			alert(1);
+		}, false);
+		document.body.addEventListener('click', function(){
+			alert(2);
+		}, false);
+		// document.body.click();
+		// 2. 自定义事件，generalized implementation,发布订阅通用实现
+		var event = {					  	 	 // 发布订阅功能提取，单独放到一对象，可以对需要的对象进行安装
+			clientList: [], 			 	 	 // 缓存列表，存放订阅者的回调函数
+			listen: function(key, fn){	 		 // 增加订阅者， key对订阅者的额消息进行分类（对应dom事件类型）
+				if(!this.clientList[key]){  	 // 如果没有订阅过此类消息，给该消息增加一个缓存列表
+					this.clientList[key] = [];
+				}
+				this.clientList[key].push(fn);   // 订阅的消息添加进缓存列表
+			},
+			trigger: function(){				 // 发布消息
+				var key = Array.prototype.shift.call(arguments), // 取出消息对应类型
+					fns = this.clientList[key];	 // 取出消息对应的回调函数集合
+
+				if(!fns || fns.length === 0){ 	 // 如果没有绑定对应的消息
+					return false;
+				}
+
+				for(var i =0, fn; fn = fns[i++]; i<fns.length){  // 遍历消息集合并执行
+					fn.apply(this, arguments);	 // arguments 是tirgger时带上的参数
+				}
+			},
+			remove: function(key, fn){ 			 // 取消订阅事件	
+				var fns = this.clientList[key];
+
+				if(!fns){ 						 // 如果key对应的消息没有被人订阅， 则直接返回
+					return false;
+				}
+				if(!fn){						 // 如果没有传入具体的回调函数，表示需要取消key对应消息的若有订阅
+					fns && (fns.length =0);
+				}else{
+					for(var l = fns.length-1;l>=0;l--){
+						var _fn = fns[l];
+						if(_fn === fn){
+							fns.splice(l, 1);	 // 删除订阅者的回调函数
+						}
+					}
+				}
+			}
+		};
+		var installEvent = function(obj){		 // 安装函数，对需要的对象安装发布订阅功能
+			for( var i in event){
+				obj[i] = event[i];
+			}
+		};
+			// test 
+			var salesOffices = {};
+			installEvent(salesOffices);
+			salesOffices.listen('squareMeter88', fn1 = function(price){  // 小明订阅消息
+				console.log('价格= ' + price);
+			});
+			salesOffices.listen('squareMeter88', fn2= function(price){   // 小红订阅消息
+				console.log('价格= ' + price);
+			});
+
+			salesOffices.remove('squareMeter88', fn1); 					 // 删除小明消息
+			salesOffices.trigger('squareMeter88', 2000000);				 // 输出： 200000	
+		// 3. demo webSite login
+	</script>
+</body>
+</html>
