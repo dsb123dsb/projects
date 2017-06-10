@@ -6,8 +6,13 @@
 </head>
 <body>
 	<button id ="execute">点击我执行命令</button>
-	<button id ="undo">点击我执行命令</button>
+	<button id ="undo">点击我撤销命令</button>
+	<button id ="refresh">点击我刷新</button>
 	<script type="text/javascript">
+		var button1 = document.getElementById('execute');
+		var button2 = document.getElementById('undo');
+		var button3 = document.getElementById('refresh');
+		// 1. 模仿面向对象命令模式
 		var Tv = {
 			open: function(){
 				console.log("打开电视");
@@ -29,18 +34,83 @@
 			this.receiver.close(); // 撤销命令，关闭电视
 		};
 
-		var setCommand = function(command){
-			document.getElementById('execute').onclick=function(){
+		var setCommand1 = function(button, command){
+			button.onclick=function(){
 				command.execute(); // 输出： 打开电视
 			};
-			document.getElementById('undo').onclick=function(){
+			button.onclick=function(){
 				command.undo();
 			};
 		};
 
-		setCommand(new OpenTvCommand(Tv));
+		setCommand1(button1, new OpenTvCommand(Tv));
 
+		// 2. js中命令模式（函数为一等对象，命令模式融入到了js中了）
+		var setCommand = function(button, func){
+			button.onclick = function(){
+				func();
+			};
+		};
 
+		var MenuBar = {
+			refresh: function(){
+				console.log('刷新菜单界面');
+			}
+		};
+
+		var RefreshMenuBarCommand = function(receiver){
+			return function(){
+				receiver.refresh();
+			};
+		};
+
+		var refreshMenuBarCommand = RefreshMenuBarCommand(MenuBar);
+
+		setCommand(button3, refreshMenuBarCommand);
+		// 执行撤销命令，执行命令之前记录下当前状态，撤销时回到记录的状态即可
+		// 执行重播， 执行时，利用一个历史堆栈记录命令日志，执行重播时，重复执行即可
+		// 命令队列， 一个命令结束后在接着执行下一个（比如动画），1.回掉函数 2. 发布订阅
+		// 3. 宏命令，一组命令集合=------命令模式和组合模式联用产物
+		var closeDoorCommand = {
+			execute: function(){
+				console.log('关门');
+			}
+		};
+		var openPcCommand = {
+			execute: function(){
+				console.log('开电脑');
+			}
+		};
+		var openQQCommand = {
+			execute: function(){
+				console.log('登陆QQ');
+			}
+		};
+
+		var MacroCommand =function(){
+			return {
+				commandList: [],
+				add: function(command){
+					this.commandList.push(command);
+				},
+				execute: function(){
+					for(var i = 0, command; command = this.commandList[i++];){
+						command.execute();
+					}
+				}
+			};
+		};
+
+		var macroCommand = MacroCommand();
+		macroCommand.add(closeDoorCommand);
+		macroCommand.add(openPcCommand);
+		macroCommand.add(openQQCommand);
+
+		macroCommand.execute();
+		// 智能的命令对象和傻瓜的命令对象，傻瓜式只负责把客户请求转交给接收者执行，实现请求发起者和接收者解耦
+		// 聪明命令对象可以直接实现请求，退化到和策略模式非常接近，从代码结构无法区分
+		// 只能分辨意图不同，策略模式指向问题域更小，所有策略对象目标一致，只是达到这个目标的不同手段，
+		// 智能命令对象解决目标更具发散性，还可以撤销，，排队等
 	</script>
 </body>
 </html>
