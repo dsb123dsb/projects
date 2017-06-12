@@ -6,7 +6,7 @@
 </head>
 <body>
 	<script type="text/javascript">
-		// 模板方法模式--咖啡与茶
+		// 1.基于继承实现模板方法模式--咖啡与茶
 		var Beverage = function(){};
 		Beverage.prototype.boilWater = function(){
 			console.log('把水煮沸');
@@ -21,29 +21,37 @@
 			throw new Error('子类必须重写addCondiments方法');
 		};   
 
+		Beverage.prototype.customerWantsCondiments = function(){  // hook方法 隔离变化，使子类实例可以不受必须调用重写的父类方法的限制，使程序拥有了变化的可能
+			return true;  // 默认需要添加调料
+		};
 		Beverage.prototype.init =function(){  // 模板方法
 			this.boilWater();
 			this.brew();
 			this.pourInCup();
-			this.addCondiments();
+			if(this.customerWantsCondiments()){  // 如果钩子返回true ，则需要调料
+				this.addCondiments();
+			}
 		};
 
 			// a.coffee类
-			var Coffee = function(){};
-			Coffee.prototype = new Beverage();
+			var CoffeeWithHook = function(){};
+			CoffeeWithHook.prototype = new Beverage();
 			// 重写方法
-			Coffee.prototype.brew = function(){
+			CoffeeWithHook.prototype.brew = function(){
 				console.log('用沸水冲泡咖啡');
 			};
-			Coffee.prototype.pourInCup = function(){
+			CoffeeWithHook.prototype.pourInCup = function(){
 				console.log('把咖啡倒进杯子');
 			};
-			Coffee.prototype.addCondiments = function(){
+			CoffeeWithHook.prototype.addCondiments = function(){
 				console.log('加糖和牛奶');
 			};
+			CoffeeWithHook.prototype.customerWantsCondiments = function(){
+				return window.confirm('请问需要调料吗？');
+			};
 
-			var coffee = new Coffee();
-			coffee.init();
+			var coffeeWithHook = new CoffeeWithHook();
+			coffeeWithHook.init();
 
 			// b.tea类
 			var Tea = function(){};
@@ -60,6 +68,62 @@
 			};
 
 			var tea = new Tea();
-			tea.init();	</script>
+			tea.init();
+		// 2. 基础好莱坞原则，利用高阶函数实现模板模式	
+		var Beverage1 = function(param){
+			var boilWater = function(){
+				console.log('把水煮沸');
+			};
+
+			var brew = param.brew  || function(){
+				throw new Error('必须传递brew方法');
+			};
+			var pourInCup = param.pourInCup || function(){
+				throw new Error('必须传递pourInCup方法');
+			};
+			var addCondiments = param.addCondiments || function(){
+				throw new Error('必须传递addCondiments方法');
+			};
+
+			var F =function(){};
+			F.prototype.init = function(){
+				boilWater();
+				brew();
+				pourInCup();
+				addCondiments();
+			};
+
+			return F;
+		};
+
+		var Coffee1 = Beverage1({
+			brew: function(){
+				console.log('用沸水冲泡咖啡');
+			},
+			pourInCup: function(){
+				console.log('把咖啡倒进杯子');
+			},
+			addCondiments: function(){
+				console.log('加糖和牛奶');
+			}
+		});
+		var Tea1 = Beverage1({
+			brew: function(){
+				console.log('用沸水浸泡茶叶');
+			},
+			pourInCup: function(){
+				console.log('把茶倒进杯子');
+			},
+			addCondiments: function(){
+				console.log('加柠檬');
+			}
+		});
+
+		var coffee1 = new Coffee1();
+		coffee1.init();
+
+		var tea1 = new Tea1();
+		tea1.init();
+		</script>
 </body>
 </html>
