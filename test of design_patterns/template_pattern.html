@@ -11,9 +11,15 @@
 		Beverage.prototype.boilWater = function(){
 			console.log('把水煮沸');
 		};
-		Beverage.prototype.brew = function(){};   // 空方法，应该由子类重写
-		Beverage.prototype.pourInCup = function(){};   // 空方法，应该由子类重写
-		Beverage.prototype.addCondiments = function(){};   // 空方法，应该由子类重写
+		Beverage.prototype.brew = function(){   // 空方法，应该由子类重写
+			throw new Error('子类必须重写brew方法'); //若子类型未重写，报错。。 或者子类调用时用鸭子类型模拟接口检查hasownproperty()
+		};
+		Beverage.prototype.pourInCup = function(){// 空方法，应该由子类重写
+			throw new Error('子类必须重写pourInCup方法');
+		};   
+		Beverage.prototype.addCondiments = function(){// 空方法，应该由子类重写
+			throw new Error('子类必须重写addCondiments方法');
+		};   
 
 		Beverage.prototype.init =function(){  // 模板方法
 			this.boilWater();
