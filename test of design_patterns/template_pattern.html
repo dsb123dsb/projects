@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 模板方法模式--咖啡与茶
+		var Beverage = function(){};
+		Beverage.prototype.boilWater = function(){
+			console.log('把水煮沸');
+		};
+		Beverage.prototype.brew = function(){};   // 空方法，应该由子类重写
+		Beverage.prototype.pourInCup = function(){};   // 空方法，应该由子类重写
+		Beverage.prototype.addCondiments = function(){};   // 空方法，应该由子类重写
+
+		Beverage.prototype.init =function(){  // 模板方法
+			this.boilWater();
+			this.brew();
+			this.pourInCup();
+			this.addCondiments();
+		};
+
+			// a.coffee类
+			var Coffee = function(){};
+			Coffee.prototype = new Beverage();
+			// 重写方法
+			Coffee.prototype.brew = function(){
+				console.log('用沸水冲泡咖啡');
+			};
+			Coffee.prototype.pourInCup = function(){
+				console.log('把咖啡倒进杯子');
+			};
+			Coffee.prototype.addCondiments = function(){
+				console.log('加糖和牛奶');
+			};
+
+			var coffee = new Coffee();
+			coffee.init();
+
+			// b.tea类
+			var Tea = function(){};
+			Tea.prototype = new Beverage();
+			// 重写方法
+			Tea.prototype.brew = function(){
+				console.log('用沸水浸泡茶叶');
+			};
+			Tea.prototype.pourInCup = function(){
+				console.log('把茶倒进杯子');
+			};
+			Tea.prototype.addCondiments = function(){
+				console.log('加柠檬');
+			};
+
+			var tea = new Tea();
+			tea.init();	</script>
+</body>
+</html>
