@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 1. 男女模特  享元节省内存
+		var Model =function(sex){
+			this.sex =sex;
+		};
+		Model.prototype.takePhoto = function(){
+			console.log('sex= ' +this.sex+ 'underweare= '+this.underweare);
+		};
+			// 分别创建男女模特
+			var maleModel = new Model('male'),
+				femaleModel = new Model('female');
+			for(var i = 1; i<=50; i++){
+				maleModel.underweare = 'underweare'+i;
+				maleModel.takePhoto();
+			}
+			for(var i = 1; i<=50; i++){
+				femaleModel.underweare = 'underweare'+i;
+				femaleModel.takePhoto();
+			}
+		//2.demo： 文件上传   享元通用结构：内部状态和外部状态
+		
+	</script>
+</body>
+</html>
