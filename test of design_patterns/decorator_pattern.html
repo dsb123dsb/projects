@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+
+		// 不污染prototyoe原型的aop，将原函数和新函数都作为参数传入before或者after函数
+		 var before = function(fn, beforefn){
+			return function(){ 
+					beforefn.apply(this, arguments);
+					return fn.apply(this, arguments);
+				 } 
+		};
+		var a = before(
+					function(){alert(3)},
+					function(){alert(2)}
+				);
+		a=before( a, function(){alert(1);} );
+		a();
+	</script>
+</body>
+</html>
