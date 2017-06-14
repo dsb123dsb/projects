@@ -5,6 +5,23 @@
 	<title>Document</title>
 </head>
 <body>
+	选择颜色：	<select id="colorSelect">
+					<option value="">请选择</option>
+					<option value="red">red</option>
+					<option value="blue">blue</option>
+				</select>
+	选择内存：	<select id="memorySelect">
+					<option value="">请选择</option>
+					<option value="32G">32G</option>
+					<option value="16G">16G</option>
+				</select>
+	输入购买数量： <input type="text" id="numberInput"><br/>
+
+	您选择了颜色： <div id="colorInfo"></div>
+	您选择了内存： <div id="memoryInfo"></div>
+	您选择了数量： <div id="numberInfo"></div>
+
+	<button id="nextBtn" disabled="true">请选择手机颜色和购买数量</button>
 	<script type="text/javascript">
 		// 1.demo游戏玩家  （中介者模式是使多对多变为一对多）
 		function Player(name, teamColor){
@@ -122,6 +139,73 @@
 			player2.die();
 			player3.die();
 			player4.die();
+		// 2. demo购买商品
+		var goods = {  // 手机库存
+			'red|32G': 3,
+			'red|16G': 0,
+			'blue|32G': 1,
+			'blue|16G': 3
+		};
+		var mediator = (function(){
+			var colorSelect = document.getElementById('colorSelect'),
+				memorySelect = document.getElementById('memorySelect'),
+				numberInput = document.getElementById('numberInput'),
+				colorInfo = document.getElementById('colorInfo'),
+				memoryInfo = document.getElementById('memoryInfo'),
+				numberInfo = document.getElementById('numberInfo'),
+				nextBtn = document.getElementById('nextBtn');
+
+			return {
+				changed: function(obj){
+					var color = colorSelect.value,
+						memory = memorySelect.value,
+						number = numberInput.value,
+						stock = goods[color+'|'+memory];
+					if(obj === colorSelect){
+						colorInfo.innerHTML = color;
+					}else if(obj === memorySelect){
+						memoryInfo.innerHTML = memory;
+					}else if(obj === numberInput){
+						numberInfo.innerHTML = number;
+					}
+
+					if(!color){
+						nextBtn.disabled = true;
+						nextBtn.innerHTML = '请选择手机颜色';
+						return;
+					}
+
+					if(!memory){
+						nextBtn.disabled = true;
+						nextBtn.innerHTML = '请选择手机内存大小';
+						return;
+					}
+
+					if(!(Number.isInteger(number - 0)) || number<0){
+						nextBtn.disabled = true;
+						nextBtn.innerHTML = '请输入正确的购买数量';
+						return;
+					}
+					if(number>stock){
+						nextBtn.disabled = true;
+						nextBtn.innerHTML = '库存不足';
+						return;						
+					}
+					nextBtn.disabled = false;
+					nextBtn.innerHTML = '请放入购物车';
+				}
+			};
+		})();
+		// 事件函数
+		colorSelect.onchange = function(){
+			mediator.changed(this);
+		};
+		memorySelect.onchange = function(){
+			mediator.changed(this);
+		};
+		numberInput.oninput = function(){
+			mediator.changed(this);
+		};
 	</script>
 </body>
 </html>
