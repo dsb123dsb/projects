@@ -57,7 +57,7 @@
 			chainOrder500.passRequest(1, true, 500);   // 输出：500元定金预购， 得到100元优惠券
 			chainOrder500.passRequest(2, true, 500);   // 输出：100元定金预购， 得到50元优惠券
 			chainOrder500.passRequest(3, true, 500);   // 输出：普通购买， 无优惠券
-			chainOrder500.passRequest(1, false, 500);   // 输出：手机库存不足
+			chainOrder500.passRequest(1, false, 0);   // 输出：手机库存不足
 		// 2.异步职责连
 		var Chain1 = function(fn){
 			this.fn = fn;
@@ -93,6 +93,21 @@
 		});
 		fn1.setNextSuccessor(fn2).setNextSuccessor(fn3);
 		fn1.passRequest();
+		// 2. AOP实现职责链
+		Function.prototype.after = function(fn){
+			var self = this;
+			return function(){
+				var ret = self.apply(this, arguments);
+				if(ret === 'nextSuccessor'){
+					return fn.apply(this, arguments);
+				}
+				return ret;
+			};
+		};
+		var order = order500.after(order200).after(orderNormal);
+		order(1, true, 500);
+		order(2, true, 500);
+		order(1, false, 500);
 	</script>
 </body>
 </html>
