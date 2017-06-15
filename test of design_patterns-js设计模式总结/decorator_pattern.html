@@ -6,6 +6,64 @@
 </head>
 <body>
 	<script type="text/javascript">
+		// 装饰者模式可以动态给某个对象添加一些额外的职责，而不会影响从这个类中派生的其它对象
+		// 1. 模拟OO语言decorator
+		var Plane = function(){};
+		Plane.prototype.fire = function(){
+			console.log('发射普通子弹');
+		};
+
+		var MissionDecorator = function(plane){
+			this.plane = plane;
+		};
+		MissionDecorator.prototype.fire = function(){
+			this.plane.fire();
+			console.log('发射的导弹');
+		};
+
+		var AtomDecorator = function(plane){
+			this.plane =plane;
+		};
+		AtomDecorator.prototype.fire = function(){
+			this.plane.fire();
+			console.log('发射原子弹');
+		};
+			// test
+			var plane = new Plane();
+			plane = new MissionDecorator(plane);
+			plane = new AtomDecorator(plane);
+
+			plane.fire();
+		// 2. js的装饰者
+		var plane1 = {
+			fire: function(){
+				console.log('发射普通子弹');
+			}
+		};
+
+		var missionDecorator = function(){
+			console.log('发射导弹');
+		};
+
+		var atomDecorator = function(){
+			console.log('发射原子弹');
+		};
+
+		var fire1 = plane1.fire;
+
+		plane1.fire = function(){
+			fire1();
+			missionDecorator();
+		};
+
+		var fire2 = plane1.fire;
+
+		plane1.fire = function(){
+			fire2();
+			atomDecorator();
+		};
+
+		plane1.fire();
 
 		// 不污染prototyoe原型的aop，将原函数和新函数都作为参数传入before或者after函数
 		 var before = function(fn, beforefn){
