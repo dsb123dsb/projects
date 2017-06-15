@@ -5,6 +5,8 @@
 	<title>Document</title>
 </head>
 <body>
+	<button id="button">错我</button>
+	<button tag="login" id="login">点击打开登陆浮层</button>
 	<script type="text/javascript">
 		// 装饰者模式可以动态给某个对象添加一些额外的职责，而不会影响从这个类中派生的其它对象
 		// 1. 模拟OO语言decorator
@@ -65,6 +67,31 @@
 
 		plane1.fire();
 
+		// 3. AOP实现decorator
+			// after before函数 
+			Function.prototype.before =function(beforefn){
+				var _self = this;   // 保存原函数的引用
+				return function(){  // 返回包含了原函数和和新函数的‘代理’函数
+					beforefn.apply(this, arguments);  // 执行新函数， 且保证this不被劫持， 新函数接受的参数 也会被原封不动的传入原函数，新函数在原函数之前执行
+					return _self.apply(this, arguments);  // 执行原函数并返回原函数的执行结果， 并且保证this不被劫持
+				};
+			};
+			// after before函数 
+			Function.prototype.after =function(afterfn){
+				var _self = this;   // 保存原函数的引用
+				return function(){  // 返回包含了原函数和和新函数的‘代理’函数
+					ret =  _self.apply(this, arguments);  
+					afterfn.apply(this, arguments); 
+					return ret;
+				};
+			};	
+			// testDemo ,获取节点前todo
+			document.getElementById = document.getElementById.before(function(){
+				alert('获取节点前干点啥呢！');
+			});
+			var button = document.getElementById('button');
+			alert('获取到button了节点： '+button);
+
 		// 不污染prototyoe原型的aop，将原函数和新函数都作为参数传入before或者after函数
 		 var before = function(fn, beforefn){
 			return function(){ 
@@ -72,12 +99,45 @@
 					return fn.apply(this, arguments);
 				 } 
 		};
-		var a = before(
-					function(){alert(3)},
-					function(){alert(2)}
-				);
-		a=before( a, function(){alert(1);} );
-		a();
+			// test
+			var a = before(
+						function(){alert(3)},
+						function(){alert(2)}
+					);
+			a=before( a, function(){alert(1);} );
+			a();
+		// 4. demo 数据统计上报(用户每次登陆时统计多少用户登陆)
+		var showLogin = function(){
+			console.log('打开登陆浮层');
+			// log(this.getAttribute('tag'));
+		};
+
+		var log = function(){
+			console.log('上报标签为： ' + this.getAttribute('tag'));
+			// (ew Image).src = 'http://xxx.com/report?tag=' +tag;    // 真正的上报代码
+		};
+		showLogin = showLogin.after(log);
+		document.getElementById('login').onclick = showLogin;
+		// 5. AOP动态改变函数的参数
+			// demo1
+			var func = function(param){
+				console.log(param);  // 输出{a:'a', b:'b'}
+			};
+			func = func.before(function(param){
+				param.b = 'b';
+			});
+			func({a: 'a'});
+			// demo2 给ajax请求加上Token参数
+			var ajax = function(type, url, param){
+				console.log(param);  // 发送ajax请求代码略
+			};
+			var getToken = function(){
+				return 'Token';
+			};
+			ajax = ajax.before(function(type, url, param){
+				param.Token = getToken();
+			});
+			ajax('get', 'http://xxx.com/userinfo', {name: 'sven'});
 	</script>
 </body>
 </html>
