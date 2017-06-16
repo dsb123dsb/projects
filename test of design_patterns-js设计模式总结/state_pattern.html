@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 状态模式关键在于区分事物内部的状态，事物内部状态的改变往往会带来事物行为的改变
+		// 1. demo电灯开关程序
+			// offlightstate
+		var OffLightState = function(light){
+			this.light = light;
+		};
+
+		OffLightState.prototype.buttonWasPressed = function(){
+			console.log('弱光');    // offlightstate对应行为
+			this.light.setState(this.light.weakLigtState);  // 切换到weakLightState
+		};
+			// WeakLightState
+		var WeakLightState = function(light){
+			this.light = light;
+		};
+		WeakLightState.prototype.buttonWasPressed = function(){
+			console.log('强光');
+			this.light.setState(this.light.strongLightState);
+		};
+			//StrongLightState
+		var StrongLightState = function(light){
+			this.light = light;
+		};
+		StrongLightState.prototype.buttonWasPressed = function(){
+			console.log('关灯');
+			this.light.setState(this.light.offLightState);
+		};
+		var Light = function(){
+			this.offLightState = new OffLightState(this);
+			this.weakLigtState = new WeakLightState(this);
+			this.strongLightState = new StrongLightState(this);
+			this.button = null;
+		};
+		Light.prototype.init = function(){
+			var button = document.createElement('button'),
+				self = this;
+			this.button = document.body.appendChild(button);
+			this.button.innerHTML = '开关';
+
+			this.currState = this.offLightState; // 设置当前状态
+
+			this.button.onclick = function(){
+				self.currState.buttonWasPressed();
+			};
+		};
+		Light.prototype.setState = function(newState){
+			this.currState = newState;
+		};
+			// test
+			var light = new Light();
+			light.init();
+	</script>
+</body>
+</html>
