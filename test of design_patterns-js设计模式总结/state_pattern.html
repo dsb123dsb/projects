@@ -230,6 +230,71 @@
 			setTimeout(function(){
 				window.external.upload('done');  // 6秒后上传完成
 			}, 6000);
+		// 3. demo关灯程序-js版本状态机
+		// a.call委托给某个字面量
+		var Light1 = function(){
+			this.currState = FSM.off;  // 设置当前状态
+			this.button = null;
+		};
+		Light1.prototype.init = function(){
+			var button = document.createElement('button'),
+				self = this;
+
+			button.innerHTML = '已关灯';
+			this.button = document.body.appendChild(button);
+
+			this.button.onclick = function(){
+				self.currState.buttonWasPressed.call(self);  // 把请求委托给FSM状态机
+			};
+		};
+
+		var FSM = {
+			off: {
+				buttonWasPressed: function(){
+					console.log('关灯');
+					this.button.innerHTML = '下一次按我是开灯';
+					this.currState = FSM.on;
+				}
+			},
+			on: {
+				buttonWasPressed: function(){
+					console.log('开灯');
+					this.button.innerHTML = '下一次按我是关灯';
+					this.currState = FSM.off;
+				}
+			}
+		};
+		var light1 = new Light1();
+		light1.init();
+		// b.利用delegate委托，面向对象和闭包
+		var delegate = function(client, delegation){
+			return {
+				buttonWasPressed: function(){  // 将客户的操作委托给delegation对象
+					return delegation.buttonWasPressed.apply(client, arguments);
+				}
+			};
+		};
+		// FSM和a中公用
+		var Light2 = function(){
+			this.offState = delegate(this, FSM.off);
+			this.onState = delegate(this, FSM.on);
+			this.currState = this.offState;    // 设置初始状态
+			this.button = null;
+		};
+
+		Light2.prototype.init = function(){
+			var button = document.createElement('button'),
+				self = this;
+
+			button.innerHTML = '已关灯';
+			this.button = document.body.appendChild(button);
+
+			this.button.onclick = function(){
+				self.currState.buttonWasPressed();  // 把请求委托给FSM状态机
+			};
+		};
+		var light2 = new Light2();
+		light2.init();
 	</script>
 </body>
 </html>
