@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 适配器模式， 解决两个软件实体间的接口不兼容问题
+		// 1.demo地图渲染接口
+		var googleMap = {
+			show: function(){
+				console.log('开始渲染谷歌地图');
+			}
+		};
+		var baiduMap = {
+			display: function(){
+				console.log('开始渲染百度歌地图');
+			}
+		};
+		var baiduMapAdapter = {
+			show: function(){
+				return baiduMap.display();
+			}
+		};
+		var renderMap = function(map){
+			if(map.show instanceof Function){
+				map.show();
+			}
+		};
+
+			// test
+			renderMap(googleMap);
+			renderMap(baiduMapAdapter);
+		// 2. 数据格式转换
+			//a.目标格式
+			var guangdongCity = {
+				shenzhen: 11,
+				guangzhou: 12,
+				zhuuhai: 13
+			};
+			//b. 获取数据的接口格式
+			var getGuangdongCity = function(){
+				var guangdongCity = [
+					{
+						name: 'shenzhen',
+						id: 11
+					},
+					{
+						name: 'guanngzhou',
+						id: 12
+					}
+				];
+				return guangdongCity;
+			};
+			//转换器
+			var addressAdapter = function(oldAddressfn){
+				var address = {},
+					oldAddress = oldAddressfn();
+
+				for(var i = 0, c; c = oldAddress[i++];){
+					address[c.name] = c.id;
+				}
+				return function(){
+					return address;
+				};
+			};
+			// test
+			console.log(addressAdapter(getGuangdongCity)());
+	</script>
+</body>
+</html>
