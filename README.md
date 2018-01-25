@@ -26,7 +26,6 @@
    - [generalized strategy_pattern](https://pressuregit.github.io/projects-show/generalized_strategy_pattern/)
 
 13. 手机手势解锁（纯es6）[demo地址](https://pressuregit.github.io/projects-show/handlock/)
-14. 微信公众号开发
 
 14. PWA demo 参考题叶大大（[知乎学习链接](https://zhuanlan.zhihu.com/p/25459319)） [google参考](https://developers.google.com/web/fundamentals/codelabs/your-first-pwapp/?hl=zh-cn#firebase)
 
@@ -34,5 +33,5 @@
 
    ![](https://ws4.sinaimg.cn/large/006tNc79gy1fnallq6sa7g30bf07074m.gif)
 
-16. ​
+16. 微信公众号开发​
 
