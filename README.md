@@ -14,4 +14,5 @@
 	- [strategy_pattern_animateDemo](https://pressuregit.github.io/projects-show/strategy_pattern_animateDemo/)
 	- [generalized strategy_pattern](https://pressuregit.github.io/projects-show/generalized_strategy_pattern/)
 13. 手机手势解锁（纯es6）[demo地址](https://pressuregit.github.io/projects-show/handlock/)
+14. 微信公众号开发
 
