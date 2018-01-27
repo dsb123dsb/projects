@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs');
+const Promise = require('bluebird');
 
 exports.readFileAsync = function(fpath, encodning){
 	return new Promise((resolve, reject) => {

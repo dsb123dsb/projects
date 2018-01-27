@@ -9,8 +9,8 @@ const util = require('./libs/util');
 let wechat_file = path.join(__dirname, './config/wechat.txt');
 const config = {
 	wechat:{
-		appId: 'wx72dc9f892d6fa1e9',
-		appSecret: '1a8dce13481068454fb519a06d465693',
+		appId: 'wxc0d5cd93a341a641',
+		appSecret: '703b5f43bf50f9e22cdf683fc6ca1825',
 		token: 'zyhsite',
 		getAccessToken: function(){
 			return util.readFileAsync(wechat_file);

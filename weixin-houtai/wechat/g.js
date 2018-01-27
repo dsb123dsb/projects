@@ -1,81 +1,16 @@
 'use strict'
 
 const sha1 = require('sha1');
-const Promise = require('bluebird');
-const request = Promise.promisify(require('request'));
-
-
-const prefix = "https://api.weixin.qq.com/cgi-bin/";
-let api = {
-	accessToken: prefix+"token?grant_type=client_credential"
-};
-
-function Wechat(opts){
-	let that = this;
-	this.appId = opts.appId;
-	this.appSecret = opts.appSecret;
-	this.getAccessToken = opts.getAccessToken;
-	this.saveAccessToken = opts.saveAccessToken;
-
-	this.getAccessToken()
-		.then(function(data){
-			try{
-				data = JSON.parse(data);
-			}
-			catch(e){
-				return that.updateAccessToken(data);
-			}
-
-			if(that.isValidAcesssToken(data)){
-				Promise.resolve(data);
-			}else{
-				return that.updateAccessToken(data);
-			}
-		})
-		.then(function(data){
-			that.access_token = data.access_token;
-			that.expires_in = data.expires_in;
-			that.saveAccessToken(data);
-		});
-}
-
-Wechat.prototype.isValidAcesssToken = function(data){
-	if(!data || !data.access_token || !data.expires_in){
-		return false;
-	}
-	let access_token = data.access_token,
-		expires_in = data.expires_in,
-		now = (new Date().getTime());
-	if(now < expires_in) {
-		return true;
-	}else{
-		return false;
-	}
-};
-
-Wechat.prototype.updateAccessToken = function(data){
-	let appId = this.appId,
-		appSecret = this.appSecret,
-		url = api.accessToken + "&appid="+appId+"&secret="+appSecret;
-	return new Promise((resolve, reject) => {
-		request({url: url, json: true}).then(function(response){
-			let data = response.body,
-				now = (new Date().getTime()),
-				expires_in = now + (data.expires_in-20)*1000;
-
-			data.expires_in = expires_in;
-
-			resolve(data);
-		});		
-	});
-};
+const getRawBody = require('raw-body'); // 解析http的requset对象为buffer的XML数据
+const util = require('./util.js');
+const Wechat = require('./wechat');
 
 module.exports = function(opts){
 	let wechat =new Wechat(opts);
 
 	return function *(next){
-		console.log(this.query);
-
+		// console.log(this.query);
+		let that = this;
 		let token = opts.token,
 			signature = this.query.signature,
 			nonce = this.query.nonce,
@@ -83,11 +18,43 @@ module.exports = function(opts){
 			echostr = this.query.echostr,
 			str = [token, timestamp, nonce].sort().join(''),
 			sha = sha1(str);
+		if(this.method === "GET"){
+			if(sha === signature){
+				this.body = echostr + '';
+			}else{
+				this.body = 'wrong';
+			}
+		}else if(this.method === "POST"){
+			if(sha !== signature){
+				this.body = 'wrong';
 
-		if(sha === signature){
-			this.body = echostr + '';
-		}else{
-			this.body = 'wrong';
+				return false;
+			}else{
+				let data = yield getRawBody(this.req, {
+					length: this.length,
+					limit: 'lmb',
+					encoding: this.charset
+				});
+				// console.log(data.toString())
+
+				let content = yield util.parseXMLAsync(data);
+				// console.log(content);
+				let message = util.formatMessage(content.xml);
+				// console.log(message);
+				if(message.MsgType === 'event'){
+					if((message.Event) === 'subscribe'){
+						let now = new Date().getTime();
+
+						that.status = 200;
+						that.type = 'application/xml';
+						// 注意i空格什么的
+						that.body = '<xml>'+
+							'<ToUserName><![CDATA['+message.FromUserName+']]></ToUserName>'+ 
+								'<FromUserName><![CDATA['+message.ToUserName+']]></FromUserName>'+'<CreateTime>'+now+'</CreateTime><MsgType><![CDATA[text]]></MsgType> <Content><![CDATA[Hi, zyh]]></Content>'+'</xml>';
+						return
+					}
+				}
+			}			
 		}
 	};
 };
