@@ -1,8 +1,9 @@
 'use strict'
+/*token验证*/
 
 const Promise = require('bluebird');
 const request = Promise.promisify(require('request'));
-
+const util = require('./util.js');
 
 const prefix = "https://api.weixin.qq.com/cgi-bin/";
 let api = {
@@ -68,5 +69,16 @@ Wechat.prototype.updateAccessToken = function(data){
 		});		
 	});
 };
+
+Wechat.prototype.reply = function(){
+	let content = this.body,
+		message= this.weixin,
+		xml = util.tpl(content, message);
+
+	this.status = 200;
+	this.type = 'application/xml';
+	this.body = xml;
+
+}
 
 module.exports=Wechat;

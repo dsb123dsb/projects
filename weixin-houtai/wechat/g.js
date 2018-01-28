@@ -1,11 +1,12 @@
 'use strict'
+/*中间件*/
 
 const sha1 = require('sha1');
 const getRawBody = require('raw-body'); // 解析http的requset对象为buffer的XML数据
 const util = require('./util.js');
 const Wechat = require('./wechat');
 
-module.exports = function(opts){
+module.exports = function(opts, handler){
 	let wechat =new Wechat(opts);
 
 	return function *(next){
@@ -39,21 +40,13 @@ module.exports = function(opts){
 
 				let content = yield util.parseXMLAsync(data);
 				// console.log(content);
-				let message = util.formatMessage(content.xml);
+				let message = util.formatMessage(content.xml); // 解析微信服务端消息格式化
 				// console.log(message);
-				if(message.MsgType === 'event'){
-					if((message.Event) === 'subscribe'){
-						let now = new Date().getTime();
+				this.weixin = message;
 
-						that.status = 200;
-						that.type = 'application/xml';
-						// 注意i空格什么的
-						that.body = '<xml>'+
-							'<ToUserName><![CDATA['+message.FromUserName+']]></ToUserName>'+ 
-								'<FromUserName><![CDATA['+message.ToUserName+']]></FromUserName>'+'<CreateTime>'+now+'</CreateTime><MsgType><![CDATA[text]]></MsgType> <Content><![CDATA[Hi, zyh]]></Content>'+'</xml>';
-						return
-					}
-				}
+				yield handler.call(this, next); // 进行下一步中间件处理
+				wechat.reply.call(this);
+
 			}			
 		}
 	};
