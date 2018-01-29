@@ -13,25 +13,25 @@ let tpl = heredoc(function(){/*
 		<Content><![CDATA[<%= content %>]]></Content>
 	<% } else if(msgType === 'image') { %>
 		<Image>
-			<MediaId><![CDATA[<%= content.media_id %>]]></MediaId>
+			<MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
 		</Image>
 	<% } else if(msgType === 'voice') { %>
 		<Voice>
-			<MediaId><![CDATA[<%= content.media_id %>]]></MediaId>
+			<MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
 		</Voice>
-	<% } else if(msgType === 'image') { %>
+	<% } else if(msgType === 'video') { %>
 		<Video>
-			<MediaId><![CDATA[<%= content.media_id %>]]></MediaId>
+			<MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
 			<Title><![CDATA[<%= content.title %>]]></Title>
-			<Description><![CDATA[<%= content.description %>] ]></Description>
+			<Description><![CDATA[<%= content.description %>]]></Description>
 		</Video>
 	<% } else if(msgType === 'music') { %>
 		<Music>
 			<Title><!CDATA[% content.title %>]]></Title>
 			<Description>< ![CDATA[CDATA[<%= content.description %>]]></Description>
-			<MusicUrl><![CDATA[<%= content.music_Url %>]]></MusicUrl>
-			<HQMusicUrl><![CDATA[hqMusic_Url]]></HQMusicUrl>
-			<ThumbMediaId><![CDATA[<%= content.thumMediaId %>] ]></ThumbMediaId>
+			<MusicUrl><![CDATA[<%= content.musicUrl %>]]></MusicUrl>
+			<HQMusicUrl><![CDATA[hqMusicUrl]]></HQMusicUrl>
+			<ThumbMediaId><![CDATA[<%= content.thumMediaId %>]]></ThumbMediaId>
 		</Music>
 	<% } else if(msgType === 'news') { %>
 		<ArticleCount><%= content.length %></ArticleCount>
@@ -40,7 +40,7 @@ let tpl = heredoc(function(){/*
 				<item>
 					<Title><![CDATA[<%= item.title %>]]></Title>
 					<Description><![CDATA[<%= item.description %>]]></Description>
-					<PicUrl><![CDATA[<%= item.picurl %>]]></PicUrl>
+					<PicUrl><![CDATA[<%= item.picUrl %>]]></PicUrl>
 					<Url><![CDATA[<%= item.url %>]]></Url>
 				</item>
 			<% }) %>

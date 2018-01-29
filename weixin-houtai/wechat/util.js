@@ -63,7 +63,7 @@ exports.tpl = function(content, message){
 	info.msgType = type;
 	info.toUserName = fromUserName;
 	info.fromUserName = toUserName;
-
+// console.log(info);
 	return tpl.compiled(info);
 
 }

@@ -1,4 +1,8 @@
 'user strict'
+const path = require('path');
+const config = require('./config');
+const Wechat = require('./wechat/wechat');
+const wechatApi = new Wechat(config.wechat);
 
 exports.reply = function* (next){
 	let message = this.weixin;
@@ -41,6 +45,33 @@ exports.reply = function* (next){
 				picUrl: 'http://img.blog.csdn.net/20160715204332491',
 				url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'
 			}];
+		}else if(content === '5'){
+			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'/2.jpg'));
+			reply = {
+				type: 'image',
+				title: 'zyh图片',
+				description: 'zyh最帅！！',
+				mediaId: data.media_id
+
+			};
+		}else if(content === '6'){
+			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'/6.mp4'));
+			console.log(data)
+			reply = {
+				type: 'video',
+				title: 'zyh回复视频',
+				description: 'zyh最帅！！',
+				mediaId: data.media_id
+			};
+		}else if(content === '7'){
+			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'/2.jpg'));
+			reply = {
+				type: 'music',
+				title: 'zyh回复音乐',
+				description: 'zyh最帅！！',
+				musicUrl: 'http://music.163.com/#/song?id=114024',
+				thumMediaId: data.media_id
+			};
 		}
 		this.body = reply;
 	}
