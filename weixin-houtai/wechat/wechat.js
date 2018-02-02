@@ -2,6 +2,7 @@
 /*token验证*/
 
 const Promise = require('bluebird');
+const _ = require('lodash');
 const request = Promise.promisify(require('request'));
 const fs = require('fs');
 const util = require('./util.js');
@@ -9,7 +10,18 @@ const util = require('./util.js');
 const prefix = "https://api.weixin.qq.com/cgi-bin/";
 let api = {
 	accessToken: prefix+"token?grant_type=client_credential",
-	upload: prefix+'media/upload?'
+	temporary: {
+		upload: prefix+'media/upload?',
+		fetch: prefix+'media/get/'
+	},
+	permanent: {
+		upload: prefix+'material/add_material?',
+		uploadNews: prefix+'material/add_news?',
+		uploadNewsPic: prefix+'media/uploadimg?',
+		fetch: prefix+'material/get_material',
+		del: prefix+ 'material/del_material',
+		update: prefix+'material/update_news'
+	}
 };
 
 function Wechat(opts){
@@ -95,19 +107,51 @@ Wechat.prototype.reply = function(){
 
 }
 // 上传素材
-Wechat.prototype.updloadMaterial = function(type, filePath){
+Wechat.prototype.updloadMaterial = function(type, material, permanent){
 	let that = this,
-		form = {
-			media: fs.createReadStream(filePath)
-		},
+		form = {},
+		uploadUrl = api.temporary.upload,
 		appId = this.appId,
 		appSecret = this.appSecret;
+
+	if(permanent){
+		uploadUrl = api.permanent.upload;
+		_.extend(form, permanent);
+	}
+	if(type === 'pic'){
+		uploadUrl = api.permanent.uploadNewsPic;
+	}
+	if(type === 'news'){
+		uploadUrl = api.permanent.uploadNews;
+		form = material;
+	}else{
+		form.media = fs.createReadStream(material);
+	}
 
 	return new Promise((resolve, reject) => {
 		that
 		.fetchAccesssToken()
 		.then(function(data){
-			let url = api.upload + "access_token="+data.access_token+"&type="+type;
+
+			let url = uploadUrl + "access_token="+data.access_token;
+			if(!permanent){
+				url += '&type=' + type;
+			}else{
+				form.access_token = data.access_token;
+			}
+
+			let options = {
+				method: 'POST',
+				url: url,
+				json: true
+			};
+
+			if(type === 'news'){
+				options.body = form;
+			}else{
+				options.formData = form;
+			}
+
 			request({method: 'POST', url: url, formData: form, json: true}).then(function(response){
 				let _data = response.body;
 				if(_data){
@@ -115,7 +159,92 @@ Wechat.prototype.updloadMaterial = function(type, filePath){
 				}else{
 					throw new Eror('Upload materials failed');
 				}
+			})
+			.catch(function(err){
+				reject(err)
 			});		
+		});
+	});
+};
+// 删除素材
+Wechat.prototype.deleteMaterial = function(mediaId){
+	let that = this,
+		form = {
+			media_id: mediaId
+		};
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.permanent.del + "access_token="+data.access_token+"&media_id="+mediaId;
+
+			request({method: 'POST', url: url, body: form, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('delete materials failed');
+				}
+			})
+			.catch(function(err){
+				reject(err)
+			});	
+		});
+	});
+};
+// 获取素材
+Wechat.prototype.fetchMaterial = function(media_id, type, permanent){
+	let that = this,
+		form = {},
+		fetchUrl = api.temporary.fetch,
+		appId = this.appId,
+		appSecret = this.appSecret;
+
+	if(permanent){
+		fetchUrl = api.permanent.fetch;
+	}
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = fetchUrl + "access_token="+data.access_token+"&media_id="+media_id;
+			if(!permanent && type ==='video'){
+				url = url.replace('https://', 'http://');
+			}
+
+			resolve(url);
+		});
+	});
+};
+// 更新素材
+Wechat.prototype.updateMaterial = function(mediaId, news){
+	let that = this,
+		form = {
+			media_id: mediaId
+		};
+	_.extend(form, news);
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.permanent.update + "access_token="+data.access_token+"&media_id="+mediaId;
+
+			request({method: 'POST', url: url, body: form, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('update materials failed');
+				}
+			})
+			.catch(function(err){
+				reject(err)
+			});	
 		});
 	});
 };

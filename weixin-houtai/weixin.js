@@ -54,9 +54,8 @@ exports.reply = function* (next){
 				mediaId: data.media_id
 
 			};
-		}else if(content === '6'){
+		}else if(content === '6'){ // there has problem
 			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'/6.mp4'));
-			console.log(data)
 			reply = {
 				type: 'video',
 				title: 'zyh回复视频',
@@ -71,6 +70,24 @@ exports.reply = function* (next){
 				description: 'zyh最帅！！',
 				musicUrl: 'http://music.163.com/#/song?id=114024',
 				thumMediaId: data.media_id
+			};
+		}else if(content === '8'){
+			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'/2.jpg'), {type: 'image'});
+			reply = {
+				type: 'image',
+				title: 'zyh永久图片',
+				description: 'zyh最帅！！',
+				mediaId: data.media_id
+
+			};
+		}else if(content === '9'){
+			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'/6.mp4'), {type: 'video', description: '{"title": "really a nice place","introduction": "never think" }'});
+			// console.log(data);
+			reply = {
+				type: 'video',
+				title: 'zyh回复永久视频',
+				description: 'zyh最帅！！',
+				mediaId: data.media_id
 			};
 		}
 		this.body = reply;
