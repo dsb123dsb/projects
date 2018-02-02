@@ -89,6 +89,74 @@ exports.reply = function* (next){
 				description: 'zyh最帅！！',
 				mediaId: data.media_id
 			};
+		}else if(content === '10'){
+			let picData = yield wechatApi.updloadMaterial('image', path.join(__dirname,'/2.jpg'), {});
+			// console.log(data);
+			let media = {
+				articles: [{
+					title: 'haha',
+					thumb_media_id: picData.media_id,
+					author: 'zyh',
+					digest: '没有摘要',
+					show_cover_pic: 1,
+					content: '没有内容',
+					content_source_url: 'http://github.com'
+				},{
+					title: 'haha2',
+					thumb_media_id: picData.media_id,
+					author: 'zyh',
+					digest: '没有摘要',
+					show_cover_pic: 0,
+					content: '没有内容',
+					content_source_url: 'http://github.com'
+				}]
+			};
+
+			data = yield wechatApi.updloadMaterial('news', media, {});
+			data = yield wechatApi.fetchMaterial(data.media_id,'news', {});
+			// console.log(data);
+
+			let items = data.news_item,
+				news = [];
+
+			items.forEach(function(item){
+				news.push({
+					title: item.title,
+					description: item.digest,
+					picUrl: picData.url,
+					url: item.url
+				});
+			});
+			reply = news;
+		}else if(content ==='11'){
+			let counts = yield wechatApi.countMaterial();
+
+			console.log(JSON.stringify(counts));
+
+			let results = yield [
+				wechatApi.batchMaterial({
+					type: 'image',
+					offset: 0,
+					count: 10
+				}),
+				wechatApi.batchMaterial({
+					type: 'video',
+					offset: 0,
+					count: 10
+				}),
+				wechatApi.batchMaterial({
+					type: 'voice',
+					offset: 0,
+					count: 10
+				}),
+				wechatApi.batchMaterial({
+					type: 'news',
+					offset: 0,
+					count: 10
+				}),
+			];
+			console.log(JSON.stringify(results));
+			reply = '1';
 		}
 		this.body = reply;
 	}

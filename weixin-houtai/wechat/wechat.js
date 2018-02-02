@@ -12,15 +12,17 @@ let api = {
 	accessToken: prefix+"token?grant_type=client_credential",
 	temporary: {
 		upload: prefix+'media/upload?',
-		fetch: prefix+'media/get/'
+		fetch: prefix+'media/get?'
 	},
 	permanent: {
 		upload: prefix+'material/add_material?',
 		uploadNews: prefix+'material/add_news?',
 		uploadNewsPic: prefix+'media/uploadimg?',
-		fetch: prefix+'material/get_material',
-		del: prefix+ 'material/del_material',
-		update: prefix+'material/update_news'
+		fetch: prefix+'material/get_material?',
+		del: prefix+ 'material/del_material?',
+		update: prefix+'material/update_news?',
+		count: prefix+'material/get_materialcount?',
+		batch: prefix+'material/batchget_material?',
 	}
 };
 
@@ -152,7 +154,7 @@ Wechat.prototype.updloadMaterial = function(type, material, permanent){
 				options.formData = form;
 			}
 
-			request({method: 'POST', url: url, formData: form, json: true}).then(function(response){
+			request(options).then(function(response){
 				let _data = response.body;
 				if(_data){
 					resolve(_data);
@@ -195,12 +197,10 @@ Wechat.prototype.deleteMaterial = function(mediaId){
 	});
 };
 // 获取素材
-Wechat.prototype.fetchMaterial = function(media_id, type, permanent){
+Wechat.prototype.fetchMaterial = function(mediaId, type, permanent){
 	let that = this,
 		form = {},
-		fetchUrl = api.temporary.fetch,
-		appId = this.appId,
-		appSecret = this.appSecret;
+		fetchUrl = api.temporary.fetch;
 
 	if(permanent){
 		fetchUrl = api.permanent.fetch;
@@ -211,12 +211,38 @@ Wechat.prototype.fetchMaterial = function(media_id, type, permanent){
 		.fetchAccesssToken()
 		.then(function(data){
 
-			let url = fetchUrl + "access_token="+data.access_token+"&media_id="+media_id;
-			if(!permanent && type ==='video'){
-				url = url.replace('https://', 'http://');
+			let url = fetchUrl + "access_token="+data.access_token;
+
+			let options = {
+				method: 'POST', url: url, json: true
+			};
+			let form = {};
+			if(permanent){
+				form.media_id = mediaId;
+				form.access_token = data.access_token;
+				options.body = form;
+			}else{
+				if( type === 'vide'){
+					url = url.replace('https://', 'http://');
+				}
+				url += '&media_id='+ mediaId;
+			}
+			if(type ==='news' || type ==='video'){
+				request(options).then(function(response){
+					let _data = response.body;
+					if(_data){
+						resolve(_data);
+					}else{
+						throw new Eror('fetch materials failed');
+					}
+				})
+				.catch(function(err){
+					reject(err);
+				});
+			}else{
+				resolve(url);
 			}
 
-			resolve(url);
 		});
 	});
 };
@@ -244,6 +270,60 @@ Wechat.prototype.updateMaterial = function(mediaId, news){
 			})
 			.catch(function(err){
 				reject(err)
+			});	
+		});
+	});
+};
+// 查询永久素材数量
+Wechat.prototype.countMaterial = function(){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.permanent.count + "access_token="+data.access_token;
+
+			request({method: 'GET', url: url, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('update materials failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});
+};
+// 批量获取永久素材
+Wechat.prototype.batchMaterial = function(options){
+	let that = this;
+
+	options.type = options.type || 'image';
+	options.offset = options.offset || 0;
+	options.count = options.count || 10;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.permanent.batch + "access_token="+data.access_token;
+
+			request({method: 'POST', url: url, body: options, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('count materials failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
 			});	
 		});
 	});
