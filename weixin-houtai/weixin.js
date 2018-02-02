@@ -157,6 +157,34 @@ exports.reply = function* (next){
 			];
 			console.log(JSON.stringify(results));
 			reply = '1';
+		}else if(content ==='12'){
+			let tag = yield wechatApi.createTag('zyh3');
+			console.log('新标签 zyh: ');
+			console.log(tag);
+
+			let tags = yield wechatApi.fetchTags();
+			console.log('已有标签： ');
+			console.log(tags);
+
+			let batchtag = yield wechatApi.batchTag([message.FromUserName], 101);
+
+			let zyhCount = yield wechatApi.fetchCount(100);
+			console.log('标签id 100下粉丝数量：')
+			console.log(zyhCount);
+
+			let result = yield wechatApi.updateTag(100, 'zyh100');
+			console.log('100 zyh 改名为 zyh100');
+			console.log(result);
+
+			let result2 = yield wechatApi.deleteTag(102);
+			console.log('删除102 zyh3');
+			console.log(result2);
+
+			let tags2 = yield wechatApi.fetchTags();
+			console.log('改动后标签： ');
+			console.log(tags2);
+
+			reply = 'tag done!';
 		}
 		this.body = reply;
 	}

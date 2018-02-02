@@ -23,6 +23,15 @@ let api = {
 		update: prefix+'material/update_news?',
 		count: prefix+'material/get_materialcount?',
 		batch: prefix+'material/batchget_material?',
+	},
+	tag: {
+		create: prefix+'tags/create?', // 创建分组
+		fetch: prefix+'tags/get?', // 获取分组
+		update: prefix+'tags/update?', // 更新分组
+		delete: prefix+'tags/delete?', // 删除分组
+		fetchcount: prefix+'user/tag/get?', // 分组下粉丝数量
+		batchtag: prefix+'tags/members/batchtagging?', // 批量打标签
+		batchuntag: prefix+'tags/members/batchuntagging?' // 批量删除标签
 	}
 };
 
@@ -328,4 +337,182 @@ Wechat.prototype.batchMaterial = function(options){
 		});
 	});
 };
+// 创建标签
+Wechat.prototype.createTag = function(name){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.tag.create + "access_token="+data.access_token;
+			let options = {
+				tag: {
+					name: name
+				}
+			}
+			request({method: 'POST', url: url, body: options, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('create tag failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});
+};
+// 获取已创建标签
+Wechat.prototype.fetchTags = function(){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.tag.fetch + "access_token="+data.access_token;
+
+			request({method: 'GET', url: url, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('fetch tag failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});
+};
+// 更新已创建标签
+Wechat.prototype.updateTag = function(id, name){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.tag.update + "access_token="+data.access_token;
+			let options = {
+				tag: {
+					id: id,
+					name: name
+				}
+			}
+			request({method: 'POST', url: url, body: options, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('update tag failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});
+};
+// 删除已创建标签
+Wechat.prototype.deleteTag = function(id){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.tag.delete + "access_token="+data.access_token;
+			let options = {
+				tag: {
+					id: id
+				}
+			}
+			request({method: 'POST', url: url, body: options, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('delete tag failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});
+};
+// 获取指定标签下粉丝数量
+Wechat.prototype.fetchCount = function(tagid){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.tag.fetchcount + "access_token="+data.access_token;
+			let options = {
+				tagid: tagid
+			}
+			request({method: 'POST', url: url, body: options, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('delete tag failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});
+};
+// 批量为用户打标签
+Wechat.prototype.batchTag = function(openIds, tagid){
+	let that = this;
+	return that.batchtaganduntag("batchtag", openIds, tagid);
+
+};
+// 批量为用户取消标签
+Wechat.prototype.batchunTag = function(openIds, tagid){
+	let that = this;
+	return that.batchtaganduntag("batchuntag", openIds, tagid);
+
+};
+Wechat.prototype.batchtaganduntag = function(action, openIds, tagid){
+	let that = this;
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.tag[action] + "access_token="+data.access_token;
+			let form = {
+				openid_list: openIds,
+				tagid: tagid 
+			}
+			request({method: 'POST', url: url, body: form, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror(action+' failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+}
 module.exports=Wechat;
