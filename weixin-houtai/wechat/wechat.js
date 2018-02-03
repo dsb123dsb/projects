@@ -32,6 +32,12 @@ let api = {
 		fetchcount: prefix+'user/tag/get?', // 分组下粉丝数量
 		batchtag: prefix+'tags/members/batchtagging?', // 批量打标签
 		batchuntag: prefix+'tags/members/batchuntagging?' // 批量删除标签
+	},
+	user: {
+		remark:  prefix+'user/info/updateremark?',
+		fetch:  prefix+'user/info?',
+		batchFetch:  prefix+'user/info/batchget?',
+		list:  prefix+'user/get?'
 	}
 };
 
@@ -514,5 +520,98 @@ Wechat.prototype.batchtaganduntag = function(action, openIds, tagid){
 			});	
 		});
 	});	
-}
+};
+// 修改用户备注
+Wechat.prototype.remarkUser = function(openId, remark){
+	let that = this;
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+
+			let url = api.user.remark + "access_token="+data.access_token;
+			let form = {
+				openid: openId,
+				remark: remark 
+			}
+			request({method: 'POST', url: url, body: form, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror(action+' failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+
+// 单个或批量获取用户基本信息
+Wechat.prototype.fetchUsers = function(openIds,lang){
+	let that = this;
+
+	lang = lang || 'zh_CN';
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let options = {
+				json: true
+			};
+
+			if(_.isArray(openIds)){
+				options.url = api.user.batchFetch + "access_token="+data.access_token;
+				options.body = {
+					user_list: openIds
+				};
+				options.method = 'POST';
+
+			}else{
+				options.url = api.user.fetch + "access_token="+data.access_token + '&openid='+openIds+'&lang='+lang;
+				options.method = 'GET';
+			}
+			request(options).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('fetch users info failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// 用户列表
+Wechat.prototype.listUsers = function(openId){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.user.list + "access_token="+data.access_token;
+			if(openId){
+				url += '&next_openid='+openId;
+			}
+			request({url: url, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('list user failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
 module.exports=Wechat;
