@@ -38,6 +38,11 @@ let api = {
 		fetch:  prefix+'user/info?',
 		batchFetch:  prefix+'user/info/batchget?',
 		list:  prefix+'user/get?'
+	},
+	mass: {
+		sendtag: prefix + 'message/mass/sendall?',
+		preview: prefix + 'message/mass/preview?',
+		check: prefix + 'message/mass/get?'
 	}
 };
 
@@ -606,6 +611,96 @@ Wechat.prototype.listUsers = function(openId){
 					resolve(_data);
 				}else{
 					throw new Eror('list user failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// 根据标签群发消息
+Wechat.prototype.sendByTag = function(type, message, tagId){
+	let that = this;
+	let msg = {
+		filter: {},
+		msgtype: type
+	};
+
+	msg[type] = message;
+	if(!tagId){
+		msg.filter.is_to_all = true;
+	}else{
+		msg.filter = {
+			tag_id: tagId,
+			is_to_all: false
+		};
+	}
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.mass.sendtag + "access_token="+data.access_token;
+			request({method: 'POST', url: url, body: msg, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('sendByTag failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// 预览接口
+Wechat.prototype.previewMass = function(type, message, openId){
+	let that = this;
+	let msg = {
+		touser: openId, 
+		msgtype: type
+	};
+
+	msg[type] = message;
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.mass.preview + "access_token="+data.access_token;
+			request({method: 'POST', url: url, body: msg, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('preview failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// 查询群发状态接口
+Wechat.prototype.checkMass = function(msgId){
+	let that = this;
+	let form = {
+		msg_id: msgId
+	};
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.mass.check + "access_token="+data.access_token;
+			request({method: 'POST', url: url, body: form, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('check mass failed');
 				}
 			})
 			.catch(function(err){

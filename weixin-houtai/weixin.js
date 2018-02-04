@@ -204,6 +204,40 @@ exports.reply = function* (next){
 			console.log(userlst);
 
 			reply = userlst.total;
+		}else if(content ==='15'){
+			let mpnews = { // 没有权限
+				media_id: 'ywUstwhmFKQ3klFZLaGhSQOWbPIFugz0Grpl8BiyqVw'
+			}
+
+			let text = {
+				content: 'Hello Wechat'
+			}
+			// let msgData = yield wechatApi.sendByTag('mpnews', mpnews, 100);
+			let msgData = yield wechatApi.sendByTag('text', text, 100);
+
+			console.log(msgData);
+
+			reply = 'ai';
+		}else if(content ==='16'){
+			let mpnews = {
+				media_id: 'ywUstwhmFKQ3klFZLaGhSQOWbPIFugz0Grpl8BiyqVw'
+			}
+
+			let text = {
+				content: 'Hello Wechat'
+			}
+			// let msgData = yield wechatApi.sendByTag('mpnews', mpnews, message.FromUserName);
+			let msgData = yield wechatApi.previewMass('text', text, message.FromUserName);
+
+			console.log(msgData);
+
+			reply = 'ai';
+		}else if(content ==='17'){
+			let msgData = yield wechatApi.checkMass(1000000001);
+
+			console.log(msgData);
+
+			reply = 'ai';
 		}
 		this.body = reply;
 	}
