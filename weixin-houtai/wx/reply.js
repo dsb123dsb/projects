@@ -5,15 +5,15 @@ const Wechat = require('../wechat/wechat');
 const menu = require('./menu');
 const wechatApi = new Wechat(config.wechat);
 
-// wechatApi.deleteMenu().then(function(){
-// 	return wechatApi.createMenu(menu);
-// })
-// .then(function(msg){
-// 	console.log(msg);
-// });
+wechatApi.deleteMenu().then(function(){
+	return wechatApi.createMenu(menu);
+})
+.then(function(msg){
+	console.log(msg);
+});
 exports.reply = function* (next){
 	let message = this.weixin;
-
+	console.log(message);
 	if(message.MsgType === 'event'){
 		if(message.Event === 'subscribe'){
 			if(message.EventKey){
@@ -35,11 +35,11 @@ exports.reply = function* (next){
 			console.log('关注后扫二维码' + message.EventKey + ' ' + Ticket);
 		}else if(message.Event === 'VIEW'){
 			this.body = '您点击了菜单中的链接: ' + message.EventKey;
-		}else if(message.Event === 'scancodde_push'){
+		}else if(message.Event === 'scancode_push'){
 			console.log(message.ScanCodeInfo.ScanType);
 			console.log(message.ScanCodeInfo.ScanResult);
 			this.body = '您点击了菜单中 : ' + message.EventKey;
-		}else if(message.Event === 'scancodde_waitingmsg'){
+		}else if(message.Event === 'scancode_waitmsg'){
 			console.log(message.ScanCodeInfo.ScanType);
 			console.log(message.ScanCodeInfo.ScanResult);
 			this.body = '您点击了菜单中 : ' + message.EventKey;
@@ -56,10 +56,10 @@ exports.reply = function* (next){
 			console.log(message.SendPicsInfo.Count);
 			this.body = '您点击了菜单中 : ' + message.EventKey;
 		}else if(message.Event === 'location_select'){
-			console.log(message.SendLocationInfo.location_X);
-			console.log(message.SendLocationInfo.location_Y);
+			console.log(message.SendLocationInfo.Location_X);
+			console.log(message.SendLocationInfo.Location_Y);
 			console.log(message.SendLocationInfo.Scale);
-			console.log(message.SendLocationInfo.Lable);
+			console.log(message.SendLocationInfo.Label);
 			console.log(message.SendLocationInfo.Poiname);
 			this.body = '您点击了菜单中 : ' + message.EventKey;
 		}

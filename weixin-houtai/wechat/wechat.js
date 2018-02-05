@@ -70,27 +70,28 @@ Wechat.prototype.fetchAccesssToken = function(data){
 			return Promise.resolve(this);
 		}
 	}
-	this.getAccessToken()
-	.then(function(data){
-		try{
-			data = JSON.parse(data);
-		}
-		catch(e){
-			return that.updateAccessToken(data);
-		}
+	// 需要加 return，否則后面執行返回的promise不会被会返回（嵌套函数）
+	return this.getAccessToken()
+		.then(function(data){
+			try{
+				data = JSON.parse(data);
+			}
+			catch(e){
+				return that.updateAccessToken(data);
+			}
 
-		if(that.isValidAcesssToken(data)){
-			return Promise.resolve(data); // 要return才能传出去
-		}else{
-			return that.updateAccessToken(data);
-		}
-	})
-	.then(function(data){
-		that.access_token = data.access_token;
-		that.expires_in = data.expires_in;
-		that.saveAccessToken(data);
-		return Promise.resolve(data);
-	});
+			if(that.isValidAcesssToken(data)){
+				return Promise.resolve(data); // 要return才能传出去
+			}else{
+				return that.updateAccessToken(data);
+			}
+		})
+		.then(function(data){
+			that.access_token = data.access_token;
+			that.expires_in = data.expires_in;
+			that.saveAccessToken(data);
+			return Promise.resolve(data);
+		});
 };
 // 验证票据
 Wechat.prototype.isValidAcesssToken = function(data){

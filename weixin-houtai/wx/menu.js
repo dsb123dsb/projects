@@ -13,11 +13,11 @@ module.exports = {
 			'url': 'http://github.com'
 		}, {
 			'name': '扫码推送事件',
-			'type': 'scancodde_push',
+			'type': 'scancode_push',
 			'key': 'qr_scan'
 		}, {
 			'name': '扫码推送中',
-			'type': 'scancodde_waitingmsg',
+			'type': 'scancode_waitmsg',
 			'key': 'qr_scan_wait'
 		}, {
 			'name': '系统拍照',
@@ -40,7 +40,7 @@ module.exports = {
 			'key': 'location_select'
 		}, {
 			'name': '扫码推送中',
-			'type': 'scancodde_waitingmsg',
+			'type': 'scancode_waitmsg',
 			'key': 'qr_scan_wait'
 		}
 		// , {
