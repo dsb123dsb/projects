@@ -43,6 +43,12 @@ let api = {
 		sendtag: prefix + 'message/mass/sendall?',
 		preview: prefix + 'message/mass/preview?',
 		check: prefix + 'message/mass/get?'
+	},
+	menu: {
+		create: prefix + 'menu/create?',
+		get: prefix + 'menu/get?',
+		delete: prefix + 'menu/delete?',
+		current: prefix + 'get_current_selfmenu_info?'
 	}
 };
 
@@ -701,6 +707,98 @@ Wechat.prototype.checkMass = function(msgId){
 					resolve(_data);
 				}else{
 					throw new Eror('check mass failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// create menu
+Wechat.prototype.createMenu = function(menu){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.menu.create + "access_token="+data.access_token;
+			request({method: 'POST', url: url, body: menu, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('create menu failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// get menu
+Wechat.prototype.getMenu = function(){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.menu.get + "access_token="+data.access_token;
+			request({url: url, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('get menu failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// delete menu
+Wechat.prototype.deleteMenu = function(){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.menu.delete + "access_token="+data.access_token;
+			request({url: url, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('delete menu failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// get current menu
+Wechat.prototype.getCurrentMenu = function(){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.menu.current + "access_token="+data.access_token;
+			request({url: url, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('get current menu failed');
 				}
 			})
 			.catch(function(err){

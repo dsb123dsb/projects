@@ -1,9 +1,16 @@
 'user strict'
 const path = require('path');
-const config = require('./config');
-const Wechat = require('./wechat/wechat');
+const config = require('../config');
+const Wechat = require('../wechat/wechat');
+const menu = require('./menu');
 const wechatApi = new Wechat(config.wechat);
 
+// wechatApi.deleteMenu().then(function(){
+// 	return wechatApi.createMenu(menu);
+// })
+// .then(function(msg){
+// 	console.log(msg);
+// });
 exports.reply = function* (next){
 	let message = this.weixin;
 
@@ -28,6 +35,33 @@ exports.reply = function* (next){
 			console.log('关注后扫二维码' + message.EventKey + ' ' + Ticket);
 		}else if(message.Event === 'VIEW'){
 			this.body = '您点击了菜单中的链接: ' + message.EventKey;
+		}else if(message.Event === 'scancodde_push'){
+			console.log(message.ScanCodeInfo.ScanType);
+			console.log(message.ScanCodeInfo.ScanResult);
+			this.body = '您点击了菜单中 : ' + message.EventKey;
+		}else if(message.Event === 'scancodde_waitingmsg'){
+			console.log(message.ScanCodeInfo.ScanType);
+			console.log(message.ScanCodeInfo.ScanResult);
+			this.body = '您点击了菜单中 : ' + message.EventKey;
+		}else if(message.Event === 'pic_sysphoto'){
+			console.log(message.SendPicsInfo.Piclist);
+			console.log(message.SendPicsInfo.Count);
+			this.body = '您点击了菜单中 : ' + message.EventKey;
+		}else if(message.Event === 'pic_photo_or_album'){
+			console.log(message.SendPicsInfo.Piclist);
+			console.log(message.SendPicsInfo.Count);
+			this.body = '您点击了菜单中 : ' + message.EventKey;
+		}else if(message.Event === 'pic_weixin'){
+			console.log(message.SendPicsInfo.Piclist);
+			console.log(message.SendPicsInfo.Count);
+			this.body = '您点击了菜单中 : ' + message.EventKey;
+		}else if(message.Event === 'location_select'){
+			console.log(message.SendLocationInfo.location_X);
+			console.log(message.SendLocationInfo.location_Y);
+			console.log(message.SendLocationInfo.Scale);
+			console.log(message.SendLocationInfo.Lable);
+			console.log(message.SendLocationInfo.Poiname);
+			this.body = '您点击了菜单中 : ' + message.EventKey;
 		}
 	}else if(message.MsgType === 'text'){
 		let content = message.Content,
@@ -46,7 +80,7 @@ exports.reply = function* (next){
 				url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'
 			}];
 		}else if(content === '5'){
-			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'/2.jpg'));
+			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'));
 			reply = {
 				type: 'image',
 				title: 'zyh图片',
@@ -55,7 +89,7 @@ exports.reply = function* (next){
 
 			};
 		}else if(content === '6'){ // there has problem
-			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'/6.mp4'));
+			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'../6.mp4'));
 			reply = {
 				type: 'video',
 				title: 'zyh回复视频',
@@ -63,7 +97,7 @@ exports.reply = function* (next){
 				mediaId: data.media_id
 			};
 		}else if(content === '7'){
-			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'/2.jpg'));
+			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'));
 			reply = {
 				type: 'music',
 				title: 'zyh回复音乐',
@@ -72,7 +106,7 @@ exports.reply = function* (next){
 				thumMediaId: data.media_id
 			};
 		}else if(content === '8'){
-			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'/2.jpg'), {type: 'image'});
+			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'), {type: 'image'});
 			reply = {
 				type: 'image',
 				title: 'zyh永久图片',
@@ -81,7 +115,7 @@ exports.reply = function* (next){
 
 			};
 		}else if(content === '9'){
-			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'/6.mp4'), {type: 'video', description: '{"title": "really a nice place","introduction": "never think" }'});
+			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'../6.mp4'), {type: 'video', description: '{"title": "really a nice place","introduction": "never think" }'});
 			// console.log(data);
 			reply = {
 				type: 'video',
@@ -90,7 +124,7 @@ exports.reply = function* (next){
 				mediaId: data.media_id
 			};
 		}else if(content === '10'){
-			let picData = yield wechatApi.updloadMaterial('image', path.join(__dirname,'/2.jpg'), {});
+			let picData = yield wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'), {});
 			// console.log(data);
 			let media = {
 				articles: [{
