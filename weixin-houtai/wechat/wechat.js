@@ -59,6 +59,9 @@ let api = {
 	},
 	shortUrl: {
 		create: prefix+'shorturl?'
+	},
+	ticket: {
+		get: prefix+'ticket/getticket?'
 	}
 };
 
@@ -67,7 +70,9 @@ function Wechat(opts){
 	this.appId = opts.appId;
 	this.appSecret = opts.appSecret;
 	this.getAccessToken = opts.getAccessToken;
-	this.saveAccessToken = opts.saveAccessToken;
+	this.saveAccessToken = opts.saveAccessToken;	
+	this.getTicket = opts.getTicket;
+	this.saveTicket = opts.saveTicket;
 
 	this.fetchAccesssToken();
 };
@@ -75,11 +80,11 @@ function Wechat(opts){
 Wechat.prototype.fetchAccesssToken = function(data){
 	let that = this;
 
-	if(this.access_token && this.expires_in){
-		if(this.isValidAcesssToken(this)){
-			return Promise.resolve(this);
-		}
-	}
+	// if(this.access_token && this.expires_in){
+	// 	if(this.isValidAcesssToken(this)){
+	// 		return Promise.resolve(this);
+	// 	}
+	// }
 	// 需要加 return，否則后面執行返回的promise不会被会返回（嵌套函数）
 	return this.getAccessToken()
 		.then(function(data){
@@ -97,12 +102,13 @@ Wechat.prototype.fetchAccesssToken = function(data){
 			}
 		})
 		.then(function(data){
-			that.access_token = data.access_token;
-			that.expires_in = data.expires_in;
+			// that.access_token = data.access_token;
+			// that.expires_in = data.expires_in;
 			that.saveAccessToken(data);
 			return Promise.resolve(data);
 		});
 };
+
 // 验证票据
 Wechat.prototype.isValidAcesssToken = function(data){
 	if(!data || !data.access_token || !data.expires_in){
@@ -134,6 +140,61 @@ Wechat.prototype.updateAccessToken = function(data){
 		});		
 	});
 };
+// 获取ticket(全局js)
+Wechat.prototype.fetchTicket = function(access_token){
+	let that = this;
+	// 需要加 return，否則后面執行返回的promise不会被会返回（嵌套函数）
+	return this.getTicket()
+		.then(function(data){
+			try{
+				data = JSON.parse(data);
+			}
+			catch(e){
+				return that.updateTicket(access_token);
+			}
+
+			if(that.isValidTicket(data)){
+				return Promise.resolve(data); // 要return才能传出去
+			}else{
+				return that.updateTicket(access_token);
+			}
+		})
+		.then(function(data){
+			// that.ticket = data.ticket;
+			// that.ticket_expires_in = data.ticket_expires_in;
+			that.saveTicket(data);
+			return Promise.resolve(data);
+		});
+};
+// 验证 ticket
+Wechat.prototype.isValidTicket = function(data){
+	if(!data || !data.ticket || !data.ticket_expires_in){
+		return false;
+	};
+	let ticket = data.ticket,
+		expires_in = data.ticket_expires_in,
+		now = (new Date().getTime());
+	if(ticket && now < expires_in) {
+		return true;
+	}else{
+		return false;
+	}
+};
+// 更新 ticket
+Wechat.prototype.updateTicket = function(access_token){
+	let url = api.ticket.get + "&access_token="+access_token+"&type=jsapi";
+	return new Promise((resolve, reject) => {
+		request({url: url, json: true}).then(function(response){
+			let data = response.body,
+				now = (new Date().getTime()),
+				expires_in = now + (data.expires_in-20)*1000;
+
+			data.ticket_expires_in = expires_in;
+
+			resolve(data);
+		});		
+	});
+};
 // 回复消息
 Wechat.prototype.reply = function(){
 	let content = this.body,
@@ -144,7 +205,7 @@ Wechat.prototype.reply = function(){
 	this.type = 'application/xml';
 	this.body = xml;
 
-}
+};
 // 上传素材
 Wechat.prototype.updloadMaterial = function(type, material, permanent){
 	let that = this,
