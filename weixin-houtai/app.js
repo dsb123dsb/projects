@@ -21,22 +21,22 @@ let tpl = heredoc(function(){/*
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="initial-scale=1, maximum-scalw=1, minimum-scale=1">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1">
 	<title>猜电影</title>
 </head>
 	<body>
 		<h1>点击标题，开始录音</h1>
 		<p id = "title"></p>
 		<div id = "poster"></div>
-		<script sr="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
-		<script sr="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.2.0/zepto.min.js"></script>
+		<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 		<script>
 			wx.config({
 			    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 			    appId: 'wxc0d5cd93a341a641', // 必填，公众号的唯一标识
 			    timestamp: '<%= timestamp %>', // 必填，生成签名的时间戳
-			    nonceStr: ''<%= nonceStr %>'', // 必填，生成签名的随机串
-			    signature: ''<%= signature %>'',// 必填，签名
+			    nonceStr: '<%= nonceStr %>', // 必填，生成签名的随机串
+			    signature: '<%= signature %>',// 必填，签名
 			    jsApiList: [
 					'startRecord',
 					'stopRecord',
@@ -71,7 +71,8 @@ let _sign = function(nonceStr, ticket, timestamp, url){
 		'timestamp='+timestamp,
 		'url='+url
 	];
-	let str = params.sort().join('');
+	let str = params.sort().join('&'); // 忘记加分隔符，你麻痹，浪费两个小时
+	console.log(str)
 	let shasum = crypto.createHash('sha1');
 
 	shasum.update(str);

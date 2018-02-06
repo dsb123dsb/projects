@@ -168,11 +168,11 @@ Wechat.prototype.fetchTicket = function(access_token){
 };
 // 验证 ticket
 Wechat.prototype.isValidTicket = function(data){
-	if(!data || !data.ticket || !data.ticket_expires_in){
+	if(!data || !data.ticket || !data.expires_in){
 		return false;
 	};
 	let ticket = data.ticket,
-		expires_in = data.ticket_expires_in,
+		expires_in = data.expires_in,
 		now = (new Date().getTime());
 	if(ticket && now < expires_in) {
 		return true;
@@ -189,7 +189,7 @@ Wechat.prototype.updateTicket = function(access_token){
 				now = (new Date().getTime()),
 				expires_in = now + (data.expires_in-20)*1000;
 
-			data.ticket_expires_in = expires_in;
+			data.expires_in = expires_in;
 
 			resolve(data);
 		});		
