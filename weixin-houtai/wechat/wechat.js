@@ -9,7 +9,9 @@ const util = require('./util.js');
 
 const prefix = "https://api.weixin.qq.com/cgi-bin/";
 const mpPrefix = "https://mp.weixin.qq.com/cgi-bin/";
+
 let api = {
+	semanticUrl:  "https://api.weixin.qq.com/semantic/semproxy/search?",
 	accessToken: prefix+"token?grant_type=client_credential",
 	temporary: {
 		upload: prefix+'media/upload?',
@@ -866,6 +868,31 @@ Wechat.prototype.createShorturl = function(action, longUrl){
 					resolve(_data);
 				}else{
 					throw new Eror('create shorturl failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// 语义理解
+Wechat.prototype.semantic = function(semanticData){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.semanticUrl + "access_token="+data.access_token;
+			semanticData.appid = semanticData.appID;
+			
+			request({method:'POST', url: url, body: semanticData, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('Semantic failed');
 				}
 			})
 			.catch(function(err){

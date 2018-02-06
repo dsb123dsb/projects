@@ -323,6 +323,18 @@ exports.reply = function* (next){
 			
 			console.log(shortData);
 			reply = shortData.short_url;
+		}else if(content === '20'){
+			let  semanticData= {
+				query: 'zyh大电影',
+				city: '杭州',
+				category: 'movie',
+				appid: 'wxaaaaaaaaaaaaaaaa',
+				uid: message.FromUserName
+			};
+
+			let _semanticData = yield wechatApi.semantic(semanticData);
+			
+			reply = JSON.stringify(semanticData);
 		}
 		this.body = reply;
 	}
