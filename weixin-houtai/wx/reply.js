@@ -272,6 +272,57 @@ exports.reply = function* (next){
 			console.log(msgData);
 
 			reply = 'ai';
+		}else if(content ==='18'){
+			let temQr = {
+				expire_seconds: 604800,
+				action_name: 'QR_SCENE',
+				action_info: {
+					scene: {
+						scene_id: 123
+					}
+				}
+			};
+			let temStrQr = {
+				expire_seconds: 604800,
+				action_name: 'QR_STR_SCENE',
+				action_info: {
+					scene: {
+						scene_str: 'test'
+					}
+				}
+			};
+			let permQr = {
+				action_name: 'QR_LIMIT_SCENE',
+				action_info: {
+					scene: {
+						scene_id: 123
+					}
+				}
+			};
+			let permStrQr = {
+				action_name: 'QR_LIMIT_STR_SCENE',
+				action_info: {
+					scene: {
+						scene_str: 'test'
+					}
+				}
+			};
+
+			let qr1 = yield wechatApi.createQrcode(temQr);
+			let qr2 = yield wechatApi.createQrcode(temStrQr);
+			let qr3 = yield wechatApi.createQrcode(permQr);
+			let qr4 = yield wechatApi.createQrcode(permStrQr);
+
+			console.log(qr2);
+
+			reply = 'ai';
+		}else if(content === '19'){
+			let longUrl = 'http://github.com';
+
+			let shortData = yield wechatApi.createShorturl(null, longUrl);
+			
+			console.log(shortData);
+			reply = shortData.short_url;
 		}
 		this.body = reply;
 	}

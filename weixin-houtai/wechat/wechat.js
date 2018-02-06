@@ -8,6 +8,7 @@ const fs = require('fs');
 const util = require('./util.js');
 
 const prefix = "https://api.weixin.qq.com/cgi-bin/";
+const mpPrefix = "https://mp.weixin.qq.com/cgi-bin/";
 let api = {
 	accessToken: prefix+"token?grant_type=client_credential",
 	temporary: {
@@ -49,6 +50,13 @@ let api = {
 		get: prefix + 'menu/get?',
 		delete: prefix + 'menu/delete?',
 		current: prefix + 'get_current_selfmenu_info?'
+	},
+	qrcode: {
+		create: prefix+'qrcode/create?',
+		show: mpPrefix+'showqrcode?'
+	},
+	shortUrl: {
+		create: prefix+'shorturl?'
 	}
 };
 
@@ -800,6 +808,64 @@ Wechat.prototype.getCurrentMenu = function(){
 					resolve(_data);
 				}else{
 					throw new Eror('get current menu failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// create qrcode
+Wechat.prototype.createQrcode = function(qr){
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.qrcode.create + "access_token="+data.access_token;
+			request({method:'POST', url: url, body: qr, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('create qrcode failed');
+				}
+			})
+			.catch(function(err){
+				reject(err);
+			});	
+		});
+	});	
+};
+// show qrcode
+Wechat.prototype.showQrcode = function(ticket){
+	return api.qrcode.show + 'ticket='+encodeURI(ticket);
+};
+// create shorturl
+Wechat.prototype.createShorturl = function(action, longUrl){
+	action = action || 'long2short';
+
+	let that = this;
+
+	return new Promise((resolve, reject) => {
+		that
+		.fetchAccesssToken()
+		.then(function(data){
+			let url =api.shortUrl.create + "access_token="+data.access_token;
+
+			let form = {
+				action: action,
+				long_url: longUrl
+			};
+			
+			request({method:'POST', url: url, body: form, json: true}).then(function(response){
+				let _data = response.body;
+				if(_data){
+					resolve(_data);
+				}else{
+					throw new Eror('create shorturl failed');
 				}
 			})
 			.catch(function(err){
