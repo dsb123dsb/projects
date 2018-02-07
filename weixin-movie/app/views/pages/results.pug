@@ -1,0 +1,30 @@
+extend ../layout
+
+block content
+	.container(style='margin-bottom: 60px;')
+		.row
+			.panel.panel-default
+				.panel-heading
+					h3=keyword
+				.panel-body
+					if movies && movies.length>0
+						each item in movies
+							.col-md-2
+								.thumbnail
+									a(href="/movie/"+item._id)
+										img(src=item.poster, alt=item.title)
+									.caption
+										h3 #{item.title}
+										p: a.btn.btn-primary(href="/movie/"+ item._id, role="button") 观看预告片 
+										//- 要紧挨并且有空格，要不报错
+			ul.pagination
+				- for ( let i = 0; i<totalPage; i++){
+					- if (currentPage == (i+1)){
+						li.active
+							span #{currentPage}
+					- }
+					- else {
+						li
+							a(href='/results?p='+i+'&'+query) #{i+1}
+					- }
+				- }
