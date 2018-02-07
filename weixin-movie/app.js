@@ -4,9 +4,6 @@ const Koa = require('koa');
 const path = require('path');
 const fs = require('fs');
 
-const wechat = require('./wechat/g');
-const reply = require('./wx/reply');
-
 const mongoose = require('mongoose');
 const dbURL = 'mongodb://localhost/node-mongodb_website'; // 连接数据库
 
@@ -46,13 +43,15 @@ const app = new Koa();
 const Router = require('koa-router');
 const router = new Router();
 const game = require('./app/controllers/game');
+const wechat = require('./app/controllers/wechat');
 
 router.get('/movie', game.movie);
+router.get('/wx', wechat.hear); // 监听来自微信的请求
+router.post('/wx', wechat.hear);
 
 app
 .use(router.routes())
 .use(router.allowedMethods());
-app.use(wechat(wx.wechatOptions.wechat, reply.reply));
 
 app.listen(3000);
 console.log('Listening: 3000')

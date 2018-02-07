@@ -2,7 +2,7 @@
 
 const ejs = require('ejs');
 const heredoc = require('heredoc');
-
+// = 会直接转移标签，-不会
 let tpl = heredoc(function(){/*
 	<xml>
 	<ToUserName><![CDATA[<%= toUserName %>]]></ToUserName>
@@ -10,7 +10,7 @@ let tpl = heredoc(function(){/*
 	<CreateTime><% createTime %></CreateTime>
 	<MsgType><![CDATA[<%= msgType %>]]></MsgType>
 	<% if(msgType === 'text'){ %>
-		<Content><![CDATA[<%= content %>]]></Content>
+		<Content><![CDATA[<%- content %>]]></Content>
 	<% } else if(msgType === 'image') { %>
 		<Image>
 			<MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>

@@ -3,7 +3,7 @@
 const ejs = require('ejs');
 const heredoc = require('heredoc');
 const crypto = require('crypto');
-
+// 安全域名也要改
 let tpl = heredoc(function(){/*
 <!DOCTYPE html>
 <html lang="en">
@@ -42,7 +42,7 @@ let tpl = heredoc(function(){/*
 				let shareContent = {												
 						title: 'title', 
 						desc: '我搜电影',
-						link: 'http://00e0edf6.ngrok.io', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+						link: 'http://1b14fef7.ngrok.io/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 						dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 						success: function () {
 							window.alert('分享成功');
@@ -92,7 +92,7 @@ let tpl = heredoc(function(){/*
 											shareContent = {
 												title: subject.title, 
 												desc: '我搜出来了电影'+ subject.title,
-												link: 'http://00e0edf6.ngrok.io', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+												link: 'http://1b14fef7.ngrok.io/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 												imgUrl: subject.images.large,
 												type: 'link', // 分享类型,music、video或link，不填默认为link
 												dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -159,14 +159,13 @@ function sign(ticket, url){
 		};
 }
 const wx = require('../../wx/index');
-exports.movie = function (ctx, next){	// koa router7对于异步处理有问题，可用promise处理
+exports.movie = async function (ctx, next){	// koa router7对于异步处理有问题，可用promise处理,，更可拥抱 async await
 	let wechatApi = wx.getWechat();
-	let data =  wechatApi.fetchAccesssToken();
+	let data = await wechatApi.fetchAccesssToken();
 	let access_token = data.access_token;
-	let ticketData =  wechatApi.fetchTicket(access_token);
+	let ticketData = await wechatApi.fetchTicket(access_token);
 	let ticket = ticketData.ticket;
 	let url = ctx.href;
 	let params = sign(ticket, url);
-
 	ctx.body = ejs.render(tpl, params);
 };

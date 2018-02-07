@@ -3,15 +3,20 @@ const path = require('path');
 const wx = require('./index');
 let wechatApi = wx.getWechat();
 
-exports.reply = function* (next){
+exports.reply = async function (next){
 	let message = this.weixin;
 	console.log(message);
 	if(message.MsgType === 'event'){
 		if(message.Event === 'subscribe'){
-			if(message.EventKey){
-				console.log('扫二维码进来： '+ message.EventKey + ' ' + message.ticket);
-			}
-			this.body = '哈哈，你订阅了zyh';
+			this.body = '哈哈，你订阅了zyh,欢迎关注科幻电影\n'+
+				'回复1~3, 测试文字回复\n'+
+				'回复4, 测试图文回复\n'+
+				'回复首页, 进入电影首页\n'+
+				'回复登陆, 进入微信登陆绑定\n'+
+				'回复游戏, 进入游戏页面\n'+
+				'回复电影名字, 查询电影信息\n'+
+				'回复 语言, 查询电影信息\n'+
+				'也可以点击 <a href="http://1b14fef7.ngrok.io/movie">语音查电影</a>';
 		}
 		else if (message.Event === 'unsubscribe'){
 			console.log('无情取关');
@@ -72,7 +77,7 @@ exports.reply = function* (next){
 				url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'
 			}];
 		}else if(content === '5'){
-			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'));
+			let data = await wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'));
 			reply = {
 				type: 'image',
 				title: 'zyh图片',
@@ -81,7 +86,7 @@ exports.reply = function* (next){
 
 			};
 		}else if(content === '6'){ // there has problem
-			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'../6.mp4'));
+			let data = await wechatApi.updloadMaterial('video', path.join(__dirname,'../6.mp4'));
 			reply = {
 				type: 'video',
 				title: 'zyh回复视频',
@@ -89,7 +94,7 @@ exports.reply = function* (next){
 				mediaId: data.media_id
 			};
 		}else if(content === '7'){
-			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'));
+			let data = await wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'));
 			reply = {
 				type: 'music',
 				title: 'zyh回复音乐',
@@ -98,7 +103,7 @@ exports.reply = function* (next){
 				thumMediaId: data.media_id
 			};
 		}else if(content === '8'){
-			let data = yield wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'), {type: 'image'});
+			let data = await wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'), {type: 'image'});
 			reply = {
 				type: 'image',
 				title: 'zyh永久图片',
@@ -107,7 +112,7 @@ exports.reply = function* (next){
 
 			};
 		}else if(content === '9'){
-			let data = yield wechatApi.updloadMaterial('video', path.join(__dirname,'../6.mp4'), {type: 'video', description: '{"title": "really a nice place","introduction": "never think" }'});
+			let data = await wechatApi.updloadMaterial('video', path.join(__dirname,'../6.mp4'), {type: 'video', description: '{"title": "really a nice place","introduction": "never think" }'});
 			// console.log(data);
 			reply = {
 				type: 'video',
@@ -116,7 +121,7 @@ exports.reply = function* (next){
 				mediaId: data.media_id
 			};
 		}else if(content === '10'){
-			let picData = yield wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'), {});
+			let picData = await wechatApi.updloadMaterial('image', path.join(__dirname,'../2.jpg'), {});
 			// console.log(data);
 			let media = {
 				articles: [{
@@ -138,8 +143,8 @@ exports.reply = function* (next){
 				}]
 			};
 
-			data = yield wechatApi.updloadMaterial('news', media, {});
-			data = yield wechatApi.fetchMaterial(data.media_id,'news', {});
+			data = await wechatApi.updloadMaterial('news', media, {});
+			data = await wechatApi.fetchMaterial(data.media_id,'news', {});
 			// console.log(data);
 
 			let items = data.news_item,
@@ -155,11 +160,11 @@ exports.reply = function* (next){
 			});
 			reply = news;
 		}else if(content ==='11'){
-			let counts = yield wechatApi.countMaterial();
+			let counts = await wechatApi.countMaterial();
 
 			console.log(JSON.stringify(counts));
 
-			let results = yield [
+			let results = await [
 				wechatApi.batchMaterial({
 					type: 'image',
 					offset: 0,
@@ -184,35 +189,35 @@ exports.reply = function* (next){
 			console.log(JSON.stringify(results));
 			reply = '1';
 		}else if(content ==='12'){
-			let tag = yield wechatApi.createTag('zyh3');
+			let tag = await wechatApi.createTag('zyh3');
 			console.log('新标签 zyh: ');
 			console.log(tag);
 
-			let tags = yield wechatApi.fetchTags();
+			let tags = await wechatApi.fetchTags();
 			console.log('已有标签： ');
 			console.log(tags);
 
-			let batchtag = yield wechatApi.batchTag([message.FromUserName], 101);
+			let batchtag = await wechatApi.batchTag([message.FromUserName], 101);
 
-			let zyhCount = yield wechatApi.fetchCount(100);
+			let zyhCount = await wechatApi.fetchCount(100);
 			console.log('标签id 100下粉丝数量：')
 			console.log(zyhCount);
 
-			let result = yield wechatApi.updateTag(100, 'zyh100');
+			let result = await wechatApi.updateTag(100, 'zyh100');
 			console.log('100 zyh 改名为 zyh100');
 			console.log(result);
 
-			let result2 = yield wechatApi.deleteTag(102);
+			let result2 = await wechatApi.deleteTag(102);
 			console.log('删除102 zyh3');
 			console.log(result2);
 
-			let tags2 = yield wechatApi.fetchTags();
+			let tags2 = await wechatApi.fetchTags();
 			console.log('改动后标签： ');
 			console.log(tags2);
 
 			reply = 'tag done!';
 		}else if(content ==='13'){
-			let user = yield wechatApi.fetchUsers(message.FromUserName, 'en');
+			let user = await wechatApi.fetchUsers(message.FromUserName, 'en');
 			console.log(user);
 
 			let openIds = [{
@@ -220,12 +225,12 @@ exports.reply = function* (next){
 				lang: 'en'
 			}];
 
-			let users =  yield wechatApi.fetchUsers(openIds);
+			let users =  await wechatApi.fetchUsers(openIds);
 			console.log(users);
 
 			reply = JSON.stringify(user);
 		}else if(content ==='14'){
-			let userlst = yield wechatApi.listUsers();
+			let userlst = await wechatApi.listUsers();
 
 			console.log(userlst);
 
@@ -238,8 +243,8 @@ exports.reply = function* (next){
 			let text = {
 				content: 'Hello Wechat'
 			}
-			// let msgData = yield wechatApi.sendByTag('mpnews', mpnews, 100);
-			let msgData = yield wechatApi.sendByTag('text', text, 100);
+			// let msgData = await wechatApi.sendByTag('mpnews', mpnews, 100);
+			let msgData = await wechatApi.sendByTag('text', text, 100);
 
 			console.log(msgData);
 
@@ -252,14 +257,14 @@ exports.reply = function* (next){
 			let text = {
 				content: 'Hello Wechat'
 			}
-			// let msgData = yield wechatApi.sendByTag('mpnews', mpnews, message.FromUserName);
-			let msgData = yield wechatApi.previewMass('text', text, message.FromUserName);
+			// let msgData = await wechatApi.sendByTag('mpnews', mpnews, message.FromUserName);
+			let msgData = await wechatApi.previewMass('text', text, message.FromUserName);
 
 			console.log(msgData);
 
 			reply = 'ai';
 		}else if(content ==='17'){
-			let msgData = yield wechatApi.checkMass(1000000001);
+			let msgData = await wechatApi.checkMass(1000000001);
 
 			console.log(msgData);
 
@@ -300,10 +305,10 @@ exports.reply = function* (next){
 				}
 			};
 
-			let qr1 = yield wechatApi.createQrcode(temQr);
-			let qr2 = yield wechatApi.createQrcode(temStrQr);
-			let qr3 = yield wechatApi.createQrcode(permQr);
-			let qr4 = yield wechatApi.createQrcode(permStrQr);
+			let qr1 = await wechatApi.createQrcode(temQr);
+			let qr2 = await wechatApi.createQrcode(temStrQr);
+			let qr3 = await wechatApi.createQrcode(permQr);
+			let qr4 = await wechatApi.createQrcode(permStrQr);
 
 			console.log(qr2);
 
@@ -311,7 +316,7 @@ exports.reply = function* (next){
 		}else if(content === '19'){
 			let longUrl = 'http://github.com';
 
-			let shortData = yield wechatApi.createShorturl(null, longUrl);
+			let shortData = await wechatApi.createShorturl(null, longUrl);
 			
 			console.log(shortData);
 			reply = shortData.short_url;
@@ -324,12 +329,12 @@ exports.reply = function* (next){
 				uid: message.FromUserName
 			};
 
-			let _semanticData = yield wechatApi.semantic(semanticData);
+			let _semanticData = await wechatApi.semantic(semanticData);
 			
 			reply = JSON.stringify(semanticData);
 		}
 		this.body = reply;
 	}
 
-	yield next;
+	await next;
 }

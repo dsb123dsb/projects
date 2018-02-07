@@ -9,7 +9,7 @@ const Wechat = require('./wechat');
 module.exports = function(opts, handler){
 	let wechat =new Wechat(opts);
 
-	return function *(next){
+	return async function (next){
 		// console.log(this.query);
 		let that = this;
 		let token = opts.token,
@@ -31,20 +31,20 @@ module.exports = function(opts, handler){
 
 				return false;
 			}else{
-				let data = yield getRawBody(this.req, {
+				let data = await getRawBody(this.req, {
 					length: this.length,
 					limit: 'lmb',
 					encoding: this.charset
 				});
 				// console.log(data.toString())
 
-				let content = yield util.parseXMLAsync(data);
+				let content = await util.parseXMLAsync(data);
 				// console.log(content);
 				let message = util.formatMessage(content.xml); // 解析微信服务端消息格式化
 				// console.log(message);
 				this.weixin = message;
 
-				yield handler.call(this, next); // 进行下一步中间件处理
+				await handler.call(this, next); // 进行下一步中间件处理
 				wechat.reply.call(this);
 
 			}			
