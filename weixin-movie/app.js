@@ -1,6 +1,7 @@
 'use strict'
 
 const Koa = require('koa');
+const views = require('koa-views');
 const path = require('path');
 const fs = require('fs');
 
@@ -9,24 +10,10 @@ const dbURL = 'mongodb://localhost/node-mongodb_website'; // 连接数据库
 
 mongoose.connect(dbURL);
 // models loading
-let model_path = __dirname + '/app/models';
-let walk = function(path){
-	fs
-		.readdirSync(path)
-		.forEach(function(file){
-			let newPath = path + '/' + file;
-			let stat = fs.statSync(newPath);
-
-			if(stat.isFile()){
-				if(new RegExp('/(.*)\.(js|coffee)/').test(file)){
-					require(newPath);
-				}
-			} else if(stat.isDirectory()){
-				walk(newPath);
-			}
-		});
-};
-walk(model_path);
+let models_path = __dirname + '/app/models';
+fs.readdirSync(models_path)
+  .filter(file => ~file.search(/^[^\.].*\.js$/))
+  .forEach(file => require(path.join(models_path, file)));
 
 const menu = require('./wx/menu');
 const wx = require('./wx/index');
@@ -49,6 +36,9 @@ router.get('/movie', game.movie);
 router.get('/wx', wechat.hear); // 监听来自微信的请求
 router.post('/wx', wechat.hear);
 
+app.use(views(__dirname + '/app/views', {
+  extension: 'pug'
+}));
 app
 .use(router.routes())
 .use(router.allowedMethods());

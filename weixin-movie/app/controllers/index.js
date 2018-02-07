@@ -1,89 +1,52 @@
-const Movie = require('../models/movies');
-const Category = require('../models/category');
+'use strict'
+
+const Movie = require('../api/movie');
 
 // index page
-exports.index = function(req, res){
-	// console.log('user in session');
-	// console.log(req.session.user);
+exports.index = async function(ctx, next){
 
-	Movie.fetch((err, movies) => {
-		Category
-			.find({})
-			.populate({path: 'movies', options: {limit: 5}})
-			.exec((err, categories)=>{
-				if(err){
-					console.log(err);
-				}
-				res.render('index', { // 返回首页
-					title: 'immoc 首页' ,// 传递参数，替代占位符
-					categories: categories
-					/*movies: [
-					{
-						title: '机械战警',
-						_id: 7,
-						poster: 'http://r3.ykimg.com/05160000530EEB63675839160D0B79D5'
-					}
-					]*/
-				});		
-			});
-	});
+  let categories = yield Movie.findAll();
+
+  await ctx.render('pages/index', {
+    title: '微信电影课程首页-[zyh]',
+    categories: categories
+  });
 };
 
 // search page
-exports.search = function(req, res){
-	let catId = req.query.cat;
-	let q = req.query.q;
-	let page = parseInt(req.query.p, 10) || 0; // 没传默认0
-	let index = page*2;
+exports.search = async function(ctx, next){
+  let catId = ctx.query.cat;
+  let q = ctx.query.q
+  let page = parseInt(ctx.query.p, 10) || 0;
+  let count = 2;
+  let index = page * count;
 
-	if(catId){
-		Category
-			.find({_id: catId})
-			.populate({
-				path: 'movies',
-				select: 'title poster'
-				// options: {limit: 2, skip: index}
-			})
-			.exec((err, categories)=>{
-				if(err){
-					console.log(err);
-				}
-				let category = categories[0] || {};
-				let movies =category.movies || [];
-				let results = movies.slice(index, index + 2)
-				// console.log(movies)
-				res.render('results', { // 返回首页
-					title: '结果列表页面',// 传递参数，替代占位符
-					keyword: category.name,
-					movies: results,
-					currentPage: (page + 1),
-					totalPage: Math.ceil(movies.length/2),
-					query: 'cat='+catId
-				});
-			});
-	}else{
-		Movie
-			.find({title: new RegExp((q+'.*'),'i')})
-			.exec((err, movies)=>{
-				if(err){
-					console.log(err);
-				}
+  if (catId) {
+    let categories = await Movie.searchByCategory(catId);
+    let category = categories[0] || {};
+    let movies = category.movies || [];
+    let results = movies.slice(index, index + count);
 
-				let results = movies.slice(index, index + 2);
+    await ctx.render('pages/results', {
+      title: 'imooc 结果列表页面',
+      keyword: category.name,
+      currentPage: (page + 1),
+      query: 'cat=' + catId,
+      totalPage: Math.ceil(movies.length / count),
+      movies: results
+    });
+  }
+  else {
+    let movies = yield Movie.searchByName(q);
+    let results = movies.slice(index, index + count);
 
-				// console.log(movies)
-				res.render('results', { // 返回首页
-					title: '结果列表页面',// 传递参数，替代占位符
-					keyword: q,
-					movies: results,
-					currentPage: (page + 1),
-					totalPage: Math.ceil(movies.length/2),
-					query: 'q='+q
-				});
-			});
-	}
+    await ctx.render('pages/results', {
+      title: 'imooc 结果列表页面',
+      keyword: q,
+      currentPage: (page + 1),
+      query: 'q=' + q,
+      totalPage: Math.ceil(movies.length / count),
+      movies: results
+    });
+  }
 };
-
-// app.get('/', (req, res) => {
-
-// });

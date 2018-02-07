@@ -1,6 +1,8 @@
 'user strict'
+
 const path = require('path');
 const wx = require('./index');
+const Movie = require('../app/api/movie');
 let wechatApi = wx.getWechat();
 
 exports.reply = async function (next){
@@ -60,7 +62,34 @@ exports.reply = async function (next){
 			console.log(message.SendLocationInfo.Poiname);
 			this.body = '您点击了菜单中 : ' + message.EventKey;
 		}
-	}else if(message.MsgType === 'text'){
+	}else if (message.MsgType === 'voice') {
+	    let voiceText = message.Recognition; // 解析后语音结果为空
+	    let movies = await Movie.searchByName(voiceText);
+
+	    if (!movies || movies.length === 0) {
+	      movies = await Movie.searchByDouban(voiceText);
+	    }
+
+	    if (movies && movies.length > 0) {
+	      reply = [];
+
+	      movies = movies.slice(0, 8);
+ // console.log(movies)
+ console.log(voiceText)
+	      movies.forEach(function(movie) {
+	        reply.push({
+	          title: movie.title,
+	          description: movie.title,
+	          picUrl: movie.images.large,
+	          url: movie.alt//options.baseUrl + '/wechat/jump/' + movie._id
+	        });
+	      });
+
+	    }else {
+	      reply = '没有查询到与 ' + voiceText + ' 匹配的电影，要不要换一个名字试试'
+	    }
+		this.body = reply;
+  	}else if(message.MsgType === 'text'){
 		let content = message.Content,
 			reply = '额， 你说的： ' + message.Content + ' 太复杂了';
 		if(content === '1'){
@@ -332,7 +361,31 @@ exports.reply = async function (next){
 			let _semanticData = await wechatApi.semantic(semanticData);
 			
 			reply = JSON.stringify(semanticData);
-		}
+		}else {
+	        var movies = await Movie.searchByName(content);
+
+	        if (!movies || movies.length === 0) {
+	           movies = await Movie.searchByDouban(content);
+	        }
+	        if (movies && movies.length > 0) {
+	            reply = [];
+
+	            movies = movies.slice(0, 8); // 目前最多八条，多了将无响应
+
+	            movies.forEach(function(movie) {
+	                reply.push({
+		                title: movie.title,
+		                description: movie.title,
+		                picUrl: movie.images.large,
+		                url: movie.alt//options.baseUrl + '/wechat/jump/' + movie._id
+	            	});
+	        	});
+	        }else {
+	        	reply = '没有查询到与 ' + content + ' 匹配的电影，要不要换一个名字试试'
+	        }
+	        console.log(reply)
+	    }
+
 		this.body = reply;
 	}
 

@@ -42,7 +42,7 @@ let tpl = heredoc(function(){/*
 				let shareContent = {												
 						title: 'title', 
 						desc: '我搜电影',
-						link: 'http://1b14fef7.ngrok.io/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+						link: 'http://f43edf16.ngrok.io', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 						dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 						success: function () {
 							window.alert('分享成功');
@@ -92,7 +92,7 @@ let tpl = heredoc(function(){/*
 											shareContent = {
 												title: subject.title, 
 												desc: '我搜出来了电影'+ subject.title,
-												link: 'http://1b14fef7.ngrok.io/', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+												link: 'http://f43edf16.ngrok.io', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 												imgUrl: subject.images.large,
 												type: 'link', // 分享类型,music、video或link，不填默认为link
 												dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
