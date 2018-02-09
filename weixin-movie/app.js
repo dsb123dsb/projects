@@ -32,7 +32,8 @@ const router = new Router();
 const game = require('./app/controllers/game');
 const wechat = require('./app/controllers/wechat');
 
-router.get('/movie', game.movie);
+router.get('/movie', game.guess);
+router.get('/movie/:id', game.find);
 router.get('/wx', wechat.hear); // 监听来自微信的请求
 router.post('/wx', wechat.hear);
 

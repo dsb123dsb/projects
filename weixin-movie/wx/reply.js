@@ -74,14 +74,13 @@ exports.reply = async function (next){
 	      reply = [];
 
 	      movies = movies.slice(0, 8);
- // console.log(movies)
- console.log(voiceText)
+	      
 	      movies.forEach(function(movie) {
 	        reply.push({
-	          title: movie.title,
-	          description: movie.title,
-	          picUrl: movie.images.large,
-	          url: movie.alt//options.baseUrl + '/wechat/jump/' + movie._id
+                title: movie.title,
+                description: movie.title,
+                picUrl: movie.poster,
+                url: 'http://28b1bb3c.ngrok.io/movie/' + movie._id
 	        });
 	      });
 
@@ -376,14 +375,13 @@ exports.reply = async function (next){
 	                reply.push({
 		                title: movie.title,
 		                description: movie.title,
-		                picUrl: movie.images.large,
-		                url: movie.alt//options.baseUrl + '/wechat/jump/' + movie._id
+		                picUrl: movie.poster,
+		                url: 'http://28b1bb3c.ngrok.io/movie/' + movie._id
 	            	});
 	        	});
 	        }else {
 	        	reply = '没有查询到与 ' + content + ' 匹配的电影，要不要换一个名字试试'
 	        }
-	        console.log(reply)
 	    }
 
 		this.body = reply;

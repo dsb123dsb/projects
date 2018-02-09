@@ -26,3 +26,37 @@ exports.writeFileAsync = function(fpath, content){
 		});
 	});
 };
+
+const crypto = require('crypto');
+// 安全域名也要改
+let createNonce = function(){
+	return Math.random().toString(36).substr(2, 15);
+};
+let createTimestamp = function(){
+	return parseInt(new Date().getTime()/1000, 10) + ''; 
+};
+let _sign = function(nonceStr, ticket, timestamp, url){
+	let params = [
+		'noncestr='+nonceStr,
+		'jsapi_ticket='+ticket,
+		'timestamp='+timestamp,
+		'url='+url
+	];
+	let str = params.sort().join('&'); // 忘记加分隔符，你麻痹，浪费两个小时
+
+	let shasum = crypto.createHash('sha1');
+
+	shasum.update(str);
+	return shasum.digest('hex');
+}
+exports.sign=function(ticket, url){
+	let nonceStr = createNonce(),
+		timestamp = createTimestamp(),
+		signature = _sign(nonceStr, ticket, timestamp, url);
+
+		return {
+			nonceStr: nonceStr,
+			timestamp: timestamp,
+			signature: signature
+		};
+}
