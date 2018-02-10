@@ -33,5 +33,5 @@
 
    ![](https://ws4.sinaimg.cn/large/006tNc79gy1fnallq6sa7g30bf07074m.gif)
 
-16. 微信公众号开发​
+16. 微信公众号开发（改造之前movie站点并共用后台）​
 
