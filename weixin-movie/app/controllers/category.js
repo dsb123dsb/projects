@@ -1,41 +1,32 @@
-const Movie = require('../models/movies');
-const Category = require('../models/category');
-const Comment = require('../models/comment');
-const _underscore = require('underscore');
+'use strict'
 
-//后台录入页admin 
-exports.new = function(req, res){
-	res.render('category_admin', {
-		title: 'immoc 后台分类录入页',
-		category: {}
-	});
-};
+const mongoose = require('mongoose');
+const Category = mongoose.model('Category');
 
-// admin post category
-exports.save = function(req, res){
-	console.log('body:', req.body);
-	var _category = req.body.category;
+// admin new page
+exports.new = async function (ctx, next) {
+  await ctx.render('pages/category_admin', {
+    title: 'imooc 后台分类录入页',
+    category: {}
+  });
+}
 
-	let category = new Category(_category);
-	category.save((err, movie) => {
-		if(err){
-			console.log(err);
-		}
+// admin post movie
+exports.save = async function (ctx, next) {
+  let _category = ctx.request.body.category;
+  let category = new Category(_category);
 
-		res.redirect('/admin/category/list' );
-	});
-};
+  await ctx.save();
 
-//Category list
-exports.list = function(req, res){
-	Category.fetch((err ,categories) => {
-		if(err){
-			console.log(err);
-		}
-		res.render('categorylist', {
-			title: '分类列表页',
-			categories: categories
-		});
+  this.redirect('/admin/category/list');
+}
 
-	});
-};
+// catelist page
+exports.list = async function (ctx, next) {
+  let catetories = await ctx.find({}).exec();
+
+  await ctx.render('pages/categorylist', {
+    title: 'imooc 分类列表页',
+    catetories: catetories
+  });
+}

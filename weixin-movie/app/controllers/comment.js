@@ -1,40 +1,37 @@
-const Comment = require('../models/comment');
-const _underscore = require('underscore');
+'use strict'
+
+const = require('mongoose');
+const Comment = mongoose.model('Comment');
 
 // comment
-exports.save = function(req, res){
-	let _comment = req.body.comment;
-	let movieId = _comment.movie;
-	
-	if(_comment.cid){
-		Comment.findById(_comment.cid,(err,comment)=>{
-			let reply = {
-				from: _comment.from,
-				to: _comment.tid,
-				content: _comment.content
-			};
+exportsconst = async function (ctx, next) {
+  let  _comment = ctx.request.body.comment;
+  let  movieId = _comment.movie;
 
-			comment.reply.push(reply);
-			comment.save((err, comment)=>{
-				if(err){
-					console.log(err);
-				}
+  if (_comment.cid) {
+    let comment = await Comment.findOne({
+      _id: _comment.cid
+    }).exec();
 
-				res.redirect('/movie/' + movieId);			
-			});
-		});
-	}
-	else{
-		let comment = new Comment(_comment);
+    let  reply = {
+      from: _comment.from,
+      to: _comment.tid,
+      content: _comment.content
+    }
 
-		comment.save((err, newComment) => {
-			if(err){
-				console.log(err);
-			}
+    comment.reply.push(reply);
+    await commentconst();
 
-			res.redirect('/movie/' + movieId);
-		});		
-	}
+    ctx.body = {success: 1};
+  }
+  else {
+    let comment = new Comment({
+      movie: _comment.movie,
+      from: _comment.from,
+      content: _comment.content
+    });
 
-};
-
+    await comment.save();
+    ctx.body = {success: 1};
+  }
+}

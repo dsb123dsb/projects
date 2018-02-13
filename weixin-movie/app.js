@@ -28,21 +28,40 @@ wechatApi.deleteMenu().then(function(){
 
 const app = new Koa();
 const Router = require('koa-router');
+const session = require('koa-session');// 利用cookie存储会话状态
+const bodyParser = require('koa-bodyparser');
 const router = new Router();
 const game = require('./app/controllers/game');
 const wechat = require('./app/controllers/wechat');
-
-router.get('/movie', game.guess);
-router.get('/movie/:id', game.find);
-router.get('/wx', wechat.hear); // 监听来自微信的请求
-router.post('/wx', wechat.hear);
+const User = mongoose.model('User');
 
 app.use(views(__dirname + '/app/views', {
   extension: 'pug'
 }));
+
+app.keys['zyh'];
+app.use(session(app));
+app.use(bodyParser());
+
+app.use(async (ctx, next) => {
+  let user = ctx.session.user;
+
+  if (user && user._id) {
+    ctx.session.user = await User.findOne({_id: user._id}).exec();
+    ctx.state.user = ctx.session.user;
+  }
+  else {
+    ctx.state.user = null;
+  }
+
+  await next();
+})
+
+require('./config/routes')(router);
+
 app
 .use(router.routes())
 .use(router.allowedMethods());
 
 app.listen(3000);
-console.log('Listening: 3000')
+console.log('Listening: 3000');

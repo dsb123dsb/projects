@@ -1,195 +1,154 @@
-const Movie = require('../models/movies');
-const Comment = require('../models/comment');
-const Category = require('../models/category');
-const _underscore = require('underscore');
-const fs = require('fs');
+'use strict'
+
+const mongoose = require('mongoose');
+const Movie = mongoose.model('Movie');
+const Category = mongoose.model('Category');
+const Comment = mongoose.model('Comment');
+const _ = require('lodash');
 const path = require('path');
 
-// 详情页
-exports.detail = function(req, res){
-	let id = req.params.id;
+// detail page
+exports.detail =async function (ctx, next) {
+  let id = ctx.params.id
 
-	Movie.update({_id: id}, {$inc: {pv:1}}, function(err){
-		if(err){
-			console.log(err);
-		}
-	});
-	Movie.findById(id, (err, movie) => { // 根据Movie查评论
-		Comment
-			.find({movie: id})
-			.populate('from', 'name') // 根据from去USer表查name
-			.populate('reply.from reply.to', 'name')
-			.exec((err, comments)=>{
-				// console.log(comments);
-				res.render('detail', {
-					title: 'zhou\'site: ' + movie.title, // 'Movie ' + movie.title + ' 详情',
-					movie: movie,
-					comments: comments
-					/*movie: {
-						doctor: 'zhou',
-						country: 'china',
-						title: 'hehhe',
-						year: 2014,
-						flash: 'http://player.youku.com/player.php/sid/XNjA1Njc0NTUy/v.swf',
-						language: 'chinese',
-						summary: 'dwhduwhduwhdwd氮化物氮化物氮化物氮化物'
-					}*/
-				});		
-		});
+  await Movie.update({_id: id}, {$inc: {pv: 1}}).exec();
 
-	});
-};
-//后台录入页admin 
-exports.new = function(req, res){
-	Category.find({}, (err, categories)=>{
-		// console.log(categories);
-		res.render('admin', {
-			title: 'immoc 后台录入页',
-			categories: categories,
-			movie: {}
-		});		
-	});
+  let movie = await Movie.findOne({_id: id}).exec();
+  let comments = await Comment
+    .find({movie: id})
+    .populate('from', 'name')
+    .populate('reply.from reply.to', 'name')
+    .exec();
 
-};
+  await ctx.render('pages/detail', {
+    title: 'imooc 详情页',
+    movie: movie,
+    comments: comments
+  });
+}
 
-// admin update movie
-exports.update = function(req, res){
-	var id = req.params.id;
+// admin new page
+exports.new =async function (ctx, next) {
+  let categories = await Category.find({}).exec();
 
-	if(id){
-		Category.find({}, (err, categories)=>{	
-			Movie.findById(id, (err, movie) => {
-				res.render('admin', {
-					titel: 'zhouSite 后台更新页',
-					movie: movie,
-					categories: categories
-				});
-			});
-		});
-	}
-};
+  await ctx.render('pages/admin', {
+    title: 'imooc 后台录入页',
+    categories: categories,
+    movie: {}
+  });
+}
+
+// admin update page
+exports.update =async function (ctx, next) {
+  let id = ctx.params.id
+
+  if (id) {
+    let movie = await Movie.findOne({_id: id}).exec();
+    let categories = await Category.find({}).exec();
+
+    await ctx.render('pages/admin', {
+      title: 'imooc 后台更新页',
+      movie: movie,
+      categories: categories
+    });
+  }
+}
+
+const util = require('../../libs/util');
 
 // admin poster
-exports.savePoster = function(req, res, next){
-	let posterData = req.files.uploadPoster;
-	let filePath = posterData.path;
-	let originalFilename = posterData.originalFilename;
-	// console.log(req.files);中间件生成
-	if(originalFilename){
-		fs.readFile(filePath, (err, data)=>{
-			let timestamp = Date.now();
-			let type = posterData.type.split('/')[1];
-			let poster = timestamp+'.'+type;
-			let newPath = path.join(__dirname, '../../', '/public/upload/'+poster);
-			fs.writeFile(newPath, data, function(err){
-				req.poster = poster;
-				next();
-			});
+exports.savePoster =async function (ctx, next) {
+  let posterData = ctx.request.body.files.uploadPoster;
+  let filePath = posterData.path;
+  let name = posterData.name;
 
-		});
-	}else{
-		next();
-	}
-};
+  if (name) {
+    let data = await util.readFileAsync(filePath);
+    let timestamp = Date.now();
+    let type = posterData.type.split('/')[1];
+    let poster = timestamp + '.' + type;
+    let newPath = path.join(__dirname, '../../', '/public/upload/' + poster);
+
+    await util.writeFileAsync(newPath, data);
+
+    ctx.poster = poster;
+  }
+
+  await next();
+}
 
 // admin post movie
-exports.save = function(req, res){
-	// console.log('body:', req.body);
-	let id = req.body.movie._id;
-	// console.log('id: ', id);
-	let movieObj = req.body.movie;
-	var _movie;
+exports.save =async function (ctx, next) {
+  let movieObj = ctx.request.body.fields || {};
+  let _movie;
 
-	if(req.poster){
-		movieObj.poster = req.poster;
-	};
+  if (ctx.poster) {
+    movieObj.poster = ctx.poster;
+  }
 
-	if(id) { // 根据报错排查问题'Cast to ObjectId failed for value "" at path "_id" for model "Movie"'
-		Movie.findById(id, (err ,movie) => {
-			if(err){
-				console.log(err);
-			}
+  if (movieObj._id) {
+    let movie = await Movie.findOne({_id: movieObj._id}).exec();
 
-			_movie = _underscore.extend(movie, movieObj);
-			_movie.save((err, movie) => {
-				if(err){
-					console.log(err);
-				}
+    _movie = _.extend(movie, movieObj);
+    await _movie.save();
 
-				res.redirect('/movie/' + movie._id);
-			});
-		});
-	}else{
-		_movie = new Movie(movieObj); // 不能给有_id的对象new，会报错castId，bug
-		// console.log(_movie);
-		// console.log(movieObj);
-		let categoryId = movieObj.category;
-		let categoryName = movieObj.categoryName;
+    ctx.redirect('/movie/' + movie._id);
+  }
+  else {
+    _movie = new Movie(movieObj);
 
-		_movie.save((err, movie) => {
-			if(err){
-				console.log(err);
-			}
+    let categoryId = movieObj.category;
+    let categoryName = movieObj.categoryName;
 
-			if(categoryId){
-				// 分类只能先查一个，多个不能用findById,会是数组
-				Category.findById(categoryId, (err, category)=>{
-					// console.log(category);
-					category.movies.push(movie._id);
-					category.save((err, category)=>{
-						res.redirect('/movie/' + movie._id);
-					});
-				});	
-			}else if(categoryName){
-					let category = new Category({
-						name: categoryName,
-						movies: [movie._id]
-					});
+    await _movie.save();
 
-					category.save((err ,category)=>{
-						movie.category = category._id;
-						movie.save((err, movie)=>{
-							res.redirect('/movie/' + movie._id);
-						});
-					});
-			}
-			
-		});
-	}
-};
+    if (categoryId) {
+      let category = await Category.findOne({_id: categoryId}).exec();
 
-//moive列表页list
-exports.list = function(req, res){
-	Movie.fetch((err ,movies) => {
-		if(err){
-			console.log(err);
-		}
-		res.render('list', {
-			title: 'zhou\'site 列表页',
-			movies: movies
-			/*movies: [{
-				title: '机械战警',
-				_id: 1,
-				country: 'china',
-				year: 2014,
-				doctor: 'zhou'
-			}]	*/	
-		});
+      category.movies.push(movie._id);
+      await category.save();
 
-	});
-};
+      ctx.redirect('/movie/' + movie._id);
+    }
+    else if (categoryName) {
+      let category = new Category({
+        name: categoryName,
+        movies: [movie._id]
+      })
 
-// list delete movie
-exports.del = function(req, res){
-	var id = req.query.id;
+      await category.save();
+      movie.category = category._id;
+      await movie.save();
 
-	if(id){
-		Movie.remove({_id: id}, (err, movie) => {
-			if(err){
-				console.log(err);
-			}else{
-				res.json({success: 1});
-			}
-		});
-	}
-};	
+      ctx.redirect('/movie/' + movie._id);
+    }
+  }
+}
+
+// list page
+exports.list =async function (ctx, next) {
+  let movies = await Movie.find({})
+    .populate('category', 'name')
+    .exec();
+
+  await ctx.render('pages/list', {
+    title: 'imooc 列表页',
+    movies: movies
+  })
+}
+
+// list page
+exports.del =async function (ctx, next) {
+  let id = ctx.query.id;
+
+  if (id) {
+    try {
+      await Movie.remove({_id: id}).exec();
+
+      ctx.body = {success: 1};
+    }
+    catch(err) {
+      ctx.body = {success: 0};
+    }
+  }
+}

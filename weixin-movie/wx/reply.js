@@ -80,7 +80,7 @@ exports.reply = async function (next){
                 title: movie.title,
                 description: movie.title,
                 picUrl: movie.poster,
-                url: 'http://28b1bb3c.ngrok.io/movie/' + movie._id
+                url: 'http://28b1bb3c.ngrok.io/wechat/movie/' + movie._id
 	        });
 	      });
 
@@ -376,7 +376,7 @@ exports.reply = async function (next){
 		                title: movie.title,
 		                description: movie.title,
 		                picUrl: movie.poster,
-		                url: 'http://28b1bb3c.ngrok.io/movie/' + movie._id
+		                url: 'http://28b1bb3c.ngrok.io/wechat/movie/' + movie._id
 	            	});
 	        	});
 	        }else {

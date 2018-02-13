@@ -1,111 +1,107 @@
-const User = require('../models/users');
+'use strict'
 
-// showSignup page
-exports.showSignup = function(req,res){
-	res.render('signup', {
-		title: '注册页面'
-	});
-};
-// showSignin page
-exports.showSignin = function(req,res){
-	res.render('signin', {
-		title: '登陆页面'
-	});
-};
-// singn up 注册
-exports.signup = function(req, res){
-	let _user = req.body.user;
-	// /user/signup/:useerId?useerId=1122;
-	// 三种获取userId，1.req.params.userid, 2.req.body.userid 3.req.query.useerid,  若直接使用req.param('userid'),会从123按顺序找
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
 
-	// 查找是或否用户名已存在
-	User.find({name:_user.name}, (err, user)=>{ // find返回的是数组
-		if(err){
-			console.log(err);
-		}
-		if(user&&user.length){
-			return res.redirect('/signin');
-		}
-		else{
-			user = new User(_user);
-			user.save((err, user)=>{
-				if(err){
-					console.log(err);
-				}else{
-					console.log(user);
-					res.redirect('/');
-				}
-			})	
-		}
-	})
-
+// signup
+exports.showSignup = async function (ctx, next) {
+  await ctx.render('pages/signup', {
+    title: '注册页面'
+  });
 };
 
-// signin 登陆
-exports.signin = function(req,res){
-	let _user= req.body.user;
-	let name = _user.name;
-	let password = _user.password;
+exports.showSignin = async function (ctx, next) {
+  await ctx.render('pages/signin', {
+    title: '登录页面'
+  });
+};
 
-	User.findOne({name:name}, (err,user)=>{
-		if(err){
-			console.log(err);
-		}
-		if(!user){
-			return res.redirect('/signup');
-		}
-		// compare password
-		user.comparePassword(password, (err, isMatched)=>{
-			if(err){
-				console.log(err);
-			}
-			if(isMatched){
-				req.session.user = user; // 写入session,不做处理重启服务就消失了
-				// console.log("Password is matched");
-				return	res.redirect('/');
-			}else{
-				return res.redirect('/signin');
-				console.log("Password is not matched");
-			}
-		});
-	});
+exports.signup = async function (ctx, next) {
+  let _user = ctx.request.body.user;
+
+  let user = await User.findOne({name: _user.name}).exec();
+
+  if (user) {
+    ctx.redirect('pages/signin');
+
+    return next;
+  }
+  else {
+    user = new User(_user);
+    await user.save();
+
+    ctx.session.user = user;
+
+    ctx.redirect('/');
+  }
+};
+
+// signin
+exports.signin = async function (ctx, next) {
+  let _user = ctx.request.body.user;
+  let name = _user.name;
+  let password = _user.password;
+
+  let user = await User.findOne({name: name}).exec();
+
+  if (!user) {
+    ctx.redirect('pages/signup');
+
+    return next;
+  }
+
+  let isMatch = await user.comparePassword(password, user.password);
+
+  if (isMatch) {
+    ctx.session.user = user;
+
+    ctx.redirect('/');
+  }
+  else {
+    ctx.redirect('pages/signin');
+  }
 };
 
 // logout
-exports.logout = function(req,res){
-	delete req.session.user;
-	// delete app.locals.user
-	res.redirect('/');
+exports.logout = async function (ctx, next) {
+  delete ctx.session.user;
+  //delete app.locals.user
+
+  ctx.redirect('/');
 };
+
 // userlist page
-exports.list = function(req,res){
-	User.fetch((err ,users) => {
-		if(err){
-			console.log(err);
-		}
-		res.render('userlist', {
-			title: 'zhou\'site user列表页',
-			users: users
-		});
+exports.list = async function (ctx, next) {
+  let users = await User
+    .find({})
+    .sort('meta.updateAt')
+    .exec();
 
-	});
+  await ctx.render('pages/userlist', {
+    title: 'imooc 用户列表页',
+    users: users
+  });
 };
 
-// middware for user
-exports.signinRequired = function(req,res,next){
-	let user = req.session.user;
+// midware for user
+exports.signinRequired = async function (ctx, next) {
+  let user = ctx.session.user;
 
-	if(!user){
-		return res.redirect('/signin');
-	}
-	next();
+  if (!user) {
+    ctx.redirect('pages/signin');
+  }
+  else {
+    await next();
+  }
 };
-// middware for admin
-exports.adminRequired = function(req,res,next){
-	let user = req.session.user;
 
-	if(user.role<=10 || !user.role){
-		return res.redirect('/signin');
-	}
-	next();
+exports.adminRequired = async function (ctx, next) {
+  let user = ctx.session.user;
+
+  if (user.role <= 10) {
+    ctx.redirect('pages/signin');
+  }
+  else {
+    await next();
+  }
 };
