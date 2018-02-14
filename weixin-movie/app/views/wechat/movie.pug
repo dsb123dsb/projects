@@ -9,8 +9,53 @@ block content
 			font-weight: 400;
 			margin: 0 15%;
 		}
+	    img {
+	      vertical-align: middle;
+	    }
+	    p {
+	      margin: 0 0 10px;
+	    }
+	    .media-list {
+	      padding-left: 0;
+	      list-style: none;
+	    }
+	    .media-object {
+	      display: block;
+	    }
+	    .pull-left {
+	      float: left!important;
+	    }
+	    .media {
+	      margin-top: 15px;
+	    }
+	    .media, .media-body {
+	      overflow: hidden;
+	      zoom: 1;
+	    }
+	    .media:first-child {
+	      margin-top: 0;
+	    }
+	    .media-left, .media>.pull-left {
+	      padding-right: 10px;
+	    }
+	    .media-body {
+	      width: 10000px;
+	    }
+	    .media-body, .media-left, .media-right {
+	      display: table-cell;
+	      vertical-align: top;
+	    }
+	    .h4, h4 {
+	      font-size: 18px;
+	    }
+	    .media-heading {
+	      margin-top: 0;
+	      margin-bottom: 5px;
+	    }
+	    
 	.page__hd
 			.h1.page__title= movie.title
+			.h2 user.name
 	.page__.bd
 			.weui-cells__title 电影介绍
 			.weui-cells
@@ -40,4 +85,76 @@ block content
 			.weui-article
 				section
 					p= movie.summary
-					
+			ul.media-list
+				if comments && comments.length>0
+					each item in comments
+						//- 多种写法
+						- var aa = item.content;
+						li.media
+							.pull-left
+								//- 锚点，跳转到主评论
+								a.comment(href="#comments", data-cid=item._id, data-tid=item.from._id) 
+									img.media-object(src="#",alt="头像",style="width:64px; height:64px;background:#eee;")
+							.media-body
+								h4.media-heading #{item.from.name}
+								//- span #{item.content} #{aa}
+								p= item.content + ": "+ item.from.name
+								if item.reply && item.reply.length > 0
+									each reply in item.reply
+										.media
+											.pull-left
+												a.comment(href="#comments", data-cid=item._id, data-tid=reply.from?reply.from._id:"无名氏") 
+													img.media-object(src="#",alt="头像",style="width:64px; height:64px;background:#eee;")
+											.media-body
+												h4.media-heading 
+													| #{reply.from?reply.from.name:"无名氏"}
+													span.text-info &nbsp;回复&nbsp;
+													| #{(reply.to?reply.to.name+":":"无名氏：")}
+												p= reply.content		
+							hr
+			#comments
+				form#commentForm(method="POST", action="/user/comment")
+					input#movie(type="hidden", name="comment[movie]", value = movie._id)
+						//- 直接使用movie._id。不用#{}这种
+					input#from(type="hidden", name="comment[from]", value = user._id)
+					input#toId(type="hidden", name="comment[tid]")
+					input#commentId(type="hidden", name="comment[cid]")
+					.weiui-cells
+						.weiui-cell
+							.weui-cell__bd
+								textarea#content.weiui-textarea(name = "comment[content]" row="3")
+					.weui-btn__area
+						a#submit.weiui-btn__primary(href='javascript:;') 提交
+	script.
+		$(() => {// 处理回复评论数据的逻辑
+			$('.comment').click((e) => {
+				let target = $(e.currentTarget);// 获取元点击素
+				let toId = target.data('tid');
+				let commentId = target.data('cid');
+				// 是否已经点击过了
+				$('#toId').val(toId);
+
+				$('#commentId').val(commentId);
+				}	
+			});
+			$('.comment').click((e) => {
+				e.preventDefault();
+				$.ajax({
+					type: 'POST',
+					data: {
+						comment: {
+							movie: $('#movie').val(),
+							from: $('#from').val(),
+							tid: $('#toId').val(),
+							cid: $('#commentId').val(),
+							content: $('#content').val(),
+						}
+					},
+					url: '/user/comment'
+					success: function(results){
+						if(results.success === 1 ){
+							window.location.reload();
+						}
+					};
+			});
+		});				

@@ -14,7 +14,7 @@ block content
 								.col-md-2
 									.thumbnail
 										a(href="/movie/"+item._id)
-											if item.poster.indexOf('http:')
+											if item.poster.indexOf('https:')
 												img(src=item.poster, alt=item.title)
 											else
 												img(src="/upload/"+item.poster, alt=item.title)

@@ -26,6 +26,7 @@ module.exports = function(router){
 	// wechat
 	router.get('/wechat/movie', Game.guess);
 	router.get('/wechat/movie/:id', Game.find);
+	router.get('/wechat/jump/:id', Game.jump);
 	router.get('/wx', Wechat.hear); // 监听来自微信的请求
 	router.post('/wx', Wechat.hear);
 
@@ -36,8 +37,8 @@ module.exports = function(router){
 	// router.post('/admin/movie', multipartMiddleware, User.signinRequired, User.adminRequired, Movie.savePoster, Movie.save);
 	// router.get('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.list);
 	// router.delete('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.del);	
-	// // Comment
-	// router.post('/user/comment', User.signinRequired, Comment.save);
+	// Comment
+	router.post('/user/comment', User.signinRequired, Comment.save);
 
 	// // Category
 	// router.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);

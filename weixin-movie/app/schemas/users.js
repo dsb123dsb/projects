@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
 		type:String,
 		unique:true
 	},
+	openid:String,
 	password:String,
 
 	// 0:normal user; 1:verifieed user; 2:professional user; >10:admmin; >50:super admin

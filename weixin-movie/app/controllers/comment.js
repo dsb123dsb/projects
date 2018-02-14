@@ -17,7 +17,7 @@ exportsconst = async function (ctx, next) {
       from: _comment.from,
       to: _comment.tid,
       content: _comment.content
-    }
+    };
 
     comment.reply.push(reply);
     await commentconst();
