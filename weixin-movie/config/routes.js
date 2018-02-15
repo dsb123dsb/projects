@@ -7,6 +7,7 @@ const Comment = require('../app/controllers/comment');
 const Game = require('../app/controllers/game');
 const Wechat = require('../app/controllers/wechat');
 const Category = require('../app/controllers/category');
+const koaBody = require('koa-body');
 
 module.exports = function(router){
 
@@ -32,20 +33,20 @@ module.exports = function(router){
 
 	// Movie
 	router.get('/movie/:id', Movie.detail);
-	// router.get('/admin/movie/new', User.signinRequired, User.adminRequired, Movie.new);
-	// router.get('/admin/movie/update/:id', User.signinRequired, User.adminRequired, Movie.update);
-	// router.post('/admin/movie', multipartMiddleware, User.signinRequired, User.adminRequired, Movie.savePoster, Movie.save);
-	// router.get('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.list);
-	// router.delete('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.del);	
+	router.get('/admin/movie/new', User.signinRequired, User.adminRequired, Movie.new);
+	router.get('/admin/movie/update/:id', User.signinRequired, User.adminRequired, Movie.update);
+	router.post('/admin/movie', User.signinRequired, User.adminRequired, koaBody({multipart: true}), Movie.savePoster, Movie.save);
+	router.get('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.list);
+	router.delete('/admin/movie/list',User.signinRequired, User.adminRequired, Movie.del);	
 	// Comment
 	router.post('/user/comment', User.signinRequired, Comment.save);
 
-	// // Category
-	// router.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);
-	// router.post('/admin/category',User.signinRequired, User.adminRequired, Category.save);
-	// router.get('/admin/category/list',User.signinRequired, User.adminRequired, Category.list);	
+	// Category
+	router.get('/admin/category/new', User.signinRequired, User.adminRequired, Category.new);
+	router.post('/admin/category',User.signinRequired, User.adminRequired, Category.save);
+	router.get('/admin/category/list',User.signinRequired, User.adminRequired, Category.list);	
 
-	// // Results
-	// router.get('/results', Index.search);	
+	// Results
+	router.get('/results', Index.search);	
 };
 

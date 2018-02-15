@@ -29,6 +29,61 @@ exports.reply = async function (next){
 		}
 		else if(message.Event === 'CLICK'){
 			this.body = '您点击了菜单： ' + message.EventKey;
+		    let news = [];
+
+		    if (message.EventKey === 'movie_hot') {
+		        let movies = await Movie.findHotMovies(-1, 10);
+
+		        movies.forEach(function(movie) {
+			        news.push({
+			            title: movie.title,
+			            description: movie.title,
+			            picUrl: movie.poster,
+			            url: 'http://28b1bb3c.ngrok.io/wechat/jump/' + movie._id
+			        });
+		        });
+		    }
+		    else if (message.EventKey === 'movie_cold') {
+		        let movies = await Movie.findHotMovies(1, 10)
+
+		        movies.forEach(function(movie) {
+			        news.push({
+			            title: movie.title,
+			            description: movie.title,
+			            picUrl: movie.poster,
+			            url: 'http://28b1bb3c.ngrok.io/wechat/jump/' + movie._id
+			        });
+		        });
+		    }
+		    else if (message.EventKey === 'movie_crime') {
+		        let cat = await Movie.findMoviesByCate('犯罪');
+
+		        cat.movies.forEach(function(movie) {
+			        news.push({
+			            title: movie.title,
+			            description: movie.title,
+			            picUrl: movie.poster,
+			            url: 'http://28b1bb3c.ngrok.io/wechat/jump/' + movie._id
+			        });
+		        });
+		    }
+		    else if (message.EventKey === 'movie_cartoon') {
+		        let cat = await Movie.findMoviesByCate('动画');
+
+		        cat.movies.forEach(function(movie) {
+			        news.push({
+			            title: movie.title,
+			            description: movie.title,
+			            picUrl: movie.poster,
+			            url: 'http://28b1bb3c.ngrok.io/wechat/jump/' + movie._id
+			        });
+		        });
+		    }
+		    else if (message.EventKey === 'help') {
+		        news = help;
+		    }
+
+		    this.body = news;
 		}
 		else if(message.Event === 'SCAN'){
 			console.log('关注后扫二维码' + message.EventKey + ' ' + Ticket);

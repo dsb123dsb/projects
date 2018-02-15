@@ -6,8 +6,16 @@ module.exports = {
 		'type': 'click',
 		'key': 'menu_click'
 	}, {
-		'name': '点出菜单',
+		'name': '排行榜',
 		'sub_button': [{
+			'name': '最热的',
+			'type': 'click',
+			'url': 'movie_hot'
+		}, {
+			'name': '最冷的',
+			'type': 'click',
+			'url': 'movie_cold'
+		}, {
 			'name': '跳转URL',
 			'type': 'view',
 			'url': 'http://github.com'
@@ -29,8 +37,20 @@ module.exports = {
 			'key': 'pic_photo_album'
 		}]
 	}, {
-		'name': '点出菜单2',
+		'name': '分类',
 		'sub_button': [{
+			'name': '犯罪',
+			'type': 'click',
+			'key': 'movie_crime'
+		}, {
+			'name': '地理位置选择',
+			'type': 'location_select',
+			'key': 'location_select'
+		}, {
+			'name': '动画',
+			'type': 'click',
+			'key': 'movie_cartoon'
+		}, {
 			'name': '微信相册发图',
 			'type': 'pic_weixin',
 			'key': 'pic_weixin'
@@ -42,7 +62,12 @@ module.exports = {
 			'name': '扫码推送中',
 			'type': 'scancode_waitmsg',
 			'key': 'qr_scan_wait'
-		}
+		}]
+	}, {
+		'name': '帮助',
+		'type': 'click',
+		'key': 'help'
+		// 'sub_button': [
 		// , {
 		// 	'name': '下发图片消息',
 		// 	'type': 'media_id',
@@ -52,6 +77,6 @@ module.exports = {
 		// 	'type': 'view_limited',
 		// 	'media_id': 'xxx'
 		// }
-		]		
+		// ]		
 	}]
 }

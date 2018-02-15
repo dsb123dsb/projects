@@ -1,7 +1,6 @@
 'use strict'
 
 const Koa = require('koa');
-const views = require('koa-views');
 const path = require('path');
 const fs = require('fs');
 
@@ -31,12 +30,15 @@ const Router = require('koa-router');
 const session = require('koa-session');// 利用cookie存储会话状态
 const bodyParser = require('koa-bodyparser');
 const router = new Router();
-const game = require('./app/controllers/game');
-const wechat = require('./app/controllers/wechat');
 const User = mongoose.model('User');
+const views = require('koa-views');
+const moment = require('moment');
 
 app.use(views(__dirname + '/app/views', {
-  extension: 'pug'
+  extension: 'pug',
+  locals: {
+  	moment： moment
+  }
 }));
 
 app.keys['zyh'];

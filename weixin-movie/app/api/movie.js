@@ -17,6 +17,20 @@ exports.findAll = async () => await Category
   })
   .exec();
 
+exports.findHotMovies = async (hot, count) => await Movie
+  .find({})
+  .sort({'pv': hot})
+  .limit(count)
+  .exec();
+
+exports.findMoviesByCate = async (cat) => await Category
+  .findOne({name: cat})
+  .populate({
+    path: 'movies',
+    select: 'title poster _id'
+  })
+  .exec();
+
 // search page
 exports.searchByCategory = async (catId) => await Category
   .find({_id: catId})
