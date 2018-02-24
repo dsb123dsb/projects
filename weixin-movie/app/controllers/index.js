@@ -5,7 +5,7 @@ const Movie = require('../api/movie');
 // index page
 exports.index = async function(ctx, next){
 
-  let categories = yield Movie.findAll();
+  let categories = await Movie.findAll();
 
   await ctx.render('pages/index', {
     title: '微信电影课程首页-[zyh]',
@@ -37,7 +37,7 @@ exports.search = async function(ctx, next){
     });
   }
   else {
-    let movies = yield Movie.searchByName(q);
+    let movies = await Movie.searchByName(q);
     let results = movies.slice(index, index + count);
 
     await ctx.render('pages/results', {

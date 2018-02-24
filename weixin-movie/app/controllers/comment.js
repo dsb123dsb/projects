@@ -1,10 +1,10 @@
 'use strict'
 
-const = require('mongoose');
+const mongoose = require('mongoose');
 const Comment = mongoose.model('Comment');
 
 // comment
-exportsconst = async function (ctx, next) {
+exports.save = async function (ctx, next) {
   let  _comment = ctx.request.body.comment;
   let  movieId = _comment.movie;
 

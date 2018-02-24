@@ -37,11 +37,11 @@ const moment = require('moment');
 app.use(views(__dirname + '/app/views', {
   extension: 'pug',
   locals: {
-  	moment： moment
+  	moment: moment
   }
 }));
 
-app.keys['zyh'];
+app.keys=['zyh'];
 app.use(session(app));
 app.use(bodyParser());
 

@@ -60,7 +60,7 @@ exports.find = async function (ctx, next){	// koa router7对于异步处理有�
 	let url = ctx.href;
 	let params = util.sign(ticket, url);
 	let movie = await Movie.searchById(id);
-	let comments = yield Comment
+	let comments = await Comment
 	    .find({movie: id})
 	    .populate('from', 'name')
 	    .populate('reply.from reply.to', 'name')

@@ -9,10 +9,10 @@ const Wechat = require('../app/controllers/wechat');
 const Category = require('../app/controllers/category');
 const koaBody = require('koa-body');
 
-module.exports = function(router){
+module.exports = router=>{
 
 	//路由编写 .调用controller
-
+	
 	// index page
 	router.get('/', Index.index);
 

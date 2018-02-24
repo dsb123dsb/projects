@@ -1,20 +1,22 @@
 'use strict'
 
 module.exports = {
-	'button' : [{
-		'name': '点击事件',
-		'type': 'click',
-		'key': 'menu_click'
-	}, {
+	'button' : [
+	// {
+	// 	'name': '点击事件',
+	// 	'type': 'click',
+	// 	'key': 'menu_click'
+	// }, 
+	{
 		'name': '排行榜',
 		'sub_button': [{
 			'name': '最热的',
 			'type': 'click',
-			'url': 'movie_hot'
+			'key': 'movie_hot'
 		}, {
 			'name': '最冷的',
 			'type': 'click',
-			'url': 'movie_cold'
+			'key': 'movie_cold'
 		}, {
 			'name': '跳转URL',
 			'type': 'view',
@@ -27,15 +29,17 @@ module.exports = {
 			'name': '扫码推送中',
 			'type': 'scancode_waitmsg',
 			'key': 'qr_scan_wait'
-		}, {
-			'name': '系统拍照',
-			'type': 'pic_sysphoto',
-			'key': 'pic_photo'
-		}, {
-			'name': '弹出系统拍照或相册',
-			'type': 'pic_photo_or_album',
-			'key': 'pic_photo_album'
-		}]
+		}
+		// , {
+		// 	'name': '系统拍照',
+		// 	'type': 'pic_sysphoto',
+		// 	'key': 'pic_photo'
+		// }, {
+		// 	'name': '弹出系统拍照或相册',
+		// 	'type': 'pic_photo_or_album',
+		// 	'key': 'pic_photo_album'
+		// }
+		]
 	}, {
 		'name': '分类',
 		'sub_button': [{
@@ -58,11 +62,13 @@ module.exports = {
 			'name': '地理位置选择',
 			'type': 'location_select',
 			'key': 'location_select'
-		}, {
-			'name': '扫码推送中',
-			'type': 'scancode_waitmsg',
-			'key': 'qr_scan_wait'
-		}]
+		}
+		// , {
+		// 	'name': '扫码推送中',
+		// 	'type': 'scancode_waitmsg',
+		// 	'key': 'qr_scan_wait'
+		// }
+		]
 	}, {
 		'name': '帮助',
 		'type': 'click',

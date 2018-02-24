@@ -36,7 +36,7 @@ module.exports = function(opts, handler){
 					limit: 'lmb',
 					encoding: this.charset
 				});
-				// console.log(data.toString())
+				// console.log(data.toString());
 
 				let content = await util.parseXMLAsync(data);
 				// console.log(content);
