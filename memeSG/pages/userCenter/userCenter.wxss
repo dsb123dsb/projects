@@ -1,0 +1,62 @@
+/* pages/userCenter/userCenter.wxss */
+.background{
+    position: absolute;
+    top: 10rpx;
+    left: 0;
+    width: 100%;
+    height: 430rpx;
+    z-index: -2;
+}
+.container {
+    height: 100%;
+    width: 100%;
+  } 
+.userinfo {
+    position: relative;
+    height: 406rpx;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(244,244,244);
+    padding: 10rpx 0 50rpx;
+    z-index: -3;
+  }
+  
+  .userinfo-avatar, .avatar {
+    width: 128rpx;
+    height: 128rpx;
+    margin-top: 100rpx;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+  }
+
+  .userinfo text{
+    color: white;
+    margin-top: 20rpx;
+  }
+  .option {
+    height: 140rpx;
+    display: flex;
+    position: relative;
+    margin: 0 30rpx;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .option text {
+    white-space: nowrap;
+    font-size: 34rpx;
+    margin-left: 20rpx;
+  }
+  .option .left {
+    width: 40rpx;
+    height: 40rpx;
+  }
+  .option .arrow{
+      position: absolute;
+      width: 15rpx;
+      height: 30rpx;
+      top: 55rpx;
+      right: 0;
+  }

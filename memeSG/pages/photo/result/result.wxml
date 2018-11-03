@@ -1,0 +1,36 @@
+<!--pages/photo/result/result.wxml-->
+<view class="page">
+    <view style="height: {{winHeigt-rpxTopxRatio*250}}px; width: 100%; background: rgb(244,244,244);">
+        <image mode="aspectFit" class="imagePoster" src="{{src}}"/>
+        <view style="position: absolute; top: {{(winHeigt-rpxTopxRatio*420)/2}}px;" class="match-text">
+            <block wx:for="{{recomend_text}}" wx:key="*this">
+                <text style="display: inline-block;">{{item}}</text>
+            </block>
+        </view>
+    </view>
+    <view class="toList" bindtap="toList">
+        <view class="top">
+            <image src="/images/favorite.png" class="favorite" id="favorite" />
+            <image src="/images/down_load.png" class="down_load" id="downLoad" />
+        </view>
+        <view class="bottom">
+            <view class="left" bindtap="rephoto">
+               <image src="/images/rephoto.png" class="rephoto"></image>
+               <text>重拍</text>
+            </view>
+            <view class="horizon">
+                <view class="share">
+                    <button style="width: 100%; height:100%" open-type="share">
+                        <image src="/images/share_short.png" class="share-short"/>
+                        <text class="text">分享好友</text>
+                    </button>
+                </view>
+            </view>
+            <view class="right" bindtap="refreshWord">
+               <image src="/images/change_small.png" class="refresh"></image>
+               <text>换一句</text>
+            </view>
+        </view>
+    </view>
+    <canvas style="width: {{canvasWidth}}px; height: {{canvasHeight}}px; left: -9999px; top: 0; position: absolute;" canvas-id="attendCanvasId"/>
+</view>

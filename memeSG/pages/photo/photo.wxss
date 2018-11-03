@@ -1,0 +1,78 @@
+/* pages/photo/photo.wxss */
+camera {
+    position: relative;
+    width: 100%;
+}
+cover-view[class|="grid"] {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;  
+}
+cover-view[class|="grid"] cover-view {
+    position: absolute;
+    z-index: 9;
+    background: rgba(255, 255, 255, 0.6);
+}
+.grid-row cover-view {
+    width: 100%;
+    height: 1px;  
+    /* transform: scale3d(1, 0.5, 1); */  
+}
+.grid-row cover-view:first-child {
+    top: 33.33%;  
+}
+.grid-row cover-view:last-child {
+    top: 66.66%;
+}
+.grid-column cover-view {  
+    width: 1px;
+    height: 100%;  
+    /* transform: scale3d(0.5, 1, 1); */  
+}
+.grid-column cover-view:first-child {
+    left: 33.33%;
+}
+.grid-column cover-view:last-child {
+    left: 66.66%;
+}
+.controls {
+    height: 250rpx;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.controls .control {  
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24rpx;
+}
+.icon-album, .icon-change {
+    width: 42rpx;
+    height: 34rpx;
+    margin-bottom: 10rpx;
+}
+.icon-photo {
+    width: 140rpx;
+    height: 140rpx;
+}
+.tip {
+    position: absolute;
+    height: 40rpx;
+    line-height: 40rpx;
+    background: rgba(32, 188, 99, 0.7);
+    border-radius: 20rpx;
+    /* padding: 0 20rpx; */
+    font-size: 26rpx;
+    color: #fff;
+    left: 50%;
+    top: 240rpx;
+    transform: translateX(-50%);
+    width: 222rpx;
+    text-align: center;
+}

@@ -1,0 +1,68 @@
+/**app.wxss**/
+page, .page {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+/* 顶部阴影 */
+.shodow{
+  height: 4rpx;
+  width: 100%;
+  background: linear-gradient(to bottom, rgb(238, 233, 233), rgba(238, 233, 2330, 0)); /* 标准的语法 */
+}
+/* reset button */
+button {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+  border-radius: 0;
+  color: inherit;
+  background-color: transparent;
+}
+button::after {
+  display: none;
+}
+.button-hover {
+  background: transparent;
+}
+.border-b-1px::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: #f1f1f1;
+  left: 0;
+  bottom: 0;  
+  transform: scale3d(1, 0.5, 1);
+  transform-origin: 0 100%;
+}
+/* 中部地平线 */
+.horizon{
+  position: relative;
+  height: 120rpx;
+  width: 100%;
+  background-color: white;
+}
+/* 转发 */
+.share{
+  position: absolute;
+  top: 18rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 89rpx;
+  width: 514rpx;
+}
+.share .image, .share .text{
+  width: 100%;
+  height: 100%;
+}
+.share .text{
+  position: absolute;
+  display: inline-block;
+  top: 0;
+  left: 0;
+  text-align: center;
+  line-height: 78rpx;
+  color: #6f5d34;
+}

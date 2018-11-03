@@ -1,0 +1,32 @@
+<view class="page">
+  <view class="shodow"></view>
+  <view class="swiper_containter">
+    <swiper indicator-dots="true" indicator-color="rgba(136,136,136,1)" indicator-active-color="rgb(255,209,0)"
+      autoplay="true" interval="3000" duration="1000">
+      <block wx:for="{{swiper_imgUrls}}" wx:key="*this">
+        <swiper-item class="swiper_item">
+          <image src="{{item}}" class="slide-image"/>
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="center_items">
+      <block wx:for="{{center_imgUrls}}" wx:key="*this">
+        <view data-url="{{item.url}}" bindtap="gotoNext" class="center_item">
+          <image src="{{item.src}}" class="center_image"/>
+          <view class="item_text">{{item.text}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class="recomend">
+    <view class="title">
+      <image class="icon_recomend" src="/images/icon_recomend.png" />
+      <text class="text">推荐表情</text>
+    </view>
+    <view class="recomend_items">
+      <block wx:for="{{recomend_imgUrls}}" wx:key="*this">
+        <image bindtap="toDIY" data-src="{{item}}" src="{{item}}" class="recomend_image"/>
+      </block>
+    </view>
+  </view>
+</view>

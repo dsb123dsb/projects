@@ -1,0 +1,25 @@
+<!--pages/photo/photo.wxml-->
+<camera binderror='refuseAthorize' style="height: {{winHeigt-rpxTopxRatio*250}}px">
+    <cover-view class='grid-row'>
+        <cover-view></cover-view>
+        <cover-view></cover-view>
+    </cover-view>
+    <cover-view class='grid-column'>
+        <cover-view></cover-view>
+        <cover-view></cover-view>
+    </cover-view>
+    <cover-view class='tip'>文字平行参考线</cover-view>
+</camera>
+<cover-view class='controls'>
+    <cover-view class="control">
+        <cover-image class='icon-album' src='/images/albums.png' bindtap='chooseImage'></cover-image>
+        <cover-view class=''>相册</cover-view>
+    </cover-view>
+    <cover-view class="control">
+        <cover-image class='icon-photo' src='/images/photo_button.png' bindtap='takePhoto'></cover-image>
+    </cover-view>
+    <cover-view class="control">
+        <cover-image class='icon-change' src='/images/change.png'></cover-image>
+        <cover-view class=''>旋转</cover-view>
+    </cover-view>
+</cover-view>

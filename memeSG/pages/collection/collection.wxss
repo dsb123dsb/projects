@@ -1,0 +1,29 @@
+/* pages/collection/collection.wxss */
+.containter{
+    margin: 0 30rpx;
+}
+.tabs{
+    position: relative;
+    height: 120rpx;
+    display: flex;
+    flex-direction: row;
+    font-size: 32rpx;
+    align-items: center;
+    justify-content: space-between;
+}
+.current{
+    color: #ffd138;
+}
+.content{
+    margin-bottom: 50rpx;
+}
+.content .image{
+    width: 100%;
+    height: 357rpx;
+    border-radius: 10rpx;
+    box-shadow: 4rpx 4rpx 2rpx 2rpx #f1f1f1;
+}
+.content .text{
+    font-size: 24rpx;
+    margin-top: 20rxp;
+}

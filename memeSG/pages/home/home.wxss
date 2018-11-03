@@ -1,0 +1,76 @@
+/* 顶部轮播图 */
+.swiper_containter{
+  position: relative;
+  width: 718rpx;
+  margin: 6rpx 16rpx 0 16rpx;
+}
+swiper{
+  height: 350rpx;
+  width: 718rpx;
+}
+/* 轮播图片 */
+.slide-image{
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+}
+/* 中部主功能栏 */
+.center_items{
+  height: 208rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  box-sizing: border-box;
+}
+.center_item{
+  display: flex;
+  flex-direction: column;
+  margin: 50rpx 0 32rpx 0;
+}
+.center_items .center_image{
+  width: 114rpx;
+  height: 114rpx;
+}
+.center_items .item_text{
+  text-align: center;
+  font-size: 24rpx;
+}
+/* 底部推荐表情 */
+.recomend{
+  position: relative;
+  padding: 41rpx 15rpx;
+  background-color: rgb(244,244,244);
+}
+/* 标题 */
+.title{
+  position: relative;
+  height: 28rpx;
+  font-size: 28rpx;
+}
+.title .text, .icon_recomend{
+  display: inline-block;
+  vertical-align: middle;
+}
+.title .text{
+  margin-left: 2rpx;
+}
+.icon_recomend{
+  width: 24rpx;
+  height: 24rpx;
+}
+/* 表情列表 */
+.recomend_items{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.recomend_items .recomend_image{
+  height: 230rpx;
+  width: 230rpx;
+  margin: 20rpx 0  0 15rpx;
+}
+.recomend_items .recomend_image:nth-child(4n), .recomend_items .recomend_image:first-child {
+  margin-left: 0;
+}

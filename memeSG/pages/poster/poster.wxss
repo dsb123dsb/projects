@@ -1,0 +1,85 @@
+/* pages/poster/poster.wxss */
+.poster{
+    position: relative;
+    height: 342rpx;
+    width: 100%;
+    margin-top: 6rpx;
+    padding: 30rpx 0 61rpx 0;
+    background-color: black;
+}
+.poster .image{
+    height: 100%;
+    width: 100%;
+}
+.poster .texts{
+    position: absolute;
+    width: 100%;
+    bottom: 15rpx;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white
+
+}
+.poster .text{
+    font-size: 24rpx;
+    line-height: 24rpx;
+    text-align: center;
+}
+.tools{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32rpx 48rpx 32rpx 16rpx;
+}
+.tools .changeBg, .tools .other{
+    width: 174rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.tools .other{
+    width: 131rpx;
+}
+.tools image{
+    height: 40rpx;
+    width: 40rpx;
+}
+/* 底部推荐表情 */
+.recomend{
+    position: relative;
+    padding: 29rpx 18rpx;
+    background-color: rgb(244,244,244);
+  }
+  /* 标题 */
+  .title{
+    position: relative;
+    height: 40rpx;
+    font-size: 28rpx;
+    line-height: 40rpx;
+  }
+  .title .text, .icon_recomend{
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .title .text{
+    margin-left: 2rpx;
+  }
+  .icon_recomend{
+    width: 24rpx;
+    height: 24rpx;
+  }
+  .recomend_items{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16rpx 0 20rpx;
+  }
+  .recomend_image{
+    width: 347rpx; 
+    height: 231rpx;
+    margin-bottom: 20rpx;
+  }

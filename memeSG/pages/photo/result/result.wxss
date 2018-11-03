@@ -1,0 +1,62 @@
+/* pages/photo/result/result.wxss */
+.imagePoster{
+    width: 100%;
+    height: 100%;
+}
+.match-text{
+    position: absolute;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
+    color: #ffff4f;
+    font-size: 32rpx;
+    text-align: center;
+}
+.toList{
+    padding: 16rpx;
+}
+.toList .top{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+.top image{
+    height: 40rpx;
+    width: 40rpx;
+    margin-left: 60rpx;
+}
+.bottom{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40rpx 64rpx;
+    font-size: 32rpx;
+}
+.bottom view{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin:0 10rpx;
+}
+.left text, .right text {
+    width: 74rpx;
+    font-size: 24rpx;
+    text-align: center;
+}
+.rephoto{
+    width: 42rpx;
+    height: 36rpx;
+    margin-bottom: 12rpx;
+}
+.share-short, .horizon, .share{
+    width: 214rpx;
+    height: 89rpx;
+    top: 0;
+}
+.refresh{
+    width: 74rpx;
+    height: 52rpx;
+}

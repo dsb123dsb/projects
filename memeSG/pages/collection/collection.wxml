@@ -1,0 +1,31 @@
+<!--pages/collection/collection.wxml-->
+<view class="page">
+    <view class="shodow"></view>
+    <view class="containter">
+        <view class="tabs" bindtap="swichTab">
+            <block wx:for="{{tabs}}" wx:key="*this">
+                <view id="{{index}}" class="tab {{index===currentIdx?'current': ''}}">{{item}}</view>
+            </block>
+        </view>
+        <view class="content">
+            <image class="image" src="https://ws1.sinaimg.cn/large/a33179fdly1fwswp4b7ntj20ku09idqq.jpg"/>
+            <text class="text">// 海报 // 2018/10/02</text>
+        </view>
+        <view class="content">
+            <image class="image" src="https://ws1.sinaimg.cn/large/a33179fdly1fwswp479izj20ku09ik4t.jpg"/>
+            <text class="text">// 海报 // 2018/10/02</text>
+        </view>
+        <view class="content">
+            <image class="image" src="https://ws1.sinaimg.cn/large/a33179fdly1fwswp41fs9j20ku09iaji.jpg"/>
+            <text class="text">// 海报 // 2018/10/02</text>
+        </view>
+        <view class="content">
+            <image class="image" src="https://ws1.sinaimg.cn/large/a33179fdly1fwswoyykzuj20ku09in8p.jpg"/>
+            <text class="text">// 海报 // 2018/10/02</text>
+        </view>
+        <view class="content">
+            <image class="image" src="https://ws1.sinaimg.cn/large/a33179fdly1fwswp4b7ntj20ku09idqq.jpg"/>
+            <text class="text">// 海报 // 2018/10/02</text>
+        </view>
+    </view>
+</view>
