@@ -22,7 +22,10 @@
     padding: 10rpx 0 50rpx;
     z-index: -3;
   }
-  
+  .btn-login{
+    z-index: 111;
+    font-size: 32rpx;
+  }
   .userinfo-avatar, .avatar {
     width: 128rpx;
     height: 128rpx;

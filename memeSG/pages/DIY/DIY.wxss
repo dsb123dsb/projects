@@ -33,7 +33,7 @@
 }
 .diy_container .text{
     position: absolute;
-    bottom: 30rpx;
+    bottom: 10rpx;
     left: 0;
     width: 100%;
     text-align: center;

@@ -5,10 +5,10 @@
         <view class="diy_container">
             <view class="content">
                 <image mode="aspectFit" class="image" src="{{diySrc}}" />
-                <text style="font-size: {{fontSize}}px; bottom: {{bottom}}px;" class="text">{{selectText}}</text>
+                <text style="font-size: {{fontSize*rpxTopxRatio}}px; bottom: {{bottom*rpxTopxRatio}}px;" class="text">{{selectText}}</text>
             </view>
             <view bindtap="toDoLosit" class="tools">
-                <image src="/images/favorite.png" class="favorite" id="favorite" />
+                <image src="{{favoriteUrl}}" class="favorite" id="favorite" />
                 <image src="/images/down_load.png" class="down_load" id="downLoad" />
                 <image src="/images/albums.png" class="upload" id="upload" />
                 <image src="/images/change_text.png" class="refresh_text" id="refreshText" />

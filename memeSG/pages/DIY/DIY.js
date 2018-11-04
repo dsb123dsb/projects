@@ -9,10 +9,12 @@ Page({
   data: {
     recomend_text: [],
     diySrc: '', // diy图片源
+    rpxTopxRatio: rpxTopxRatio,
     tmpSrc: '',
+    favoriteUrl: '/images/favorite.png',
     selectText: '', // 选择匹配文字
-    fontSize: 64*rpxTopxRatio,
-    bottom: 30*rpxTopxRatio
+    fontSize: 48,
+    bottom: 10
   },
 
   /**
@@ -20,7 +22,7 @@ Page({
    */
   onLoad: function (options) {
     wx.showShareMenu();
-    let src = decodeURIComponent(options.src||'https://ws1.sinaimg.cn/large/a33179fdly1fwswj029p5j205e04edfn.jpg');
+    let src = decodeURIComponent(options.src||'http://10.141.8.84/meme2face/frontend/75.jpg');
     this.setData({
       diySrc: src
     });
@@ -57,7 +59,7 @@ Page({
         let data = JSON.parse(res.data ||'') || {},
             textObjs = JSON.parse(data.objs || '{}'),
             textArr,
-            ratio;
+            ratio =1;
         for (let key in textObjs){
           let tmp = textObjs[key];
           if(tmp) textArr = tmp;
@@ -69,8 +71,8 @@ Page({
         this.setData({
           recomend_text: textArr,
           selectText: textArr[0],
-          fontSize: 64 * rpxTopxRatio / ratio,
-          bottom: 30 * rpxTopxRatio * ratio*0.80
+          fontSize: 48 / ratio,
+          bottom: 10 * ratio*0.80
         });
         wx.hideLoading();
       },
@@ -92,15 +94,18 @@ Page({
 
   toDoLosit: function(e){
     let todo = e.target.id,
-        diySrc = this.data.tmpSrc;
+        diySrc = this.data.tmpSrc,
+        favoriteUrl = this.data.favoriteUrl;
     if(todo==='refreshText'){ // 更换配文
       this.fetchText(diySrc);
     }else if(todo==='downLoad'){ // 下载
       this.downLoad();
     }else if(todo==='upload'){ // 换脸
       this.changeFace(diySrc);
-    }else{ // 收藏
-
+    }else if(todo=='favorite'){
+      this.setData({
+        favoriteUrl: favoriteUrl=='/images/favorited.png'?'/images/favorite.png': '/images/favorited.png'
+      });
     }
   },
   changeFace: function(diySrc){
@@ -160,14 +165,14 @@ Page({
    */
   selectText: function(e){
     let text = e.target.dataset.text,
-        ratio;
+        ratio = 1;
     if(Math.ceil(text.length/7)>1) {
       ratio = 2;
     }
     this.setData({
       selectText: text,
-      fontSize: 64 * rpxTopxRatio / ratio,
-      bottom: 30 * rpxTopxRatio * ratio*0.80
+      fontSize: 48  / ratio,
+      bottom: 10 * ratio*0.80
     });
   },
   /**

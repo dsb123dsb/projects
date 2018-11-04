@@ -12,22 +12,22 @@
     </block>
   </view>
   <view class='option-list'>
-    <view class='option border-b-1px' bindtap='showGuide'>
+    <view class='option border-b-1px' bindtap=''>
         <image class="left" src='/images/user_center_dwon.png'/>
         <text>我的下载</text>
         <image class="arrow" src='/images/user_center_arrow.png'/>
     </view>
-    <view class='option border-b-1px' bindtap='onSettings'>
+    <view class='option border-b-1px' bindtap=''>
         <image class="left" src='/images/user_center_setting.png'/>
         <text>我的设置</text>
         <image class="arrow" src='/images/user_center_arrow.png'/>
     </view>
-    <view class='option border-b-1px' bindtap='onFeedBack'>
+    <view class='option border-b-1px' bindtap=''>
         <image class="left" src='/images/usern_center_feed.png'/>
         <text>反馈建议</text>
         <image class="arrow" src='/images/user_center_arrow.png'/>
     </view>
-    <view class='option border-b-1px' bindtap='onAboutUs'>
+    <view class='option border-b-1px' bindtap=''>
         <image class="left" src='/images/user_center_about.png'/>
         <text>关于我们</text>
         <image class="arrow" src='/images/user_center_arrow.png'/>

@@ -8,7 +8,6 @@
         <cover-view></cover-view>
         <cover-view></cover-view>
     </cover-view>
-    <cover-view class='tip'>文字平行参考线</cover-view>
 </camera>
 <cover-view class='controls'>
     <cover-view class="control">
@@ -18,8 +17,8 @@
     <cover-view class="control">
         <cover-image class='icon-photo' src='/images/photo_button.png' bindtap='takePhoto'></cover-image>
     </cover-view>
-    <cover-view class="control">
-        <cover-image class='icon-change' src='/images/change.png'></cover-image>
-        <cover-view class=''>旋转</cover-view>
+    <cover-view class="control" style="visibility: hidden;">
+        <cover-image class='icon-change' src=''></cover-image>
+        <cover-view class=''></cover-view>
     </cover-view>
 </cover-view>

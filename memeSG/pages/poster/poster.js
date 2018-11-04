@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    postUrl: 'https://ws1.sinaimg.cn/large/a33179fdly1fwswp4b7ntj20ku09idqq.jpg',
+    postUrl: '',
     matchtexts: ['每一个沐浴在爱河中的人都是诗人', 'At the touch of love everyone become a poet'],
     currentBg: 'black',
     photoBg: ['black', '#2d3134'],
@@ -18,14 +18,21 @@ Page({
       {url: 'https://ws1.sinaimg.cn/large/a33179fdly1fwswoyykzuj20ku09in8p.jpg', text: ['每当你想放弃的时候，想一想', 'The moment you think about giving up, think of']}
     ],
     currentIdx: 0,
-    rpxTopxRatio: rpxTopxRatio
+    rpxTopxRatio: rpxTopxRatio,
+    favoriteUrl: '/images/favorite.png'
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    let {src, text} = options;
+    text = text || JSON.stringify(['每一个沐浴在爱河中的人都是诗人', 'At the touch of love everyone become a poet']);
+    src = src || 'https://ws1.sinaimg.cn/large/a33179fdly1fwswp4b7ntj20ku09idqq.jpg'
+    this.setData({
+      matchtexts: JSON.parse(decodeURIComponent(text)),
+      postUrl: decodeURIComponent(src)
+    })
   },
   toPoster: function(e){
     let dataset = e.target.dataset,
@@ -36,9 +43,14 @@ Page({
     });
   },
   toList: function(e){
-    let todo = e.target.id;
+    let todo = e.target.id,
+        favoriteUrl = this.data.favoriteUrl;
     if(todo=='downLoad'){
       this.downLoad();
+    }else if(todo=='favorite'){
+      this.setData({
+        favoriteUrl: favoriteUrl=='/images/favorited.png'?'/images/favorite.png': '/images/favorited.png'
+      });
     }
   },
     /**

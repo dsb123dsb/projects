@@ -9,7 +9,6 @@
     width: 100%;
     transform: translateX(-50%);
     color: #ffff4f;
-    font-size: 32rpx;
     text-align: center;
 }
 .toList{

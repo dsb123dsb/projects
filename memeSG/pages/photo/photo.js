@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    winHeigt: globalData.winHeight,
+    winHeigt: globalData.winHeight+50,
     rpxTopxRatio: globalData.rpxTopxRatio
   },
   onLoad: function(){

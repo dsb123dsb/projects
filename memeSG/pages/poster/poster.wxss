@@ -4,7 +4,7 @@
     height: 342rpx;
     width: 100%;
     margin-top: 6rpx;
-    padding: 30rpx 0 61rpx 0;
+    padding: 30rpx 0 81rpx 0;
     background-color: black;
 }
 .poster .image{
@@ -14,7 +14,7 @@
 .poster .texts{
     position: absolute;
     width: 100%;
-    bottom: 15rpx;
+    bottom: 20rpx;
     left: 50%;
     transform: translateX(-50%);
     color: white

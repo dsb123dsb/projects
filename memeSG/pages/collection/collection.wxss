@@ -1,29 +1,66 @@
 /* pages/collection/collection.wxss */
 .containter{
-    margin: 0 30rpx;
+    padding: 0 30rpx 0 0;
+    display: flex;
+    flex-direction: column;
+}
+.shodow{
+    position: fixed;
 }
 .tabs{
-    position: relative;
+    position: fixed;
     height: 120rpx;
+    width: 690rpx;
     display: flex;
     flex-direction: row;
     font-size: 32rpx;
     align-items: center;
     justify-content: space-between;
+    padding: 0 30rpx 15rpx;
+    background-color: white;
+}
+.contents{
+    margin-top: 135rpx;
 }
 .current{
     color: #ffd138;
 }
-.content{
+.poster{
     margin-bottom: 50rpx;
+    margin-left: 30rpx;
 }
-.content .image{
+.diys{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.diy, .photo{
+    margin: 0 0 30rpx 30rpx;
+}
+.diy .image{
+    width: 150rpx;
+    height: 150rpx;
+}
+.poster .image{
     width: 100%;
     height: 357rpx;
+}
+.photo .image{
+    width: 216rpx;
+    height: 216rpx;
+    margin-right: 21rpx;
+}
+.photo .image :nth-child(3n) {
+    margin-right: 0;
+}
+.photos .text {
+    margin: 0 0 10rpx 30rpx;
+}
+.containter .image{
     border-radius: 10rpx;
     box-shadow: 4rpx 4rpx 2rpx 2rpx #f1f1f1;
 }
-.content .text{
+.containter .text{
     font-size: 24rpx;
     margin-top: 20rxp;
 }

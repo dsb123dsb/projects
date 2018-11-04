@@ -4,10 +4,25 @@
     <view class="containter">
         <view class="tabs" bindtap="swichTab">
             <block wx:for="{{tabs}}" wx:key="*this">
-                <view id="{{index}}" class="tab {{index===currentIdx?'current': ''}}">{{item}}</view>
+                <view class="">
+                    <view id="{{index}}" class="tab {{index===currentIdx?'current': ''}}">{{item.title}}</view>
+                </view>
             </block>
         </view>
-        <view class="content">
+        <view class="contents {{currentIdx===0?'posters':currentIdx===1?'diys':'photos'}}">
+            <block wx:for="{{tabs[currentIdx].urls}}"  wx:key="*this">
+                <text wx:if="{{currentIdx===2}}" class="text">{{tabs[currentIdx].urls[index]['date']}}</text>
+                <view class="{{currentIdx===0?'poster':currentIdx===1?'diy':'photo'}}">
+                    <image wx:if="{{currentIdx!==2}}" class="image" src="{{item}}"/>
+                    <text wx:if="{{currentIdx===0}}" class="text">// 海报 // 2018/10/02</text>
+                    <block wx:for="{{item.urlss}}"  wx:key="*this">                    
+                        <image style="margin-right: {{index==2||index==5?0:21*rpxTopxRatio}}px" class="image" src="{{item}}"/>
+                        <text wx:if="{{currentIdx===0}}" class="text">// 海报 // 2018/10/02</text>
+                    </block>
+                </view>
+            </block>
+        </view>
+        <!-- <view class="content">
             <image class="image" src="https://ws1.sinaimg.cn/large/a33179fdly1fwswp4b7ntj20ku09idqq.jpg"/>
             <text class="text">// 海报 // 2018/10/02</text>
         </view>
@@ -26,6 +41,6 @@
         <view class="content">
             <image class="image" src="https://ws1.sinaimg.cn/large/a33179fdly1fwswp4b7ntj20ku09idqq.jpg"/>
             <text class="text">// 海报 // 2018/10/02</text>
-        </view>
+        </view> -->
     </view>
 </view>

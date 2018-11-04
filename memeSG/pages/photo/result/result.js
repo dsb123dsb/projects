@@ -8,39 +8,33 @@ Page({
    */
   data: {
     src: '',
-    winHeigt: globalData.winHeight,
+    fontSize: 40,
+    winHeigt: globalData.winHeight+50,
     rpxTopxRatio: globalData.rpxTopxRatio,
     recomend_text: [],
-    canvasWidth: 50,
-    canvasHeight: 50
+    canvasWidth: 0,
+    canvasHeight: 0,
+    favoriteUrl: '/images/favorite.png'
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let src = decodeURIComponent(options.src|| "") || "https://ws1.sinaimg.cn/large/a33179fdly1fwswp4b7ntj20ku09idqq.jpg"
+    let src = decodeURIComponent(options.src|| "");
     this.setData({
       src: src
     });
-    wx.downloadFile({
-      url: src,
-      success: (res)=> {
-        wx.getImageInfo({
-          src: res.tempFilePath,
-          success: res => {
-              this.setData({
-                  canvasWidth: res.width,
-                  canvasHeight: res.height
-              });
-          }
-      });
-        this.fetchText(res.tempFilePath);
-      },
-      fail: function(res){
-        console.log(res)
+    wx.getImageInfo({
+      src: src,
+      success: res => {
+          this.setData({
+              canvasWidth: res.width,
+              canvasHeight: res.height
+          });
       }
     });
+    this.fetchText(src);
   },
   /**
    * 请求图片匹配文字
@@ -63,6 +57,11 @@ Page({
             textArr = JSON.parse(data.objs || '[]');
         console.log(textArr)
         textArr[0] = textArr[0].replace(',', ',\n');
+        if(textArr[0].split(',')[0].length>44){
+          this.setData({
+            fontSize: 32
+          });
+        }
         this.setData({
           recomend_text: textArr.reverse()
         });
@@ -80,9 +79,14 @@ Page({
     });
   },
   toList: function(e){
-    let todo = e.target.id;
+    let todo = e.target.id,
+        favoriteUrl = this.data.favoriteUrl;
     if(todo=='downLoad'){
       this.downLoad();
+    }else if(todo=='favorite'){
+      this.setData({
+        favoriteUrl: favoriteUrl=='/images/favorited.png'?'/images/favorite.png': '/images/favorited.png'
+      });
     }
   },
     /**
@@ -95,13 +99,13 @@ Page({
         text = data.recomend_text,
         canvasHeight = data.canvasHeight,
         canvasWidth = data.canvasWidth,
-        canvasCtx = wx.createCanvasContext('attendCanvasId');
+        canvasCtx = wx.createCanvasContext('attendCanvasIds');
     canvasCtx.drawImage(src, 0, 0, canvasWidth, canvasHeight);
     canvasCtx.setFillStyle('#ffff4f');
     canvasCtx.setFontSize(16);
     canvasCtx.setTextAlign('center');
-    canvasCtx.fillText(text[0], canvasWidth/2, canvasHeight/2);
-    canvasCtx.fillText(text[1], canvasWidth/2, canvasHeight/2-16);
+    canvasCtx.fillText(text[0], canvasWidth/2, canvasHeight*0.66);
+    canvasCtx.fillText(text[1], canvasWidth/2, canvasHeight*0.66-16);
     canvasCtx.draw(); // 绘制异步，后面导出要定时器
     wx.showLoading({
       title: '图片导出中...',
@@ -117,7 +121,7 @@ Page({
           destWidth: canvasWidth,
           destHeight: canvasHeight,
           quality: 1,
-          canvasId: 'attendCanvasId',
+          canvasId: 'attendCanvasIds',
           success: res => {
               if (res.tempFilePath) {
                   wx.saveImageToPhotosAlbum({
@@ -145,21 +149,10 @@ Page({
   }, 2000);
   },
   refreshWord: function(){
-    let textArr = this.data.recomend_text,
-        idx = Math.ceil(Math.random()*5);
-    this.setData({
-      matchText: textArr[idx-1]
-    });
+        this.fetchText(this.data.src);
   },
   rephoto: function(){
     wx.navigateBack();
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
   },
 
   /**

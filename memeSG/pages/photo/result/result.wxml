@@ -2,15 +2,15 @@
 <view class="page">
     <view style="height: {{winHeigt-rpxTopxRatio*250}}px; width: 100%; background: rgb(244,244,244);">
         <image mode="aspectFit" class="imagePoster" src="{{src}}"/>
-        <view style="position: absolute; top: {{(winHeigt-rpxTopxRatio*420)/2}}px;" class="match-text">
+        <view style="position: absolute; top: {{(winHeigt-rpxTopxRatio*220)*0.6}}px;" class="match-text">
             <block wx:for="{{recomend_text}}" wx:key="*this">
-                <text style="display: inline-block;">{{item}}</text>
+                <text style="display: block; font-size:{{fontSize*rpxTopxRatio}}px; font-weight: bold; text-shadow: 1px 0 0px rgba(0,0,0,0.3), -1px 0 0px rgba(0,0,0,0.3), 0 1px rgba(0,0,0,0.3), 0 -1px rgba(0,0,0,0.3), 1px 1px rgba(0,0,0,0.3), -1px -1px rgba(0,0,0,0.3), 1px -1px rgba(0,0,0,0.3), -1px 1px rgba(0,0,0,0.3);">{{item}}</text>
             </block>
         </view>
     </view>
     <view class="toList" bindtap="toList">
         <view class="top">
-            <image src="/images/favorite.png" class="favorite" id="favorite" />
+            <image src="{{favoriteUrl}}" class="favorite" id="favorite" />
             <image src="/images/down_load.png" class="down_load" id="downLoad" />
         </view>
         <view class="bottom">
@@ -31,6 +31,6 @@
                <text>换一句</text>
             </view>
         </view>
+        <canvas style="visibility: hidden; width: {{canvasWidth}}px; height: {{canvasHeight}}px; position: absolute; left: -9999px; top: 0;" canvas-id="attendCanvasIds"/>
     </view>
-    <canvas style="width: {{canvasWidth}}px; height: {{canvasHeight}}px; left: -9999px; top: 0; position: absolute;" canvas-id="attendCanvasId"/>
 </view>

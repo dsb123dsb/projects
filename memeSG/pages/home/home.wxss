@@ -46,7 +46,8 @@ swiper{
 /* 标题 */
 .title{
   position: relative;
-  height: 28rpx;
+  line-height: 40rpx;
+  height: 40rpx;
   font-size: 28rpx;
 }
 .title .text, .icon_recomend{
@@ -69,8 +70,10 @@ swiper{
 .recomend_items .recomend_image{
   height: 230rpx;
   width: 230rpx;
-  margin: 20rpx 0  0 15rpx;
+  margin: 20rpx 15rpx  0 0;
+  border-radius: 5rpx;
+  box-shadow: 2rpx 2rpx 1rpx 1rpx #f1f1f1;
 }
-.recomend_items .recomend_image:nth-child(4n), .recomend_items .recomend_image:first-child {
-  margin-left: 0;
+.recomend_items .recomend_image:nth-child(3n){
+  margin-right: 0;
 }

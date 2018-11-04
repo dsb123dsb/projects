@@ -16,7 +16,7 @@
             </block>
         </view>
         <view bindtap="toList" class="other">
-            <image src="/images/favorite.png" class="favorite" id="favorite" />
+            <image src="{{favoriteUrl}}" class="favorite" id="favorite" />
             <image src="/images/down_load.png" class="down_load" id="downLoad" />
         </view>
     </view>
