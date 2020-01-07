@@ -112,6 +112,6 @@ function trigger(target,type,key){
 
 var p2 = reactive([1,2,3,4]);
 effect(()=>{
-    console.log('reactive', p2.length);  // youxuan
+    console.log('reactive', p2.length);
 })
 p2.push(5);
