@@ -1,3 +1,4 @@
+// 1，监听
 function reactive(target){
     // 创建响应式对象
     return createReactiveObject(target);
@@ -18,6 +19,9 @@ function createReactiveObject(target){
             console.log('获取', key, receiver);
             track(target,'get',key); // 依赖收集
             let res = Reflect.get(target,key,receiver);
+            if(res._isRef){
+                return res.value
+            }
             return res;
         },
         set(target,key,value,receiver){ // 更改 、 新增属性
@@ -47,6 +51,7 @@ function createReactiveObject(target){
     return observed;
 }
 
+// 2，副作用
 function effect(fn) {
     const effect = createReactiveEffect(fn); // 创建响应式的effect
     effect(); // 先执行一次
@@ -69,6 +74,7 @@ function run(effect, fn) {
     }
 }
 
+// 3 收集副作用
 const targetMap = new WeakMap();
 function track(target,type,key){
     // 查看是否有effect
@@ -88,6 +94,7 @@ function track(target,type,key){
     }
 }
 
+// 4 调用副作用
 function trigger(target,type,key){
     const depsMap = targetMap.get(target);
     if(!depsMap){
@@ -110,8 +117,33 @@ function trigger(target,type,key){
     }
 }
 
+// 5 ref可以将原始数据类型也转换成响应式数据
+function convert(val) {
+    return isObject(val) ? reactive(val) : val;
+  }
+  function ref(raw) {
+    raw = convert(raw);
+    const v = {
+      _isRef:true, // 标识是ref类型
+      get value() {
+        track(v, "get", "");
+        return raw;
+      },
+      set value(newVal) {
+        raw = newVal;
+        trigger(v,'set','');
+      }
+    };
+    return v;
+  }
+
+let r = ref(1);
+let c = reactive({
+    a:r
+});
+console.log('ref', c.a);
 var p2 = reactive([1,2,3,4]);
 effect(()=>{
-    console.log('reactive', p2.length);
+    console.log('reactive', p2.length);  // youxuan
 })
 p2.push(5);
