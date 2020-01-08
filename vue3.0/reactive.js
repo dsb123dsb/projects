@@ -1,4 +1,5 @@
 // https://segmentfault.com/a/1190000020709962
+// https://juejin.im/post/5d977f47e51d4578453274b3
 // 1，监听
 function reactive(target){
     // 创建响应式对象
