@@ -9,7 +9,7 @@
   "author": "zyh",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.5.1",
     "crypto": "^1.0.1",
     "ejs": "^2.5.7",
